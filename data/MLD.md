@@ -73,7 +73,7 @@ __CHARACTER_HAS_CAPACITY__
 | id | INTEGER | PRIMARY KEY, NOT NULL, AUTO_INCREMENT | The unique association identifier |  
 | character_id | INTEGER | REFERENCE character(id) | A character identifier |  
 | capacity_id | INTEGER | REFERENCE capacty(id) | A capacity identifier |  
-| level | INTEGER |  | The capacity level of the user |
+| level | INTEGER | NOT NULL, DEFAULT 0 | The capacity level of the user |
 
 &nbsp;
 
