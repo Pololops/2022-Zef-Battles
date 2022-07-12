@@ -28,7 +28,7 @@ This project contains a back-end part with a server based on Node.js and Express
 ![the MCD](./data/MCD.svg)
 
 #### MLD and data dictionary  :
-[le MLD et le dictionnnaire des données sont consultable ici](./data/MDL.md)
+[le MLD et le dictionnnaire des données sont consultable ici](./data/MLD.md)
 
 &nbsp;
 
