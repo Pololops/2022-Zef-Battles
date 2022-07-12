@@ -27,17 +27,8 @@ This project contains a back-end part with a server based on Node.js and Express
 #### MCD:
 ![the MCD](./data/MCD.svg)
 
-#### MLD:
-* USER (__user_num__, name, password, language, victory_number, role)
-* BATTLE (__battle_num__, start_date, #family_num)
-* CAPACITY (__capacity_num__, name)
-* CHARACTER (__character_num__, name, picture, family, #family_num)
-* FAMILY (__family_num__, name)
-* USER_PLAY_BATTLE (#user_num, #battle_num)
-* PLAYER_HAS_CHARATER (#battle_num, #character_num)
-* CHARACTER_HAS_CAPACITY (#capacity_num, #character_num, level)
-
-#### data dictionary:
+#### MLD and data dictionary  :
+[le MLD et le dictionnnaire des données sont consultable ici](./data/MDL.md)
 
 &nbsp;
 
@@ -73,14 +64,5 @@ Ce projet est constitué d'une partie back-end avec un serveur monté avec Node.
 #### MCD :
 ![the MCD](./data/MCD.svg)
 
-#### MLD :
-* USER (__user_num__, name, password, language, victory_number, role)
-* BATTLE (__battle_num__, start_date, #family_num)
-* CAPACITY (__capacity_num__, name)
-* CHARACTER (__character_num__, name, picture, family, #family_num)
-* FAMILY (__family_num__, name)
-* USER_PLAY_BATTLE (#user_num, #battle_num)
-* PLAYER_HAS_CHARATER (#battle_num, #character_num)
-* CHARACTER_HAS_CAPACITY (#capacity_num, #character_num, level)
-
-#### Dictionnaire des données :
+#### MLD  et dictionnaire des données :
+[le MLD et le dictionnnaire des données sont consultable ici](./data/MDL.md)
