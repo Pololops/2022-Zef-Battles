@@ -1,0 +1,35 @@
+{
+	"name": "zef-battles-server",
+	"version": "1.0.0",
+	"description": "A battle game with character cards",
+	"main": "index.js",
+  "type": "module",
+	"scripts": {
+		"start": "node index.js",
+		"dev": "DEBUG=*,-express:*,-nodemon*,-node-dev*,-body* node-dev index.js --no-notify",
+		"data": "DEBUG=*, node ./data/data-import.js",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+ssh://git@github.com/Pololops/2022-zef-battles.git"
+	},
+	"keywords": [
+		"game",
+		"cards",
+		"battle",
+		"characters",
+		"server"
+	],
+	"author": "Polo",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/Pololops/2022-zef-battles/issues"
+	},
+	"homepage": "https://github.com/Pololops/2022-zef-battles#readme",
+	"dependencies": {
+		"debug": "^4.3.4",
+		"dotenv": "^16.0.1",
+		"pg": "^8.7.3"
+	}
+}
