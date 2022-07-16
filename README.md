@@ -22,16 +22,6 @@ This project contains a back-end part with a server based on Node.js and Express
 
 &nbsp;
 
-### The database
-
-#### MCD:
-![the MCD](./data/MCD.svg)
-
-#### MLD and data dictionary  :
-[le MLD et le dictionnnaire des données sont consultable ici](./data/MLD.md)
-
-&nbsp;
-
 ___
 
 &nbsp;
@@ -56,13 +46,3 @@ Le jeu se termine quand tous les joueurs ont joué toutes leurs cartes et le gag
 ## Le projet
 
 Ce projet est constitué d'une partie back-end avec un serveur monté avec Node.js et Express ainsi qu'une base de données PostgreSQL, et une partie front-end réalisée avec React et Redux.
-
-&nbsp;
-
-### La base de données
-
-#### MCD :
-![the MCD](./data/MCD.svg)
-
-#### MLD  et dictionnaire des données :
-[le MLD et le dictionnnaire des données sont consultable ici](./data/MDL.md)

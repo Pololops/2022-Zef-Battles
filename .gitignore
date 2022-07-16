@@ -13,7 +13,7 @@
 **/*~
 
 # npm
-node_modules
+**/node_modules
 *.gz
 
 # log
@@ -24,8 +24,8 @@ node_modules
 .vs_code/
 
 # config
-.env
-sqitch.conf
+**/.env
+**/sqitch.conf
 
 # jest
-coverage
+**/coverage
