@@ -1,6 +1,9 @@
 import { Router } from 'express';
 const router = Router();
 
+import validate from '../../validation/validator.js';
+import schema from '../../validation/schemas/familySchema.js';
+
 import controllerHandler from '../../middlewares/controllerHandler.js';
 
 import controller from '../../controllers/familyController.js';
@@ -23,7 +26,7 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Family not found - application/json
 	 */
-	.post(controllerHandler(controller.create));
+	.post(validate('body', schema), controllerHandler(controller.create));
 
 router
 	.route('/:id(\\d+)')
@@ -37,7 +40,7 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Family not found - application/json
 	 */
-	.patch(controllerHandler(controller.update))
+	.patch(validate('body', schema), controllerHandler(controller.update))
 	/**
 	 * DELETE /api/family/{id}
 	 * @summary Delete one family

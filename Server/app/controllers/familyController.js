@@ -5,10 +5,6 @@ import ApiError from '../errors/apiError.js';
 
 import familyDatamapper from '../models/family.js';
 
-const regexp = new RegExp(
-	/^([A-ZÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{1}[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ]*){1}([- ']{1}[A-ZÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ]{1}[a-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ]*)*$/,
-);
-
 const familyController = {
 	async getAll(_, response) {
 		const families = await familyDatamapper.findAll();
@@ -16,13 +12,6 @@ const familyController = {
 	},
 
 	async create(request, response) {
-		if (!regexp.test(request.body.name)) {
-			throw new ApiError(
-				'Each word of the family name has to begin with a capital letter',
-				{ statusCode: 400 },
-			);
-		}
-
 		const family = await familyDatamapper.isUnique(request.body);
 		if (family) {
 			throw new ApiError('This family name already exists', {

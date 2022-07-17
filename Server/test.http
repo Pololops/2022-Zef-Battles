@@ -22,7 +22,7 @@ POST {{ endpoint }}/family
 content-type: application/json
 
 {
-  "name": "New family"
+  "name": "new Family"
 }
 
 ### Create a new family
