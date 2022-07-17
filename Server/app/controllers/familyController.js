@@ -1,11 +1,14 @@
 import Debug from 'debug';
-const debug = Debug('Controller:familyController');
+const debug = Debug('Controller:familyController:log');
 
-import ApiError from '../middlewares/handleError.js';
+import ApiError from '../errors/apiError.js';
+
+import family from '../models/family.js';
 
 const familyController = {
-  async getAllFamily(request, response) {
-    
+  async getAll(_, response) {
+    const families = await family.findAll();
+    return response.json(families);
   }
 };
 

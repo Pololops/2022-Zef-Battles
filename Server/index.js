@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import Debug from 'debug';
-const debug = Debug('Server');
+const debug = Debug('Server:log');
 
 import app from './app/app.js';
 

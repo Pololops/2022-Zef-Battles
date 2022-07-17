@@ -1,16 +1,17 @@
 import { Router } from 'express';
 const router = Router();
 
-import familyController from '../controllers/familyController.js';
+import controllerHandler from '../../middlewares/controllerHandler.js';
+import familyController from '../../controllers/familyController.js';
 
 router
-	.route('/family')
+	.route('/')
 	/**
 	 * GET /v1/family
 	 * @summary Get all families order by name
 	 * @tags FAMILY
 	 * @return {Family} 200 - success response - application/json
 	 */
-	.get(familyController.getAllFamily);
+	.get(controllerHandler(familyController.getAll));
 
 export default router;
