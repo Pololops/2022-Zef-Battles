@@ -33,10 +33,21 @@ content-type: application/json
   "name": "New Family"
 }
 
-### Create a new family
+### Failed update one family  -->  error
 PATCH {{ endpoint }}/family/4
 content-type: application/json
 
 {
-  "name": "New"
+  "name": "New pokémon"
 }
+
+### Update one family
+PATCH {{ endpoint }}/family/4
+content-type: application/json
+
+{
+  "name": "New Pokémon"
+}
+
+### Delete a family by its id
+DELETE {{ endpoint }}/family/2
