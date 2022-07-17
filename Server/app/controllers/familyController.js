@@ -16,25 +16,27 @@ const familyController = {
 	},
 
 	async create(request, response) {
-		const newFamily = request.body;
-
-		if (!regexp.test(newFamily.name)) {
+		if (!regexp.test(request.body.name)) {
 			throw new ApiError(
 				'Each word of the family name has to begin with a capital letter',
 				{ statusCode: 400 },
 			);
 		}
 
-		const family = await familyDatamapper.isUnique(newFamily);
+		const family = await familyDatamapper.isUnique(request.body);
 		if (family) {
 			throw new ApiError('This family name already exists', {
 				statusCode: 400,
 			});
 		}
 
-    const saveFamily = await familyDatamapper.insert(newFamily);
-    return response.json(saveFamily);
+		const saveFamily = await familyDatamapper.insert(request.body);
+		return response.json(saveFamily);
 	},
+
+	async update(request, response) {},
+
+	async delete(request, response) {},
 };
 
 export default familyController;
