@@ -32,3 +32,11 @@ content-type: application/json
 {
   "name": "New Family"
 }
+
+### Create a new family
+PATCH {{ endpoint }}/family/4
+content-type: application/json
+
+{
+  "name": "New"
+}
