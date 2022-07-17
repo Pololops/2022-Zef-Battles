@@ -9,7 +9,7 @@ INSERT INTO "user" ("name", "password", "role") VALUES
   ('Zéphyr', 'test', 'admin');
 
 INSERT INTO "family" ("name") VALUES 
-  ('Pokemons'),
+  ('Pokémons'),
   ('Schtroumpfs');
 
 INSERT INTO "capacity" ("name", "description") VALUES 

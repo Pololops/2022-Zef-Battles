@@ -15,4 +15,20 @@ GET {{ endpoint }}/test404
 #########################
 
 ### List of families
-GET {{ endpoint }}/families
+GET {{ endpoint }}/family
+
+### Create a wrong name family  -->  error
+POST {{ endpoint }}/family
+content-type: application/json
+
+{
+  "name": "New family"
+}
+
+### Create a new family
+POST {{ endpoint }}/family
+content-type: application/json
+
+{
+  "name": "New Family"
+}

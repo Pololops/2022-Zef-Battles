@@ -22,6 +22,26 @@ const familyDatamapper = {
 		debug(result);
 		return result.rows;
 	},
+
+	async isUnique(inputData) {
+		const result = await client.query(
+			`SELECT * FROM "family" WHERE "name" = $1;`,
+			[inputData.name]
+		);
+
+		debug(result);
+		return result.rows[0];
+	},
+
+	async insert(inputData) {
+		const result = await client.query(
+			`INSERT INTO "family" ("name") VALUES ($1) RETURNING *;`,
+			[inputData.name]
+		);
+
+		debug(result);
+		return result.rows[0];
+	},
 };
 
 export default familyDatamapper;

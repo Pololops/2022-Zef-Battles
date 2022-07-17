@@ -6,6 +6,6 @@ const router = Router();
 
 import familyRouter from './familyRouter.js';
 
-router.use('/families', familyRouter);
+router.use('/family', familyRouter);
 
 export default router;
