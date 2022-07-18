@@ -164,3 +164,48 @@ content-type: application/json
   "picture": "test",
   "family_id": "2"
 }
+
+### Update a character with a wrong name format  -->  error
+PATCH {{ endpoint }}/character/7
+content-type: application/json
+
+{
+  "name": "Schtroumpf bricoleur"
+}
+
+### Update a character name
+PATCH {{ endpoint }}/character/7
+content-type: application/json
+
+{
+  "name": "Schtroumpf Bricoleur"
+}
+
+### Update a character picture
+PATCH {{ endpoint }}/character/7
+content-type: application/json
+
+{
+  "picture": "test"
+}
+
+### Update a character in changing his family
+PATCH {{ endpoint }}/character/7
+content-type: application/json
+
+{
+  "family_id": 1
+}
+
+### Update a character
+PATCH {{ endpoint }}/character/7
+content-type: application/json
+
+{
+  "name": "Schtroumpf Coquet",
+  "picture": "/",
+  "family_id": 2
+}
+
+### Delete a character
+DELETE {{ endpoint }}/character/7

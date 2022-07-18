@@ -12,10 +12,9 @@ import controller from '../../controllers/characterController.js';
 router
 	.route('/:id(\\d+)')
 	/**
-	 * PATCH /api/family/{familyId}/character/{id}
+	 * PATCH /api/character/{id}
 	 * @summary Update one character
 	 * @tags Character
-	 * @param {number} familyId.path.required - character identifier
 	 * @param {number} id.path.required - character identifier
 	 * @param {InputCharacter} request.body.required - character info
 	 * @return {Character} 200 - success response - application/json
@@ -24,10 +23,9 @@ router
 	 */
 	.patch(validate('body', updateSchema), controllerHandler(controller.update))
 	/**
-	 * DELETE /api/family/{familyId}/character/{id}
+	 * DELETE /api/character/{id}
 	 * @summary Delete one character
 	 * @tags Character
-	 * @param {number} familyId.path.required - character identifier
 	 * @param {number} id.path.required - character identifier
 	 * @return {Character} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
