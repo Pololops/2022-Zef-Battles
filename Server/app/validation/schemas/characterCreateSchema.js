@@ -13,5 +13,13 @@ export default Joi.object({
 				'Each word of the capacity name has to begin with a capital letter',
 		}),
 	picture: Joi.string().label('character picture'),
-	family_id: Joi.number().integer().min(1).required(),
+	family_id: Joi.number()
+		.integer()
+		.min(1)
+		.required()
+		.label('character family')
+		.messages({
+			'any.required':
+				'Choose a family to create a character in it',
+		}),
 }).required();

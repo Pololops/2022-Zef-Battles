@@ -24,7 +24,7 @@ CREATE TABLE "capacity" (
 CREATE TABLE "character" (
   "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   "name" TEXT NOT NULL UNIQUE,
-  "picture" TEXT NOT NULL,
+  "picture" TEXT NOT NULL DEFAULT '/',
   "family_id" INT NOT NULL REFERENCES "family"("id")
 );
 

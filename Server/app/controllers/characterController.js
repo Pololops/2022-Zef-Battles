@@ -16,17 +16,32 @@ const characterController = {
 		return response.json(characters);
 	},
 
-	async create(request, response) {
+	async createInFamily(request, response) {
+		const paramsFamilyId = Number(request.params.familyId);
+		const bodyFamilyId = Number(request.body.family_id);
+
+		if (paramsFamilyId !== bodyFamilyId) {
+			throw new ApiError(
+				'This character is not create in the right family, change family to create it.',
+				{
+					statusCode: 400,
+				},
+			);
+		}
+
 		const character = await characterDatamapper.isUnique(request.body);
 		if (character) {
-			throw new ApiError('This character name already exists', {
+			throw new ApiError('This character already exists', {
 				statusCode: 400,
 			});
 		}
 
-		const savedcharacter = await characterDatamapper.insert(request.body);
+		const savedCharacter = await characterDatamapper.insertInFamily(
+			request.body,
+			bodyFamilyId,
+		);
 
-		debug('create : ', savedCharacter);
+		debug('createInFamily : ', savedCharacter);
 		return response.json(savedCharacter);
 	},
 

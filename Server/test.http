@@ -120,3 +120,47 @@ DELETE {{ endpoint }}/capacity/5
 
 ### List of all characters in one family
 GET {{ endpoint }}/character/family/2
+
+### Create a wrong name character  -->  error
+POST {{ endpoint }}/character/family/2
+content-type: application/json
+
+{
+  "name": "Schtroumpf bricoleur"
+}
+
+### Create a character with missing family_id  -->  error
+POST {{ endpoint }}/character/family/2
+content-type: application/json
+
+{
+  "name": "Schtroumpf Bricoleur"
+}
+
+### Create a character in the wrong family params.familyId !== body.family_id  -->  error
+POST {{ endpoint }}/character/family/2
+content-type: application/json
+
+{
+  "name": "Schtroumpf Bricoleur",
+  "family_id": "1"
+}
+
+### Create a character without picture in a family
+POST {{ endpoint }}/character/family/2
+content-type: application/json
+
+{
+  "name": "Schtroumpf Bricoleur",
+  "family_id": "2"
+}
+
+### Create a character with a picture in a family
+POST {{ endpoint }}/character/family/2
+content-type: application/json
+
+{
+  "name": "Schtroumpf Bricoleur",
+  "picture": "test",
+  "family_id": "2"
+}

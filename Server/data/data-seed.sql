@@ -17,14 +17,14 @@ INSERT INTO "capacity" ("name", "description") VALUES
   ('Force', 'plein de muscles'),
   ('Beauté', 'de beaux yeux et de beaux cheveux');
 
-INSERT INTO "character" ("name", "picture", "family_id") VALUES 
-  ('Pikachu', '/', 1),
-  ('Bulbizarre', '/', 1),
-  ('Grand Schtroumpf', '/', 2),
-  ('Schtroumpf Costaud', '/', 2),
-  ('Schtroumpf à Lunette', '/', 2),
-  ('Schtroumpfette', '/', 2),
-  ('Schtroumpf Coquet', '/', 2);
+INSERT INTO "character" ("name", "family_id") VALUES 
+  ('Pikachu', 1),
+  ('Bulbizarre', 1),
+  ('Grand Schtroumpf', 2),
+  ('Schtroumpf Costaud', 2),
+  ('Schtroumpf à Lunette', 2),
+  ('Schtroumpfette', 2),
+  ('Schtroumpf Coquet', 2);
 
 INSERT INTO "character_has_capacity" ("character_id", "capacity_id", "level") VALUES 
   (3, 1, 100),

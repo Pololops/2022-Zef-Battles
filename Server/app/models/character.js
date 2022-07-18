@@ -73,13 +73,18 @@ const characterDatamapper = {
 	 * @param {InputCharacter} character - The data to insert
 	 * @returns {character} - the added character into the database
 	 */
-	async insert(character) {
+	async insertInFamily(character) {
+		const fields = Object.keys(character).map((key) => `"${key}"`);
+		const numberFields = Object.keys(character).map(
+			(_, index) => `$${index + 1}`);
+		const values = Object.values(character);
+
 		const result = await client.query(
-			`INSERT INTO "character" ("name", "description") VALUES ($1, $2) RETURNING *;`,
-			[character.name, character.description],
+			`INSERT INTO "character" (${fields}) VALUES (${numberFields}) RETURNING *;`,
+			values,
 		);
 
-		debug('insert : ', result.rows[0]);
+		debug('insertInFamily : ', result.rows[0]);
 		return result.rows[0];
 	},
 
