@@ -9,7 +9,7 @@ export default Joi.object({
 		.label('capacity name')
 		.messages({
 			'string.pattern.base':
-				'Each word of the capacity name has to begin with a capital letter',
+				'Each word of the capacity name has to begin with a capital letter except "et", "de" or similars',
 		}),
 	description: Joi.string().label('capacity description'),
 }).required();

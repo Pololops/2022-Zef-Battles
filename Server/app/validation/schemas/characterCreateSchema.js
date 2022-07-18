@@ -7,10 +7,11 @@ export default Joi.object({
 		)
 		.min(1)
 		.required()
-		.label('capacity name')
+		.label('character name')
 		.messages({
 			'string.pattern.base':
-				'Each word of the capacity name has to begin with a capital letter except "et", "de" or similars',
+				'Each word of the capacity name has to begin with a capital letter',
 		}),
-	description: Joi.string().label('capacity description'),
+	picture: Joi.string().label('character picture'),
+	family_id: Joi.number().integer().min(1).required(),
 }).required();
