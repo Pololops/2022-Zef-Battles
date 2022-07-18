@@ -12,18 +12,18 @@ import controller from '../../controllers/capacityController.js';
 router
 	.route('/')
 	/**
-	 * GET /v1/capacity
+	 * GET /api/capacity
 	 * @summary Get all families order by name
-	 * @tags capacity
-	 * @return {capacity} 200 - success response - application/json
+	 * @tags Capacity
+	 * @return {Capacity} 200 - success response - application/json
 	 */
 	.get(controllerHandler(controller.getAll))
 	/**
 	 * POST /api/capacity
 	 * @summary Create a capacity
-	 * @tags capacity
-	 * @param {Inputcapacity} request.body.required - capacity info
-	 * @return {capacity} 200 - success response - application/json
+	 * @tags Capacity
+	 * @param {InputCapacity} request.body.required - capacity info
+	 * @return {Capacity} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - capacity not found - application/json
 	 */
@@ -34,10 +34,10 @@ router
 	/**
 	 * PATCH /api/capacity/{id}
 	 * @summary Update one capacity
-	 * @tags capacity
+	 * @tags Capacity
 	 * @param {number} id.path.required - capacity identifier
-	 * @param {Inputcapacity} request.body.required - capacity info
-	 * @return {capacity} 200 - success response - application/json
+	 * @param {InputCapacity} request.body.required - capacity info
+	 * @return {Capacity} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - capacity not found - application/json
 	 */
@@ -45,9 +45,9 @@ router
 	/**
 	 * DELETE /api/capacity/{id}
 	 * @summary Delete one capacity
-	 * @tags capacity
+	 * @tags Capacity
 	 * @param {number} id.path.required - capacity identifier
-	 * @return {capacity} 200 - success response - application/json
+	 * @return {Capacity} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - capacity not found - application/json
 	 */

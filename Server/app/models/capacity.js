@@ -68,7 +68,7 @@ const capacityDatamapper = {
 
 	/**
 	 * Add one capacity in the database
-	 * @param {Inputcapacity} capacity - The data to insert
+	 * @param {InputCapacity} capacity - The data to insert
 	 * @returns {capacity} - the added capacity into the database
 	 */
 	async insert(capacity) {
@@ -84,7 +84,7 @@ const capacityDatamapper = {
 	/**
 	 * Modify one capacity in the database
 	 * @param {number} id - The id of the capacity to update
-	 * @param {Inputcapacity} capacity - The data to insert
+	 * @param {InputCapacity} capacity - The data to insert
 	 * @returns {capacity} - the added capacity into the database
 	 */
 	async update(id, capacity) {

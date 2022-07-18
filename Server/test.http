@@ -14,7 +14,7 @@ GET {{ endpoint }}/test404
 #         FAMILY         #
 #########################
 
-### List of families
+### List of all families
 GET {{ endpoint }}/family
 
 ### Create a wrong name family  -->  error
@@ -58,7 +58,7 @@ DELETE {{ endpoint }}/family/6
 #       CAPACITY        #
 #########################
 
-### List of capacities
+### List of all capacities
 GET {{ endpoint }}/capacity
 
 ### Create a wrong name capacity  -->  error
@@ -111,3 +111,12 @@ content-type: application/json
 
 ### Delete a family by its id
 DELETE {{ endpoint }}/capacity/5
+
+
+
+#########################
+#       CHARACTER       #
+#########################
+
+### List of all characters in one family
+GET {{ endpoint }}/character/family/2

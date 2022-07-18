@@ -23,8 +23,8 @@ const capacityController = {
 
 		const savedcapacity = await capacityDatamapper.insert(request.body);
 
-		debug('create : ', savedcapacity);
-		return response.json(savedcapacity);
+		debug('create : ', savedCapacity);
+		return response.json(savedCapacity);
 	},
 
 	async update(request, response) {
@@ -36,30 +36,30 @@ const capacityController = {
 		}
 
 		if (request.body.name, id) {
-			const existingcapacity = await capacityDatamapper.isUnique(request.body);
-			if (existingcapacity) {
+			const existingCapacity = await capacityDatamapper.isUnique(request.body);
+			if (existingCapacity) {
 				throw new ApiError('Other capacity already exists with this name', {
 					statusCode: 400,
 				});
 			}
 		}
 
-		const savedcapacity = await capacityDatamapper.update(
+		const savedCapacity = await capacityDatamapper.update(
 			id,
 			request.body,
 		);
 
-		debug('update : ', savedcapacity);
-		return response.json(savedcapacity);
+		debug('update : ', savedCapacity);
+		return response.json(savedCapacity);
 	},
 
 	async delete(request, response) {
-		const deletedcapacity = await capacityDatamapper.delete(Number(request.params.id));
-		if (!deletedcapacity) {
+		const deletedCapacity = await capacityDatamapper.delete(Number(request.params.id));
+		if (!deletedCapacity) {
 			throw new ApiError('This capacity does not exists', { statusCode: 404 });
 		}
 
-		debug('delete : ', deletedcapacity);
+		debug('delete : ', deletedCapacity);
 		return response.status(204).json();
 	},
 };

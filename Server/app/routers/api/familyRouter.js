@@ -11,7 +11,7 @@ import controller from '../../controllers/familyController.js';
 router
 	.route('/')
 	/**
-	 * GET /v1/family
+	 * GET /api/family
 	 * @summary Get all families order by name
 	 * @tags Family
 	 * @return {Family} 200 - success response - application/json
