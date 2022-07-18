@@ -23,9 +23,36 @@ const familyController = {
 		return response.json(saveFamily);
 	},
 
-	async update(request, response) {},
+	async update(request, response) {
+		const family = await familyDatamapper.findByPk(Number(request.params.id));
+		if (!family) {
+			throw new ApiError('This family does not exists', { statusCode: 404 });
+		}
 
-	async delete(request, response) {},
+		if (request.body.name) {
+			const existingFamily = await familyDatamapper.isUnique(request.body);
+			if (existingFamily) {
+				throw new ApiError('Other family already exists with this name', {
+					statusCode: 400,
+				});
+			}
+		}
+
+		const savedFamily = await familyDatamapper.update(
+			request.params.id,
+			request.body,
+		);
+		return response.json(savedFamily);
+	},
+
+	async delete(request, response) {
+		const deletedFamily = await familyDatamapper.delete(request.params.id);
+		if (!deletedFamily) {
+			throw new ApiError('This family does not exists', { statusCode: 404 });
+		}
+
+		return response.status(204).json();
+	},
 };
 
 export default familyController;

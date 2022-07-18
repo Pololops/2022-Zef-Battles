@@ -19,7 +19,7 @@ const familyDatamapper = {
 			`SELECT * FROM "family" ORDER BY "name";`,
 		);
 
-		debug(result);
+		debug('findAll : ', result.rows);
 		return result.rows;
 	},
 
@@ -28,12 +28,13 @@ const familyDatamapper = {
 	 * @param {number} familyId - The id of the wished family
 	 * @returns {(family|undefined)} - The wished family or undefined if there is no family with this id in the database
 	 */
-	async findByPk() {
+	async findByPk(id) {
 		const result = await client.query(
 			`SELECT * FROM "family" WHERE "id" = $1;`,
+			[id],
 		);
 
-		debug(result);
+		debug('findByPk : ', result.rows);
 		return result.rows[0];
 	},
 
@@ -48,7 +49,7 @@ const familyDatamapper = {
 			[inputData.name],
 		);
 
-		debug(result);
+		debug('isUnique : ', result.rows[0]);
 		return result.rows[0];
 	},
 
@@ -63,7 +64,7 @@ const familyDatamapper = {
 			[family.name],
 		);
 
-		debug(result);
+		debug('insert : ', result.rows[0]);
 		return result.rows[0];
 	},
 
@@ -73,7 +74,15 @@ const familyDatamapper = {
 	 * @param {InputFamily} family - The data to insert
 	 * @returns {family} - the added family into the database
 	 */
-	async update(id, family) {},
+	async update(id, family) {
+		const result = await client.query(
+			`UPDATE "family" SET "name" = $1 WHERE "id" = $2 RETURNING *`,
+			[family.name, id],
+		);
+
+		debug('update : ', result.rows[0]);
+		return result.rows[0];
+	},
 
 	/**
 	 * Delete one family in the database
@@ -85,6 +94,7 @@ const familyDatamapper = {
 			id,
 		]);
 
+		debug('delete : ', !!result.rowCount);
 		return !!result.rowCount;
 	},
 };
