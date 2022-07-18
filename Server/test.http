@@ -51,3 +51,63 @@ content-type: application/json
 
 ### Delete a family by its id
 DELETE {{ endpoint }}/family/6
+
+
+
+#########################
+#       CAPACITY        #
+#########################
+
+### List of capacities
+GET {{ endpoint }}/capacity
+
+### Create a wrong name capacity  -->  error
+POST {{ endpoint }}/capacity
+content-type: application/json
+
+{
+  "name": "magie"
+}
+
+### Create an already existed capacity  -->  error
+POST {{ endpoint }}/capacity
+content-type: application/json
+
+{
+  "name": "Force"
+}
+
+### Create a new capacity
+POST {{ endpoint }}/capacity
+content-type: application/json
+
+{
+  "name": "Magie"
+}
+
+### Failed update one family  -->  error
+PATCH {{ endpoint }}/capacity/4
+content-type: application/json
+
+{
+  "name": "Magie et Puissance"
+}
+
+### Update one capacity name
+PATCH {{ endpoint }}/capacity/2
+content-type: application/json
+
+{
+  "name": "Magie Et Puissance"
+}
+
+### Update one capacity description
+PATCH {{ endpoint }}/capacity/2
+content-type: application/json
+
+{
+  "description": "La magie apporte une grande puissance au combat pour ganer"
+}
+
+### Delete a family by its id
+DELETE {{ endpoint }}/capacity/5

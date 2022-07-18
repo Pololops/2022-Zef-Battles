@@ -13,9 +13,9 @@ INSERT INTO "family" ("name") VALUES
   ('Schtroumpfs');
 
 INSERT INTO "capacity" ("name", "description") VALUES 
-  ('sorcellerie', 'préparation de potions magiques'),
-  ('force', 'plein de muscles'),
-  ('beauté', 'de beaux yeux et de beaux cheveux');
+  ('Sorcellerie', 'préparation de potions magiques'),
+  ('Force', 'plein de muscles'),
+  ('Beauté', 'de beaux yeux et de beaux cheveux');
 
 INSERT INTO "character" ("name", "picture", "family_id") VALUES 
   ('Pikachu', '/', 1),

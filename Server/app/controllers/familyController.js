@@ -8,6 +8,8 @@ import familyDatamapper from '../models/family.js';
 const familyController = {
 	async getAll(_, response) {
 		const families = await familyDatamapper.findAll();
+
+		debug('getAll : ', families);
 		return response.json(families);
 	},
 
@@ -19,12 +21,16 @@ const familyController = {
 			});
 		}
 
-		const saveFamily = await familyDatamapper.insert(request.body);
-		return response.json(saveFamily);
+		const savedFamily = await familyDatamapper.insert(request.body);
+
+		debug('create : ', savedFamily);
+		return response.json(savedFamily);
 	},
 
 	async update(request, response) {
-		const family = await familyDatamapper.findByPk(Number(request.params.id));
+		const id = Number(request.params.id);
+
+		const family = await familyDatamapper.findByPk(id);
 		if (!family) {
 			throw new ApiError('This family does not exists', { statusCode: 404 });
 		}
@@ -39,18 +45,21 @@ const familyController = {
 		}
 
 		const savedFamily = await familyDatamapper.update(
-			request.params.id,
+			id,
 			request.body,
 		);
+
+		debug('update : ', savedFamily);
 		return response.json(savedFamily);
 	},
 
 	async delete(request, response) {
-		const deletedFamily = await familyDatamapper.delete(request.params.id);
+		const deletedFamily = await familyDatamapper.delete(Number(request.params.id));
 		if (!deletedFamily) {
 			throw new ApiError('This family does not exists', { statusCode: 404 });
 		}
 
+		debug('delete : ', deletedFamily);
 		return response.status(204).json();
 	},
 };
