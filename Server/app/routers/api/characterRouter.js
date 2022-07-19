@@ -1,6 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 
+import sanitize from '../../middlewares/sanitizerHandler.js';
 import validate from '../../validation/validator.js';
 import createSchema from '../../validation/schemas/characterCreateSchema.js';
 import updateSchema from '../../validation/schemas/characterUpdateSchema.js';
@@ -21,7 +22,11 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character not found - application/json
 	 */
-	.patch(validate('body', updateSchema), controllerHandler(controller.update))
+	.patch(
+		sanitize('body'),
+		validate('body', updateSchema),
+		controllerHandler(controller.update),
+	)
 	/**
 	 * DELETE /api/character/{id}
 	 * @summary Delete one character
@@ -54,6 +59,7 @@ router
 	 * @return {ApiError} 404 - character not found - application/json
 	 */
 	.post(
+		sanitize('body'),
 		validate('body', createSchema),
 		controllerHandler(controller.createInFamily),
 	);

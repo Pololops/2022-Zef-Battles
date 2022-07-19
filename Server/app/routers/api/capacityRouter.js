@@ -1,6 +1,7 @@
 import { Router } from 'express';
 const router = Router();
 
+import sanitize from '../../middlewares/sanitizerHandler.js';
 import validate from '../../validation/validator.js';
 import createSchema from '../../validation/schemas/capacityCreateSchema.js';
 import updateSchema from '../../validation/schemas/capacityUpdateSchema.js';
@@ -27,7 +28,11 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - capacity not found - application/json
 	 */
-	.post(validate('body', createSchema), controllerHandler(controller.create));
+	.post(
+		sanitize('body'),
+		validate('body', createSchema),
+		controllerHandler(controller.create),
+	);
 
 router
 	.route('/:id(\\d+)')
@@ -41,7 +46,11 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - capacity not found - application/json
 	 */
-	.patch(validate('body', updateSchema), controllerHandler(controller.update))
+	.patch(
+		sanitize('body'),
+		validate('body', updateSchema),
+		controllerHandler(controller.update),
+	)
 	/**
 	 * DELETE /api/capacity/{id}
 	 * @summary Delete one capacity

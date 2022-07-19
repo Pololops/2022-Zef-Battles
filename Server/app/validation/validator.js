@@ -7,7 +7,7 @@ import ApiError from '../errors/apiError.js'
  * A middleware genrator for the validation of an object pass in request property.
  * @param {string} prop - The request object's property name to validate
  * @param {Joi.object} schema - The Joi's validation schema
- * @returns {Function} - A middleware for express that validate the request body using the schema in parameter.
+ * @returns {Function} - A middleware for express that validate the request using the schema in parameter.
  * Returns an 400 error if the validation failed.
  */
 const validate = (prop, schema) => async (request, _, next) => {
