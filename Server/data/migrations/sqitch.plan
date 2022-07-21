@@ -2,3 +2,4 @@
 %project=zef-battles
 
 1-schema 2022-07-16T15:32:11Z System Administrator <root@Copain-MaxiBook> # database init with tables creation
+2-view-character_with_capacity 2022-07-21T18:38:10Z System Administrator <root@Copain-MaxiBook> # Add a SQL view to get characters with their capacities"
