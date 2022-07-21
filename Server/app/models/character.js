@@ -18,7 +18,7 @@ const characterDatamapper = {
 	 */
 	async findAllInFamily(familyId) {
 		const result = await client.query(
-			`SELECT * FROM "character" WHERE family_id = $1 ORDER BY "name";`,
+			`SELECT * FROM "character_with_capacity" WHERE "family_id" = $1 ORDER BY "name"`,
 			[familyId],
 		);
 
@@ -33,7 +33,7 @@ const characterDatamapper = {
 	 */
 	async findByPk(id) {
 		const result = await client.query(
-			`SELECT * FROM "character" WHERE "id" = $1;`,
+			`SELECT * FROM "character_with_capacity" WHERE "id" = $1;`,
 			[id],
 		);
 
@@ -76,7 +76,8 @@ const characterDatamapper = {
 	async insertInFamily(character) {
 		const fields = Object.keys(character).map((key) => `"${key}"`);
 		const numberFields = Object.keys(character).map(
-			(_, index) => `$${index + 1}`);
+			(_, index) => `$${index + 1}`,
+		);
 		const values = Object.values(character);
 
 		const result = await client.query(

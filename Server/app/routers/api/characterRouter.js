@@ -13,6 +13,14 @@ import controller from '../../controllers/characterController.js';
 router
 	.route('/:id(\\d+)')
 	/**
+	 * GET /api/character/{id}
+	 * @summary Get one character by its id
+	 * @tags Character
+	 * @param {number} id.path.required - character identifier
+	 * @return {Character} 200 - success response - application/json
+	 */
+	.get(controllerHandler(controller.getOneByPk))
+	/**
 	 * PATCH /api/character/{id}
 	 * @summary Update one character
 	 * @tags Character

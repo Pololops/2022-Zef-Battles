@@ -7,13 +7,21 @@ import characterDatamapper from '../models/character.js';
 
 const characterController = {
 	async getAllInFamily(request, response) {
-		console.log(request.params.familyId);
 		const familyId = Number(request.params.familyId);
 
 		const characters = await characterDatamapper.findAllInFamily(familyId);
 
 		debug('getAllInFamily : ', characters);
 		return response.json(characters);
+	},
+
+	async getOneByPk(request, response) {
+		const characterId = Number(request.params.id);
+
+		const character = await characterDatamapper.findByPk(characterId);
+
+		debug('getOneByPOk : ', character);
+		return response.json(character);
 	},
 
 	async createInFamily(request, response) {

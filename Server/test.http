@@ -121,6 +121,9 @@ DELETE {{ endpoint }}/capacity/5
 ### List of all characters in one family
 GET {{ endpoint }}/character/family/2
 
+### Get one character by its id
+GET {{ endpoint }}/character/6
+
 ### Create a wrong name character  -->  error
 POST {{ endpoint }}/character/family/2
 content-type: application/json
