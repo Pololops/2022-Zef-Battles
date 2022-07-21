@@ -9,7 +9,7 @@ CREATE VIEW "character_with_capacity" AS
 	"family"."name" AS "family_name",
 	COALESCE(SUM("character_has_capacity"."level"), 0) AS "total_level",
 	COUNT("capacity".*) AS "number_capacity",
-	COALESCE(json_agg(json_build_object(
+	COALESCE(jsonb_agg(jsonb_build_object(
 		'id', "capacity"."id",
 		'name', "capacity"."name",
 		'description', "capacity"."description",
