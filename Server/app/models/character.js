@@ -4,18 +4,27 @@ const debug = Debug('Datamapper:characterDatamapper:log');
 import client from '../database/index.js';
 
 /**
- * @typedef {object} character
- * @property {number} familyId - The id of the field family_id in the table
+ * Character model
+ * @typedef {object} Character
  * @property {number} id - The unique Pk id of the table
  * @property {string} name - The character's name
- * @property {string} description - The character's description
+ * @property {string} picture - The URL to the character's picture
+ * @property {number} family_id - The id of the family to which the character belongs
+ * @property {string} family_name - The name of the family to which the character belongs
+ * @property {number} total_level - The total level of the character's capacities
+ * @property {number} number_capacity - The quantity of capcities that the character has
+ * @property {array<Capacity>} capacity - An array of each character's capacities
+ */
+
+/**
+ * InputCharacter model
+ * @typedef {object} InputCharacter
+ * @property {string} name.required - The character's name
+ * @property {string} picture - The URL to the character's picture
+ * @property {number} family_id.required - The id of the family to which the character belongs
  */
 
 const characterDatamapper = {
-	/**
-	 * Get all families
-	 * @returns {character[]} - All the families from the database order by name
-	 */
 	async findAllInFamily(familyId) {
 		const result = await client.query(
 			`SELECT * FROM "character_with_capacity" WHERE "family_id" = $1 ORDER BY "name"`,
@@ -26,11 +35,6 @@ const characterDatamapper = {
 		return result.rows;
 	},
 
-	/**
-	 * Get one character by its id
-	 * @param {number} characterId - The id of the wished character
-	 * @returns {(character|undefined)} - The wished character or undefined if there is no character with this id in the database
-	 */
 	async findByPk(id) {
 		const result = await client.query(
 			`SELECT * FROM "character_with_capacity" WHERE "id" = $1;`,
@@ -41,11 +45,6 @@ const characterDatamapper = {
 		return result.rows[0];
 	},
 
-	/**
-	 * Find if a character exists with the name
-	 * @param {object} inputData - The data provided
-	 * @returns {(character|undefined)} - The wished character or undefined if there is no character with this name in the database
-	 */
 	async isUnique(inputData, id) {
 		const values = [inputData.name];
 
@@ -68,11 +67,6 @@ const characterDatamapper = {
 		return result.rows[0];
 	},
 
-	/**
-	 * Add one character in the database
-	 * @param {InputCharacter} character - The data to insert
-	 * @returns {character} - the added character into the database
-	 */
 	async insertInFamily(character) {
 		const fields = Object.keys(character).map((key) => `"${key}"`);
 		const numberFields = Object.keys(character).map(
@@ -89,12 +83,6 @@ const characterDatamapper = {
 		return result.rows[0];
 	},
 
-	/**
-	 * Modify one character in the database
-	 * @param {number} id - The id of the character to update
-	 * @param {InputCharacter} character - The data to insert
-	 * @returns {character} - the added character into the database
-	 */
 	async update(id, character) {
 		const fields = Object.keys(character).map(
 			(prop, index) => `"${prop}" = $${index + 1}`,
@@ -112,11 +100,6 @@ const characterDatamapper = {
 		return result.rows[0];
 	},
 
-	/**
-	 * Delete one character in the database
-	 * @param {number} id - The id of the character to delete
-	 * @returns {boolean} - the result of the delete
-	 */
 	async delete(id) {
 		const result = await client.query(`DELETE FROM "character" WHERE id = $1`, [
 			id,

@@ -15,7 +15,7 @@ router
 	 * GET /api/family
 	 * @summary Get all families order by name
 	 * @tags Family
-	 * @return {Family} 200 - success response - application/json
+	 * @return {array<Family>} 200 - success response - application/json
 	 */
 	.get(controllerHandler(controller.getAll))
 	/**
@@ -26,6 +26,14 @@ router
 	 * @return {Family} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Family not found - application/json
+	 * @example request - example payload
+	 * {
+	 *   "name": "Minions"
+	 * }
+	 * @example request - other payload example
+	 * {
+	 *   "name": "Schtroumpfs"
+	 * }
 	 */
 	.post(
 		sanitize('body'),
@@ -44,6 +52,14 @@ router
 	 * @return {Family} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Family not found - application/json
+	 * @example request - example payload
+	 * {
+	 *   "name": "Minions"
+	 * }
+	 * @example request - other payload example
+	 * {
+	 *   "name": "Schtroumpfs"
+	 * }
 	 */
 	.patch(
 		sanitize('body'),
@@ -55,7 +71,7 @@ router
 	 * @summary Delete one family
 	 * @tags Family
 	 * @param {number} id.path.required - family identifier
-	 * @return {Family} 200 - success response - application/json
+	 * @return 204 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Family not found - application/json
 	 */

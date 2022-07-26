@@ -29,6 +29,18 @@ router
 	 * @return {Character} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character not found - application/json
+	 * @example request - example payload
+	 * {
+	 *		"name": "Schtroumpf Grognon",
+	 * 		"picture": "/",
+	 * 		"family_id": 2
+	 * }
+	 * @example request - other payload example
+	 * {
+	 *		"name": "Pikachu",
+	 * 		"picture": "/",
+	 * 		"family_id": 1
+	 * }
 	 */
 	.patch(
 		sanitize('body'),
@@ -40,7 +52,7 @@ router
 	 * @summary Delete one character
 	 * @tags Character
 	 * @param {number} id.path.required - character identifier
-	 * @return {Character} 200 - success response - application/json
+	 * @return 204 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character not found - application/json
 	 */
@@ -53,7 +65,7 @@ router
 	 * @summary Get all families order by name
 	 * @tags Character
 	 * @param {number} familyId.path.required - character identifier
-	 * @return {Character} 200 - success response - application/json
+	 * @return {array<Character>} 200 - success response - application/json
 	 */
 	.get(controllerHandler(controller.getAllInFamily))
 	/**
@@ -65,6 +77,18 @@ router
 	 * @return {Character} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character not found - application/json
+	 * @example request - example payload
+	 * {
+	 *		"name": "Schtroumpf Grognon",
+	 * 		"picture": "/",
+	 * 		"family_id": 2
+	 * }
+	 * @example request - other payload example
+	 * {
+	 *		"name": "Pikachu",
+	 * 		"picture": "/",
+	 * 		"family_id": 1
+	 * }
 	 */
 	.post(
 		sanitize('body'),
