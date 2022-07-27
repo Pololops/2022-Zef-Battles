@@ -2,5 +2,6 @@
 %project=zef-battles
 
 1-schema 2022-07-16T15:32:11Z System Administrator <root@Copain-MaxiBook> # database init with tables creation
-2-view-character_with_capacity 2022-07-21T18:38:10Z System Administrator <root@Copain-MaxiBook> # Add a SQL view to get characters with their capacities"
-3-view-user_in_battle 2022-07-27T10:40:47Z System Administrator <root@Copain-MaxiBook.local> # Add a SLQ view to get users and their characters into each battle
+2-view-character_with_capacity 2022-07-21T18:38:10Z System Administrator <root@Copain-MaxiBook> # SQL view to get characters with their capacities
+3-view-battle_with_usergame 2022-07-27T10:40:47Z System Administrator <root@Copain-MaxiBook.local> # SLQ view to get users and their characters into each battle
+4-view-battle_with_user 2022-07-27T12:11:25Z System Administrator <root@Copain-MaxiBook> # SQL view to get battles with the players

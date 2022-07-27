@@ -1,9 +1,9 @@
--- Deploy zef-battles:3-view-user_in_battle to pg
+-- Deploy zef-battles:3-view-battle_with_usergame to pg
 
 BEGIN;
 
 -- Returns all association between battles and users with the user's characters
-CREATE VIEW "user_in_battle" AS
+CREATE VIEW "battle_with_usergame" AS
 SELECT 
 	"user_play_battle_with_character"."battle_id" AS "battle_id",
 	"battle"."is_started" AS "battle_is_started",

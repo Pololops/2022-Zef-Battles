@@ -9,7 +9,8 @@ import client from '../database/index.js';
  * @property {number} id - The unique Pk id of the table
  * @property {string} start_date - The battle's start date
  * @property {number} wished_player_number - The quatity of wished user in the battle
- * @property {array<User>} user - Users in the battle
+ * @property {boolean} is_started - The status of the battle started or not started
+ * @property {array<User>} players - Users in the battle
  */
 
 /**
