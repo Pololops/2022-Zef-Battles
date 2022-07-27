@@ -10,6 +10,7 @@ import client from '../database/index.js';
  * @property {string} start_date - The battle's start date
  * @property {number} wished_player_number - The quatity of wished user in the battle
  * @property {boolean} is_started - The status of the battle started or not started
+ * @property {number} number_of_players - The total number of players in each battle
  * @property {array<User>} players - Users in the battle
  */
 
@@ -19,13 +20,21 @@ import client from '../database/index.js';
  * @property {number} wished_player_number - The quatity of wished user in the battle
  */
 
-const battleDatamapper = {
-	async findAll() {
+export default {
+	async findAll(userId = 0, isPlayingInBattle = false) {
+		let existsOrNot = 'NOT EXISTS';
+		if (userId !== 0 && isPlayingInBattle === true) {
+			existsOrNot = 'EXISTS';
+		}
+
 		const result = await client.query(
-			`SELECT * FROM "battle" ORDER BY "start_date";`,
+			`SELECT * FROM "battle_with_user" WHERE ${existsOrNot}(
+				SELECT * FROM jsonb_array_elements("players") as "player" WHERE ("player"->>'id')::INT = $1
+			);`,
+			[userId],
 		);
 
-		debug('findAll : ', result.rows);
+		debug('findAll : ', userId, isPlayingInBattle, existsOrNot, result.rows);
 		return result.rows;
 	},
 
@@ -39,7 +48,8 @@ const battleDatamapper = {
 		return result.rows[0];
 	},
 
-	// TODO BATTLE INSERT : ADD USERS...
+	// TODO : adapt insert method to battle
+	/*
 	async insert(battle) {
 		const result = await client.query(
 			`INSERT INTO "battle" ("start_date", "wished_player_number") VALUES ($1, $2) RETURNING *;`,
@@ -49,8 +59,9 @@ const battleDatamapper = {
 		debug('insert : ', result.rows[0]);
 		return result.rows[0];
 	},
+	*/
 
-	// TODO BATTLE UPDATE
+	// TODO : adapt update method to battle
 	/* 
 	async update(id, battle) {
 		const fields = Object.keys(battle).map(
@@ -79,5 +90,3 @@ const battleDatamapper = {
 		return !!result.rowCount;
 	},
 };
-
-export default battleDatamapper;

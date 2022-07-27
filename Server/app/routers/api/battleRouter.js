@@ -13,11 +13,14 @@ router
 	.route('/')
 	/**
 	 * GET /api/battle
-	 * @summary Get all battles order by name
+	 * @summary Get all battles order by date with players
 	 * @tags Battle
+	 * @param {boolean} playing.query - query string to filter battles in function of if the connected user is playing them
 	 * @return {array<Battle>} 200 - success response - application/json
 	 */
 	.get(controllerHandler(controller.getAll))
+
+	// TODO : adapt POST route to battle
 	/**
 	 * POST /api/battle
 	 * @summary Create a battle
@@ -43,6 +46,8 @@ router
 
 router
 	.route('/:id(\\d+)')
+	
+	// TODO : adapt PATCH route to battle
 	/**
 	 * PATCH /api/battle/{id}
 	 * @summary Update one battle

@@ -18,7 +18,7 @@ import client from '../database/index.js';
  * @property {string} description - The capacity's description
  */
 
-const capacityDatamapper = {
+export default {
 	async findAll() {
 		const result = await client.query(
 			`SELECT * FROM "capacity" ORDER BY "name";`,
@@ -96,5 +96,3 @@ const capacityDatamapper = {
 		return !!result.rowCount;
 	},
 };
-
-export default capacityDatamapper;

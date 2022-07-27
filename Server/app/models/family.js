@@ -16,7 +16,7 @@ import client from '../database/index.js';
  * @property {string} name.required - The family's name
  */
 
-const familyDatamapper = {
+export default {
 	async findAll() {
 		const result = await client.query(
 			`SELECT * FROM "family" ORDER BY "name";`,
@@ -75,5 +75,3 @@ const familyDatamapper = {
 		return !!result.rowCount;
 	},
 };
-
-export default familyDatamapper;

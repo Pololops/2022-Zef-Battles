@@ -24,7 +24,7 @@ import client from '../database/index.js';
  * @property {number} family_id.required - The id of the family to which the character belongs
  */
 
-const characterDatamapper = {
+export default {
 	async findAllInFamily(familyId) {
 		const result = await client.query(
 			`SELECT * FROM "character_with_capacity" WHERE "family_id" = $1 ORDER BY "name"`,
@@ -109,5 +109,3 @@ const characterDatamapper = {
 		return !!result.rowCount;
 	},
 };
-
-export default characterDatamapper;

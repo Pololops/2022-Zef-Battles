@@ -212,3 +212,18 @@ content-type: application/json
 
 ### Delete a character
 DELETE {{ endpoint }}/character/7
+
+
+
+####################################################################################################
+#                                             BATTLE                                               #
+####################################################################################################
+
+### List all battles with all players into them
+GET {{ endpoint }}/battle/
+
+### List battles into where the user is part of players
+GET {{ endpoint }}/battle/?playing=yes
+
+### List battles into where the user is not part of players
+GET {{ endpoint }}/battle/?playing=no
