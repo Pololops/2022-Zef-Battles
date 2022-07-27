@@ -1,4 +1,4 @@
--- Deploy zef-battles:view-character_with_capacity to pg
+-- Deploy zef-battles:2-view-character_with_capacity to pg
 
 BEGIN;
 

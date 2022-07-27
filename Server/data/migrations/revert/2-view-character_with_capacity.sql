@@ -1,4 +1,4 @@
--- Revert zef-battles:view-character_with_capacity from pg
+-- Revert zef-battles:2-view-character_with_capacity from pg
 
 BEGIN;
 

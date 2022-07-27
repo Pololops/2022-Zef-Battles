@@ -6,7 +6,7 @@ CREATE TABLE "user" (
   "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   "name" TEXT NOT NULL UNIQUE,
   "password" TEXT NOT NULL,
-  "vistory_number" INT NOT NULL DEFAULT 0,
+  "victory_number" INT NOT NULL DEFAULT 0,
   "role" TEXT NOT NULL DEFAULT 'player'
 );
 
@@ -31,7 +31,8 @@ CREATE TABLE "character" (
 CREATE TABLE "battle" (
   "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   "wished_player_number" INT NOT NULL DEFAULT 2,
-  "start_date" TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  "start_date" TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  "is_started" BOOL NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE "character_has_capacity" (
@@ -45,8 +46,8 @@ CREATE TABLE "user_play_battle_with_character" (
   "id" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   "battle_id" INT NOT NULL REFERENCES "battle"("id") ON DELETE CASCADE,
   "user_id" INT NOT NULL REFERENCES "user"("id") ON DELETE CASCADE,
-  "character_id" INT NOT NULL REFERENCES "character"("id") ON DELETE CASCADE,
-  "is_playable" BOOL NOT NULL DEFAULT TRUE
+  "character_id" INT REFERENCES "character"("id") ON DELETE CASCADE,
+  "is_playable" BOOL
 );
 
 COMMIT;

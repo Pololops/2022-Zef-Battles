@@ -1,4 +1,4 @@
--- Verify zef-battles:view-character_with_capacity on pg
+-- Verify zef-battles:2-view-character_with_capacity on pg
 
 BEGIN;
 
