@@ -8,6 +8,7 @@ import client from '../database/index.js';
  * @typedef {object} Family
  * @property {number} id - The unique Pk id of the table
  * @property {string} name - The family's name
+ * @property {array<Character>} characters - An array contains all characters of the family
  */
 
 /**
@@ -19,7 +20,8 @@ import client from '../database/index.js';
 export default {
 	async findAll() {
 		const result = await client.query(
-			`SELECT * FROM "family" ORDER BY "name";`,
+			`SELECT * FROM "family_with_character";
+`,
 		);
 
 		debug('findAll : ', result.rows);
@@ -28,7 +30,7 @@ export default {
 
 	async findByPk(id) {
 		const result = await client.query(
-			`SELECT * FROM "family" WHERE "id" = $1;`,
+			`SELECT * FROM "family_with_character" WHERE "family_with_character"."id" = $1;`,
 			[id],
 		);
 
