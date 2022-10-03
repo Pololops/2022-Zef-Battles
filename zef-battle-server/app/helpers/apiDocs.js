@@ -14,6 +14,7 @@ const options = {
 			name: 'MIT',
 		},
 	},
+	description: 'API documentation of the Zef\'s Battle Project',
 	security: {
 		BearerAuth: {
 			type: 'http',
