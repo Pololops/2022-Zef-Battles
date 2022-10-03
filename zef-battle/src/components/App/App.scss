@@ -1,0 +1,6 @@
+@use "src/styles/_vars";
+
+.App {
+  background: vars.$baseBackground;
+  height: 100vh;
+}
