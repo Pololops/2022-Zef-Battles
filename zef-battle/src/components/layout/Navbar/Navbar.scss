@@ -1,0 +1,18 @@
+.navbar {
+  display: flex;
+  gap: 1px;
+
+  a {
+    color: #bbbbbb;
+    font-weight: bold;
+    text-decoration: none;
+    padding-inline: 1.5rem;
+    line-height: 2.5rem;
+    transition: all 300ms;
+
+    &:hover,
+    &:focus {
+      color: white;
+    }
+  }
+}
