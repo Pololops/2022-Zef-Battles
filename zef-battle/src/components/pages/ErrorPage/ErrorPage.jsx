@@ -1,17 +1,39 @@
+import { useState, useEffect } from 'react';
 import { useRouteError, Link } from 'react-router-dom';
+
+import Header from '../../layout/Header/Header';
+import Main from '../../layout/Main/Main';
 
 export default function ErrorPage() {
 	const error = useRouteError();
+	const [errorMessage, setErrorMessage] = useState('');
+
+	const adaptErrorMessage = () => {
+		const status = error.status;
+		if (status === 404)
+			return setErrorMessage(
+				`Tu sembles être perdu, car cette page n'existe pas.`,
+			);
+		return setErrorMessage(`Quelque chose ne s'est pas passé correctement...`);
+	};
+
+	useEffect(() => {
+		adaptErrorMessage();
+
+		return () => setErrorMessage('');
+	}, []);
 
 	return (
-		<>
-			<h2>Oops !</h2>
-			<p>Une erreur s'est produite.</p>
-			<p>
-				<i>{error.statusText || error.message}</i>
-			</p>
-			<Link to="/">Retourner à l'accueil</Link>
-			<Link to="/">Revenir en arrière</Link>
-		</>
+		<div className="App">
+			<Header />
+			<Main>
+				<h2>Oops !</h2>
+				<p>Erreur {error.status}</p>
+				<p>{errorMessage}</p>
+				<p>
+					<Link to="/">Retourner à l'accueil</Link>
+				</p>
+			</Main>
+		</div>
 	);
 }
