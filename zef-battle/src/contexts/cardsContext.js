@@ -5,7 +5,8 @@ export const CardsContext = createContext();
 
 const CardsContextProvider = ({ children }) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [data, setData] = useState([]);
+	const [families, setFamilies] = useState([]);
+	const [familyIds, setFamilyIds] = useState([]);
 	const [infoMessage, setInfoMessage] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 
@@ -13,11 +14,11 @@ const CardsContextProvider = ({ children }) => {
 		setIsLoading(true);
 
 		try {
-			const response = await getFamilies();
+			const data = await getFamilies();
 
-			if (response && response !== undefined) {
-				if (response.length > 0) {
-					setData(response);
+			if (data && data !== undefined) {
+				if (data.length > 0) {
+					setFamilies(data);
 				} else {
 					setInfoMessage('Aucun élément trouvé !');
 				}
@@ -33,7 +34,9 @@ const CardsContextProvider = ({ children }) => {
 		<CardsContext.Provider
 			value={{
 				isLoading,
-				data,
+				families,
+				familyIds,
+				setFamilyIds,
 				infoMessage,
 				errorMessage,
 				loadData,
