@@ -21,16 +21,14 @@ export default function FamiliesPage() {
 	};
 
 	useEffect(() => {
-		(async () => {
-			if (id) {
-				await getFamilyCharacters();
-			}
-		})();
+		if (id) {
+			getFamilyCharacters();
+		}
 
 		return () => {
 			setFamilyName('');
 			setCharacters([]);
-		}
+		};
 	}, [families, id]);
 
 	return (
@@ -41,7 +39,7 @@ export default function FamiliesPage() {
 				{infoMessage !== '' && infoMessage}
 				{errorMessage !== '' && errorMessage}
 			</p>
-			{id 
+			{id
 				? !isLoading && <Cards data={characters} isFamilyCard={false} />
 				: !isLoading && <Cards data={families} isFamilyCard={true} />}
 		</>
