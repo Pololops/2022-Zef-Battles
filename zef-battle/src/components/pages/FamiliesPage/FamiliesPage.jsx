@@ -1,42 +1,48 @@
 import { useContext, useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { CardsContext } from '../../../contexts/cardsContext';
 
 import Cards from '../../layout/Cards/Cards';
 
 export default function FamiliesPage() {
-	const {
-		isLoading,
-		infoMessage,
-		errorMessage,
-		families,
-		familyId,
-	} = useContext(CardsContext);
-	const [data, setData] = useState([])
+	const { isLoading, infoMessage, errorMessage, families } =
+		useContext(CardsContext);
+	const { id } = useParams();
+	const [characters, setCharacters] = useState([]);
+	const [familyName, setFamilyName] = useState('');
 
-	const getData = () => {
-		if (familyId !== null) {
-			const findFamily = families.find(({ id }) => id === familyId);
-			if (findFamily) return setData(findFamily);
+	const getFamilyCharacters = () => {
+		const familyId = Number(id);
+		const findFamily = families.find((family) => family.id === familyId);
+		if (findFamily) {
+			setFamilyName(findFamily.name);
+			setCharacters(findFamily.characters);
 		}
-			
-		setData(families);
-	}
+	};
 
 	useEffect(() => {
-		if (familyId !== null) getData();
-	}, [familyId]);
+		(async () => {
+			if (id) {
+				await getFamilyCharacters();
+			}
+		})();
+
+		return () => {
+			setFamilyName('');
+			setCharacters([]);
+		}
+	}, [families, id]);
 
 	return (
 		<>
-			<h2>{familyId !== null ? 'Les Familles' : 'Une famille'}</h2>
+			<h2>{id ? `La famille ${familyName}` : 'Les Familles'}</h2>
 			<p>
 				{isLoading && '...chargement en cours...'}
 				{infoMessage !== '' && infoMessage}
 				{errorMessage !== '' && errorMessage}
 			</p>
-			{console.log(familyId, data)}
-			{data.length > 0
-				? !isLoading && <Cards data={data} isFamilyCard={false} />
+			{id 
+				? !isLoading && <Cards data={characters} isFamilyCard={false} />
 				: !isLoading && <Cards data={families} isFamilyCard={true} />}
 		</>
 	);

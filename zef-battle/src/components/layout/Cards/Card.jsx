@@ -29,7 +29,7 @@ export default function Card({ id, title, imageUrl, isFamilyCard }) {
 					{!isFamilyCard ? (
 						<span className="card__inner__face__title">{title}</span>
 					) : (
-						<Link className="card__inner__face__title" to={`/families/:${id}`}>
+						<Link className="card__inner__face__title" to={`/families/${id}`}>
 							{title}
 						</Link>
 					)}

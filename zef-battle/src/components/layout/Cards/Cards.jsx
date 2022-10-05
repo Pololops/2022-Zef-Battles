@@ -8,7 +8,7 @@ export default function Cards({ data, isFamilyCard }) {
 		<div className="cards">
 			{data.map((item) => (
 				<Card
-					key={item.id}
+					key={item.id + item.name}
 					id={item.id}
 					title={item.name}
 					imageUrl={!isFamilyCard ? item.picture : ''}
