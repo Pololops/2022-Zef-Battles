@@ -1,12 +1,15 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import defaultImage from '../../../assets/images/card-default-image.png';
 
-export default function Card({ title, imageUrl, isCharacter }) {
+export default function Card({ id, title, imageUrl, isFamilyCard }) {
 	const [isFlipped, setIsFlipped] = useState(false);
 
 	const clickHandler = (event) => {
 		event.preventDefault();
-		if (isCharacter) setIsFlipped((previousSate) => !previousSate);
+		if (!isFamilyCard) setIsFlipped((previousSate) => !previousSate);
 	};
 
 	return (
@@ -18,17 +21,39 @@ export default function Card({ title, imageUrl, isCharacter }) {
 				<div
 					className="card__inner__face card__inner__face--front"
 					style={{
-						backgroundImage: `url("${imageUrl && imageUrl !== ('' || '/') ? imageUrl : defaultImage}")`,
+						backgroundImage: `url("${
+							imageUrl && imageUrl !== ('' || '/') ? imageUrl : defaultImage
+						}")`,
 					}}
 				>
-					<div className="card__inner__face__title">{title}</div>
+					{!isFamilyCard ? (
+						<span className="card__inner__face__title">{title}</span>
+					) : (
+						<Link className="card__inner__face__title" to={`/families/:${id}`}>
+							{title}
+						</Link>
+					)}
 				</div>
 
-				<div className="card__inner__face card__inner__face--back">
-					<div className="card__inner__face__title">{title}</div>
-					BACKFACE CARD
-				</div>
+				{!isFamilyCard && (
+					<div className="card__inner__face card__inner__face--back">
+						<span className="card__inner__face__title">{title}</span>
+						BACKFACE CARD
+					</div>
+				)}
 			</div>
 		</div>
 	);
 }
+
+Card.propTypes = {
+	id: PropTypes.number.isRequired,
+	title: PropTypes.string.isRequired,
+	imageUrl: PropTypes.string,
+	isFamilyCard: PropTypes.bool,
+};
+
+Card.defaultProps = {
+	imageUrl: defaultImage,
+	isFamilyCard: false,
+};

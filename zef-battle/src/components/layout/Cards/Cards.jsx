@@ -7,10 +7,11 @@ export default function composant({ data }) {
 		<div className="cards">
 			{data.map((item) => (
 				<Card
-					key={item.name}
+					key={item.id}
+					id={item.id}
 					title={item.name}
 					imageUrl={item.characters[0].picture}
-					isCharacter={false}
+					isFamilyCard={true}
 				/>
 			))}
 		</div>
