@@ -14,6 +14,12 @@ export const router = createBrowserRouter([
 			{
 				path: 'families',
 				element: <FamiliesPage />,
+				children: [
+					{
+						path: 'families/:id',
+						element: <FamiliesPage />,
+					},
+				],
 			},
 		],
 	},
