@@ -11,7 +11,7 @@ export default function Cards({ data, isFamilyCard }) {
 					key={item.id}
 					id={item.id}
 					title={item.name}
-					imageUrl={!isFamilyCard ? item.picture : item.characters[0].picture}
+					imageUrl={!isFamilyCard ? item.picture : ''}
 					capacity={!isFamilyCard ? item.capacity : []}
 					isFamilyCard={isFamilyCard}
 				/>
