@@ -1,19 +1,26 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import defaultImage from '../../../assets/images/card-default-image.png';
 
-export default function Card({ id, title, imageUrl, isFamilyCard }) {
+export default function Card({ id, index, title, imageUrl, isFamilyCard }) {
 	const [isFlipped, setIsFlipped] = useState(false);
+	const [isAppeared, setIsAppeared] = useState(false);
 
 	const clickHandler = (event) => {
 		event.preventDefault();
 		if (!isFamilyCard) setIsFlipped((previousSate) => !previousSate);
 	};
 
+	useEffect(() => {
+		setTimeout(() => {
+			setIsAppeared(true);
+		}, index * 100);
+	}, [index]);
+
 	return (
-		<div className="card">
+		<div className={'card' + (isAppeared ? ' fadein' : ' before-fadein')}>
 			<div
 				className={'card__inner' + (isFlipped ? ' is-flipped' : '')}
 				onClick={clickHandler}
@@ -29,8 +36,8 @@ export default function Card({ id, title, imageUrl, isFamilyCard }) {
 					{!isFamilyCard ? (
 						<span className="card__inner__face__title">{title}</span>
 					) : (
-						<Link className="card__inner__face__title" to={`/families/${id}`}>
-							{title}
+						<Link to={`/families/${id}`}>
+							<span className="card__inner__face__title">{title}</span>
 						</Link>
 					)}
 				</div>
@@ -50,12 +57,14 @@ Card.propTypes = {
 	id: PropTypes.number.isRequired,
 	title: PropTypes.string.isRequired,
 	imageUrl: PropTypes.string,
-	capacity: PropTypes.arrayOf(PropTypes.shape({
-		id: PropTypes.number,
-		name: PropTypes.string,
-		level: PropTypes.number,
-		description: PropTypes.string,
-	})),
+	capacity: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.number,
+			name: PropTypes.string,
+			level: PropTypes.number,
+			description: PropTypes.string,
+		}),
+	),
 	isFamilyCard: PropTypes.bool,
 };
 
