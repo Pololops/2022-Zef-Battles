@@ -1,12 +1,13 @@
 .cards {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: center;
 	gap: 2rem;
 
 	.card {
 		position: relative;
-		width: 200px;
-		height: 300px;
+		min-width: 200px;
+		min-height: 300px;
 		box-shadow: 0 1px 5px black;
 		transform-origin: bottom left;
 		transition: all 500ms;
