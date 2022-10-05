@@ -1,12 +1,17 @@
-import './Cards.scss'
+import './Cards.scss';
 
 import Card from './Card';
 
 export default function composant({ data }) {
-  return (
+	return (
 		<div className="cards">
 			{data.map((item) => (
-				<Card key={item.name} title={item.name} imageUrl={data[0].picture} />
+				<Card
+					key={item.name}
+					title={item.name}
+					imageUrl={item.characters[0].picture}
+					isCharacter={false}
+				/>
 			))}
 		</div>
 	);

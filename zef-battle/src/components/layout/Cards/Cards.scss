@@ -7,32 +7,67 @@
 		position: relative;
 		width: 200px;
 		height: 300px;
-		border: 10px solid rgba(255, 255, 255, 0.3);
-		border-radius: 15px;
-		overflow: hidden;
-		box-shadow: 0 1px 10px black;
-		transition: all 300ms;
-
-		&__title {
-			font-size: 1.2rem;
-			font-weight: bold;
-			padding: 0.7rem;
-			background-color: rgba(0, 0, 0, 0.5);
-			position: absolute;
-			left: 0;
-			right: 0;
-			top: 0;
-		}
-
-		&__image {
-			display: block;
-			background-color: red;
-			height: 100%;
-		}
+		box-shadow: 0 1px 5px black;
+		transform-origin: bottom left;
+		transition: all 500ms;
+		perspective: 1000px;
 
 		&:hover {
-			border: 10px solid rgba(255, 255, 255, 0.5);
-			box-shadow: 0 1px 20px black;
+			box-shadow: 0 1px 40px black;
+			transform: rotateZ(-2deg);
+			cursor: pointer;
+		}
+
+		&__inner {
+			width: 100%;
+			height: 100%;
+			background-color: rgba(255, 255, 255, 0.3);
+			border-radius: 12px;
+			transform-style: preserve-3d;
+			transform-origin: center left;
+			transition: all 500ms;
+
+			&:hover {
+				background-color: rgba(255, 255, 255, 0.6);
+			}
+
+			&.is-flipped {
+				transform: translateX(100%) rotateY(-180deg);
+			}
+
+			&__face {
+				position: absolute;
+				top: 10px;
+				bottom: 10px;
+				left: 10px;
+				right: 10px;
+				border-radius: 5px;
+				overflow: hidden;
+				backface-visibility: hidden;
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center center;
+
+				&--front {
+					background-color: lightcoral;
+				}
+
+				&--back {
+					background: lightblue;
+					transform: rotateY(180deg);
+				}
+
+				&__title {
+					color: inherit;
+					text-decoration: inherit;
+					font-weight: bold;
+					font-size: 1.2rem;
+					line-height: 1.2rem;
+					padding: 0.7rem;
+					margin-bottom: 1rem;
+					background-color: rgba(0, 0, 0, 0.5);
+				}
+			}
 		}
 	}
 }
