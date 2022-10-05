@@ -1,8 +1,9 @@
 import './Cards.scss';
 
+import PropTypes from 'prop-types';
 import Card from './Card';
 
-export default function composant({ data }) {
+export default function Cards({ data, isFamilyCard }) {
 	return (
 		<div className="cards">
 			{data.map((item) => (
@@ -10,10 +11,20 @@ export default function composant({ data }) {
 					key={item.id}
 					id={item.id}
 					title={item.name}
-					imageUrl={item.characters[0].picture}
-					isFamilyCard={true}
+					imageUrl={!isFamilyCard ? item.picture : item.characters[0].picture}
+					capacity={!isFamilyCard ? item.capacity : []}
+					isFamilyCard={isFamilyCard}
 				/>
 			))}
 		</div>
 	);
 }
+
+Cards.propTypes = {
+	data: PropTypes.arrayOf(PropTypes.object).isRequired,
+	isFamilyCard: PropTypes.bool,
+};
+
+Cards.defaultProps = {
+	isFamilyCard: false,
+};

@@ -50,10 +50,17 @@ Card.propTypes = {
 	id: PropTypes.number.isRequired,
 	title: PropTypes.string.isRequired,
 	imageUrl: PropTypes.string,
+	capacity: PropTypes.arrayOf(PropTypes.shape({
+		id: PropTypes.number,
+		name: PropTypes.string,
+		level: PropTypes.number,
+		description: PropTypes.string,
+	})),
 	isFamilyCard: PropTypes.bool,
 };
 
 Card.defaultProps = {
 	imageUrl: defaultImage,
+	capacity: [],
 	isFamilyCard: false,
 };

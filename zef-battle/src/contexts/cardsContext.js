@@ -6,7 +6,7 @@ export const CardsContext = createContext();
 const CardsContextProvider = ({ children }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [families, setFamilies] = useState([]);
-	const [familyIds, setFamilyIds] = useState([]);
+	const [familyId, setFamilyId] = useState(1);
 	const [infoMessage, setInfoMessage] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 
@@ -35,8 +35,8 @@ const CardsContextProvider = ({ children }) => {
 			value={{
 				isLoading,
 				families,
-				familyIds,
-				setFamilyIds,
+				familyId,
+				setFamilyId,
 				infoMessage,
 				errorMessage,
 				loadData,
