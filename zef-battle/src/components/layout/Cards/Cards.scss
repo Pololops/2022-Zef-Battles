@@ -21,10 +21,6 @@
 			animation: fadein 500ms ease-out 0s 1 normal none;
 		}
 
-		&.fadeout {
-			animation: fadeout 5000ms ease-out 0s 1 normal both;
-		}
-
 		&:hover {
 			filter: brightness(1.2);
 			transform: rotateZ(-2deg);
@@ -106,16 +102,5 @@
 		opacity: 1;
 		box-shadow: 0 1px 5px black;
 		transform: translateX(0);
-	}
-}
-
-@keyframes fadeout {
-	0% {
-		opacity: 1;
-		transform: translateX(0);
-	}
-	100% {
-		opacity: 0;
-		transform: translateX(-200px);
 	}
 }
