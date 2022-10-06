@@ -1,9 +1,9 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
-import FamiliesPage from '../pages/FamiliesPage/FamiliesPage';
-import ErrorPage from '../pages/ErrorPage/ErrorPage';
-import App from '../App/App';
+import FamiliesPage from '../components/pages/FamiliesPage/FamiliesPage';
+import ErrorPage from '../components/pages/ErrorPage/ErrorPage';
+import App from '../components/App/App';
 
 export const router = createBrowserRouter([
 	{
@@ -12,7 +12,7 @@ export const router = createBrowserRouter([
 		errorElement: <ErrorPage />,
 		children: [
 			{
-				path: 'families/',
+				path: 'families',
 				element: <FamiliesPage />,
 				children: [
 					{

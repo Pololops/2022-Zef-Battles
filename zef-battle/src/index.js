@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import CardsContextProvider from './contexts/cardsContext';
 import { RouterProvider } from 'react-router-dom';
-import { router } from './components/router/router';
+import { router } from './router/router';
 
 import './styles/index.scss';
 
