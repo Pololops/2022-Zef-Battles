@@ -1,10 +1,20 @@
 import PropTypes from 'prop-types';
 
+import Capacity from '../Capacity/Capacity';
+
 export default function CardBackFace({ title, capacities }) {
 	return (
 		<div className="card__inner__face card__inner__face--back">
 			<span className="card__inner__face__title">{title}</span>
-			BACKFACE CARD
+			{capacities.length > 0 &&
+				capacities.map(({ id, name, level, description }) => (
+					<Capacity
+						key={id + name}
+						name={name}
+						level={level}
+						desc={description}
+					/>
+				))}
 		</div>
 	);
 }
@@ -18,7 +28,7 @@ CardBackFace.propTypes = {
 			level: PropTypes.number,
 			description: PropTypes.string,
 		}),
-	),
+	).isRequired,
 };
 
 CardBackFace.defaultProps = {
