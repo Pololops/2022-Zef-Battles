@@ -12,13 +12,13 @@
 		transition: all 500ms;
 		perspective: 1000px;
 
-		&.before-fadein {
+		&.before-fade-in {
 			opacity: 0;
 			transform: translateX(200px);
 		}
 
-		&.fadein {
-			animation: fadein 500ms ease-out 0s 1 normal none;
+		&.fade-in {
+			animation: slide-in 500ms ease-out 0s 1 normal none;
 		}
 
 		&:hover {
@@ -89,10 +89,65 @@
 				}
 			}
 		}
+
+		&.card--add {
+			&.before-fade-in {
+				opacity: 0;
+				transform: translateX(0);
+			}
+
+			&.fade-in {
+				opacity: 1;
+			}
+
+			&:hover {
+				filter: none;
+				transform: rotateZ(0);
+				cursor: pointer;
+
+				.card__inner {
+					border: 2px solid rgba(255, 255, 255, 0.7);
+
+					&__face--front {
+						color: rgba(255, 255, 255, 0.9);
+					}
+				}
+			}
+
+			.card__inner {
+				border: 2px solid rgba(255, 255, 255, 0.3);
+				background-color: transparent;
+				box-shadow: none;
+
+				&__face {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					gap: 1rem;
+					color: rgba(255, 255, 255, 0.5);
+
+					&--front,
+					&--back {
+						transition: all 300ms;
+						background-color: transparent;
+					}
+
+					&--front {
+						span:first-child {
+							font-size: 8rem;
+						}
+
+						span:last-child {
+							font-weight: bold;
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
-@keyframes fadein {
+@keyframes fade-in {
 	0% {
 		opacity: 0;
 		box-shadow: 0 1px 20px black;

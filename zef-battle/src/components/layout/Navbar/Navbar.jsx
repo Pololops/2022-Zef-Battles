@@ -10,7 +10,7 @@ export default function Navbar() {
 					<NavLink
 						to="/"
 						className={({ isActive }) => {
-							return isActive && 'active';
+							return isActive ? 'active' : undefined;
 						}}
 						end // prevent isActive = true when children routes are active
 					>
@@ -21,7 +21,7 @@ export default function Navbar() {
 					<NavLink
 						to="/families"
 						className={({ isActive }) => {
-							return isActive && 'active';
+							return isActive ? 'active' : undefined;
 						}}
 					>
 						Cartes

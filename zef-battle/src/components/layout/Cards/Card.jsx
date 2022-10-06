@@ -1,16 +1,27 @@
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
-import defaultImage from '../../../assets/images/card-default-image.png';
+import CardFrontFace from './CardFrontFace';
+import CardBackFace from './CardBackFace';
+import AddCardFrontFace from './AddCardFrontFace';
+import AddCardBackFace from './AddCardBackFace';
 
-export default function Card({ id, index, title, imageUrl, isFamilyCard }) {
+export default function Card({
+	id,
+	index,
+	title,
+	imageUrl,
+	capacities,
+	isFamilyCard,
+	isAddNewCard,
+}) {
 	const [isFlipped, setIsFlipped] = useState(false);
 	const [isAppeared, setIsAppeared] = useState(false);
 
 	const clickHandler = (event) => {
 		event.preventDefault();
-		if (!isFamilyCard) setIsFlipped((previousSate) => !previousSate);
+		if (!isFamilyCard || isAddNewCard)
+			setIsFlipped((previousSate) => !previousSate);
 	};
 
 	useEffect(() => {
@@ -20,33 +31,34 @@ export default function Card({ id, index, title, imageUrl, isFamilyCard }) {
 	}, [index]);
 
 	return (
-		<div className={'card' + (isAppeared ? ' fadein' : ' before-fadein')}>
+		<div
+			className={
+				'card' +
+				(isAddNewCard ? ' card--add' : '') +
+				(isAppeared ? ' fade-in' : ' before-fade-in')
+			}
+		>
 			<div
 				className={'card__inner' + (isFlipped ? ' is-flipped' : '')}
 				onClick={clickHandler}
 			>
-				<div
-					className="card__inner__face card__inner__face--front"
-					style={{
-						backgroundImage: `url("${
-							imageUrl && imageUrl !== ('' || '/') ? imageUrl : defaultImage
-						}")`,
-					}}
-				>
-					{!isFamilyCard ? (
-						<span className="card__inner__face__title">{title}</span>
-					) : (
-						<Link to={`/families/${id}`}>
-							<span className="card__inner__face__title">{title}</span>
-						</Link>
-					)}
-				</div>
+				{isAddNewCard ? (
+					<AddCardFrontFace isFamilyCard={isFamilyCard} />
+				) : (
+					<CardFrontFace
+						id={id}
+						title={title}
+						imageUrl={imageUrl}
+						isFamilyCard={isFamilyCard}
+					/>
+				)}
 
-				{!isFamilyCard && (
-					<div className="card__inner__face card__inner__face--back">
-						<span className="card__inner__face__title">{title}</span>
-						BACKFACE CARD
-					</div>
+				{isAddNewCard ? (
+					<AddCardBackFace isFamilyCard={isFamilyCard} />
+				) : (
+					!isFamilyCard && (
+						<CardBackFace title={title} capacities={capacities} />
+					)
 				)}
 			</div>
 		</div>
@@ -54,8 +66,9 @@ export default function Card({ id, index, title, imageUrl, isFamilyCard }) {
 }
 
 Card.propTypes = {
-	id: PropTypes.number.isRequired,
-	title: PropTypes.string.isRequired,
+	id: PropTypes.number,
+	index: PropTypes.number.isRequired,
+	title: PropTypes.string,
 	imageUrl: PropTypes.string,
 	capacity: PropTypes.arrayOf(
 		PropTypes.shape({
@@ -66,10 +79,13 @@ Card.propTypes = {
 		}),
 	),
 	isFamilyCard: PropTypes.bool,
+	isAddNewCard: PropTypes.bool,
 };
 
 Card.defaultProps = {
-	imageUrl: defaultImage,
-	capacity: [],
+	id: -1,
+	title: '',
+	capacities: [],
 	isFamilyCard: false,
+	isAddNewCard: false,
 };
