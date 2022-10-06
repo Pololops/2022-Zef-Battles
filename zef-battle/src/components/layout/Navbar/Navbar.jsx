@@ -7,10 +7,25 @@ export default function Navbar() {
 		<nav>
 			<ul className="navbar">
 				<li>
-					<NavLink to="/">Accueil</NavLink>
+					<NavLink
+						to="/"
+						className={({ isActive }) => {
+							return isActive && 'active';
+						}}
+						end // prevent isActive = true when children routes are active
+					>
+						Accueil
+					</NavLink>
 				</li>
 				<li>
-					<NavLink to="/families">Cartes</NavLink>
+					<NavLink
+						to="/families"
+						className={({ isActive }) => {
+							return isActive && 'active';
+						}}
+					>
+						Cartes
+					</NavLink>
 				</li>
 			</ul>
 		</nav>
