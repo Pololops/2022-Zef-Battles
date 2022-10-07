@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouteError, Link } from 'react-router-dom';
 
-import Header from '../../layout/Header/Header';
-import Main from '../../layout/Main/Main';
+import Header from '../../layout/main-layout/Header/Header';
+import Main from '../../layout/main-layout/Main/Main';
 
 export default function ErrorPage() {
 	const error = useRouteError();
