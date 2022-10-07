@@ -1,0 +1,47 @@
+.button {
+	cursor: pointer;
+	font-size: 0.9rem;
+	padding: 0.2rem 0.7rem;
+  margin: 0.4rem;
+	border: 0;
+	color: black;
+	text-transform: lowercase;
+	border-radius: 3px;
+	display: inline-block;
+	overflow: hidden;
+	transition: all 300ms cubic-bezier(0.86, 0.01, 0.15, 0.99);
+	background: white;
+	color: black;
+	transform: perspective(1px) translateZ(0);
+
+	&:hover {
+		color: white;
+		box-shadow: 0 0 0 5px rgba(250, 250, 250, 0.1);
+
+		&::before {
+			clip-path: circle(100% at 50% 50%);
+		}
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		top: 0px;
+		left: 0px;
+		right: 0px;
+		bottom: 0;
+		background: #6f6f6f;
+		clip-path: circle(0% at 50% 50%);
+		transition: 300ms;
+		opacity: 1;
+	}
+
+  &--reset::before {
+		background: #a93838;
+  }
+
+  &--submit::before {
+		background: #35a37d;
+  }
+}

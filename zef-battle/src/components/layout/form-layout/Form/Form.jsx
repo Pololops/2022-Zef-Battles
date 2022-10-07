@@ -1,14 +1,25 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 
-export default function Form({ isFamilyForm, onCancelButtonClick }) {
+export default function Form({ isFamilyForm, onCancelButtonClick, isActive }) {
 	const [nameInputValue, setNameInputValue] = useState('');
 
 	const inputChangeHandler = (event, setState) => setState(event.target.value);
 	const submitButtonClickHandler = (event) => event.preventDefault();
+
+	useEffect(() => {
+		if (isActive) {
+			setNameInputValue('');
+		}
+
+		return () =>
+			setTimeout(() => {
+				setNameInputValue('');
+			}, 500);
+	}, [isActive]);
 
 	return (
 		<form
@@ -21,17 +32,11 @@ export default function Form({ isFamilyForm, onCancelButtonClick }) {
 				placeholder={isFamilyForm ? 'Nom de Famille' : 'Nom du personnage'}
 				autoComplete={false}
 				onChange={(event) => inputChangeHandler(event, setNameInputValue)}
-				isFocus={true}
+				isFocus={isActive}
 			/>
-			<Button
-				type="button"
-				value="Cancel"
-				label="Annuler"
-				onClick={onCancelButtonClick}
-			/>
+			<Button type="reset" label="Annuler" onClick={onCancelButtonClick} />
 			<Button
 				type="submit"
-				value="Submit"
 				label="Valider"
 				onClick={submitButtonClickHandler}
 			/>
