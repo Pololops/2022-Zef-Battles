@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import CardFrontFace from './CardFrontFace';
 import CardBackFace from './CardBackFace';
 import AddCardFrontFace from './AddCardFrontFace';
 import AddCardBackFace from './AddCardBackFace';
+import useAppearEffect from '../../../hooks/useAppearEffect';
 
 export default function Card({
 	id,
@@ -16,7 +17,7 @@ export default function Card({
 	isAddNewCard,
 }) {
 	const [isFlipped, setIsFlipped] = useState(false);
-	const [isAppeared, setIsAppeared] = useState(false);
+	const isAppeared = useAppearEffect(index);
 
 	const clickHandler = (event) => {
 		event.preventDefault();
@@ -25,12 +26,6 @@ export default function Card({
 
 		setIsFlipped((previousSate) => !previousSate);
 	};
-
-	useEffect(() => {
-		setTimeout(() => {
-			setIsAppeared(true);
-		}, index * 100);
-	}, [index]);
 
 	return (
 		<div
