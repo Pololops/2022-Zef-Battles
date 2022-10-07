@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import defaultImage from '../../../assets/images/card-default-image.png';
+import defaultImage from '../../../../assets/images/card-default-image.png';
 
 export default function CardFrontFace({ id, title, imageUrl, isFamilyCard }) {
 	return (

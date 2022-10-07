@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
-import CardFrontFace from './CardFrontFace';
-import CardBackFace from './CardBackFace';
-import AddCardFrontFace from './AddCardFrontFace';
-import AddCardBackFace from './AddCardBackFace';
-import useAppearEffect from '../../../hooks/useAppearEffect';
+import CardFrontFace from '../CardFrontFace/CardFrontFace';
+import CardBackFace from '../CardBackFace/CardBackFace';
+import AddCardFrontFace from '../AddCardFrontFace/AddCardFrontFace';
+import AddCardBackFace from '../AddCardBackFace/AddCardBackFace';
+import useAppearEffect from '../../../../hooks/useAppearEffect';
 
 export default function Card({
 	id,

@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { CardsContext } from '../../../contexts/cardsContext';
 
-import Cards from '../../layout/Cards/Cards';
+import Cards from '../../layout/cards-layout/Cards/Cards';
 
 export default function FamiliesPage() {
 	const { isLoading, infoMessage, errorMessage, families } =

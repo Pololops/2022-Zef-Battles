@@ -1,7 +1,7 @@
 import './Cards.scss';
 
 import PropTypes from 'prop-types';
-import Card from './Card';
+import Card from '../Card/Card';
 
 export default function Cards({ data, isFamilyCard }) {
 	const addNewCardIndex = data.length + 4;

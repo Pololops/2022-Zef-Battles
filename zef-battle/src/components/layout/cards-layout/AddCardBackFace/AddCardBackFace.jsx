@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import Form from '../form-layout/Form/Form';
+import Form from '../../form-layout/Form/Form';
 
 export default function AddCardBackFace({
 	isFamilyCard,
