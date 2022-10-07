@@ -40,7 +40,13 @@ export default function FamiliesPage() {
 				{errorMessage !== '' && errorMessage}
 			</p>
 			{id
-				? !isLoading && <Cards data={characters} isFamilyCard={false} />
+				? !isLoading && (
+						<Cards
+							data={characters}
+							isFamilyCard={false}
+							familyName={familyName}
+						/>
+				  )
 				: !isLoading && <Cards data={families} isFamilyCard={true} />}
 		</>
 	);

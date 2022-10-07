@@ -13,16 +13,20 @@ export default function Card({
 	title,
 	imageUrl,
 	capacities,
+	familyId,
+	family,
+	familyName,
+	totalLevel,
 	isFamilyCard,
-	isAddNewCard,
+	isAddCard,
 }) {
 	const [isFlipped, setIsFlipped] = useState(false);
 	const isAppeared = useAppearEffect(index);
 
 	const clickHandler = (event) => {
 		event.preventDefault();
-		if (isFamilyCard && !isAddNewCard) return;
-		if (isAddNewCard && isFlipped === true) return;
+		if (isFamilyCard && !isAddCard) return;
+		if (isAddCard && isFlipped === true) return;
 
 		setIsFlipped((previousSate) => !previousSate);
 	};
@@ -31,7 +35,7 @@ export default function Card({
 		<div
 			className={
 				'card' +
-				(isAddNewCard ? ' card--add' : '') +
+				(isAddCard ? ' card--add' : '') +
 				(isAppeared ? ' fade-in' : ' before-fade-in')
 			}
 		>
@@ -39,9 +43,12 @@ export default function Card({
 				className={'card__inner' + (isFlipped ? ' is-flipped' : '')}
 				onClick={clickHandler}
 			>
-				{isAddNewCard ? (
+				{isAddCard ? (
 					<>
-						<AddCardFrontFace isFamilyCard={isFamilyCard} />
+						<AddCardFrontFace
+							isFamilyCard={isFamilyCard}
+							familyName={familyName}
+						/>
 						<AddCardBackFace
 							isFamilyCard={isFamilyCard}
 							isActive={isFlipped}
@@ -79,14 +86,22 @@ Card.propTypes = {
 			description: PropTypes.string,
 		}),
 	),
+	familyId: PropTypes.number,
+	family: PropTypes.string,
+	familyName: PropTypes.string,
+	totalLevel: PropTypes.number,
 	isFamilyCard: PropTypes.bool,
-	isAddNewCard: PropTypes.bool,
+	isAddCard: PropTypes.bool,
 };
 
 Card.defaultProps = {
-	id: -1,
+	id: 0,
 	title: '',
 	capacities: [],
+	familyId: 0,
+	family: '',
+	familyName: '',
+	totalLevel: 0,
 	isFamilyCard: false,
-	isAddNewCard: false,
+	isAddCard: false,
 };
