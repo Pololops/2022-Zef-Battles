@@ -3,15 +3,10 @@ import { useState, useEffect } from 'react';
 
 import Input from '../Input/Input';
 
-export default function Form({ isFamilyForm, isActive }) {
-	const [isFocus, setIsFocus] = useState(false);
+export default function Form({ isFamilyForm }) {
 	const [nameInputValue, setNameInputValue] = useState('');
 
 	const inputChangeHandler = (event, setState) => setState(event.target.value);
-
-	useEffect(() => {
-		setIsFocus(true);
-	}, [isActive])
 
 	return (
 		<form
@@ -23,7 +18,7 @@ export default function Form({ isFamilyForm, isActive }) {
 				value={nameInputValue}
 				placeholder={isFamilyForm ? 'Nom de Famille' : 'Nom du personnage'}
 				onChange={(event) => inputChangeHandler(event, setNameInputValue)}
-				isFocus={isFocus}
+				isFocus={true}
 			/>
 		</form>
 	);

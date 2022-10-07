@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useRef } from 'react';
+import useAutoFocus from '../../../../hooks/useAutoFocus';
 
 export default function Input({
 	type,
@@ -9,15 +9,11 @@ export default function Input({
 	onChange,
 	isFocus,
 }) {
-	const input = useRef();
-
-	useEffect(() => {
-		if (isFocus) input.current.focus();
-	}, [isFocus]);
+	const focus = useAutoFocus(isFocus);
 
 	return (
 		<input
-			ref={input}
+			ref={focus}
 			type={type}
 			name={name}
 			value={value}
