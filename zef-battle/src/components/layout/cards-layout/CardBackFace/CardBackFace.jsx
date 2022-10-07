@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import Capacity from '../../Capacity/Capacity';
+import Capacity from '../Capacity/Capacity';
 
 export default function CardBackFace({ title, capacities }) {
 	return (
