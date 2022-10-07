@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import useAutoFocus from '../../../../hooks/useAutoFocus';
+import useAutoFocus from '../../../../hooks/useAutoFocusRef';
 
 export default function Input({
 	type,
