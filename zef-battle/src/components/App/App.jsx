@@ -4,8 +4,8 @@ import { useContext, useEffect } from 'react';
 import { CardsContext } from '../../contexts/cardsContext';
 
 import { Outlet } from 'react-router-dom';
-import Header from '../layout/main-layout/Header/Header';
-import Main from '../layout/main-layout/Main/Main';
+import Header from '../layouts/main-layout/Header/Header';
+import Main from '../layouts/main-layout/Main/Main';
 
 export default function App() {
 	const { loadData } = useContext(CardsContext);
