@@ -51,7 +51,11 @@ export default function Card({
 				)}
 
 				{isAddNewCard ? (
-					<AddCardBackFace isFamilyCard={isFamilyCard} isActive={isFlipped} />
+					<AddCardBackFace
+						isFamilyCard={isFamilyCard}
+						isActive={isFlipped}
+						onCancelButtonClick={() => setIsFlipped(false)}
+					/>
 				) : (
 					!isFamilyCard && (
 						<CardBackFace title={title} capacities={capacities} />

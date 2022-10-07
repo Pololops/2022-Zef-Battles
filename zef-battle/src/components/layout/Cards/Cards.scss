@@ -64,7 +64,7 @@
 				}
 
 				&--back {
-					background: #121212;
+					background-color: #121212;
 					transform: rotateY(180deg);
 				}
 
@@ -103,7 +103,7 @@
 			&:hover {
 				filter: none;
 				transform: rotateZ(0);
-				cursor: pointer;
+				cursor: initial;
 
 				.card__inner {
 					border: 2px solid rgba(255, 255, 255, 0.7);
@@ -120,7 +120,13 @@
 				box-shadow: none;
 
 				&__face {
+					top: 0;
+					bottom: 0;
+					left: 0;
+					right: 0;
+					padding: 10px;
 					display: flex;
+					border-radius: inherit;
 					flex-direction: column;
 					justify-content: center;
 					gap: 1rem;
@@ -129,16 +135,21 @@
 					&--front,
 					&--back {
 						transition: all 300ms;
-						background-color: transparent;
 					}
 
 					&--front {
+						background-color: transparent;
+
 						span:first-child {
 							font-size: 8rem;
 						}
 
 						span:last-child {
 							font-weight: bold;
+						}
+
+						&:hover {
+							cursor: pointer;
 						}
 					}
 				}

@@ -19,7 +19,7 @@ export default function Input({
 			name={name}
 			value={value}
 			placeholder={placeholder}
-			autocomplete={autoComplete ? 'on' : 'off'}
+			autoComplete={autoComplete ? 'on' : 'off'}
 			onChange={onChange}
 		/>
 	);

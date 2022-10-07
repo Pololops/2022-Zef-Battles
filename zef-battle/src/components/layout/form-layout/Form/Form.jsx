@@ -4,14 +4,10 @@ import { useState } from 'react';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 
-export default function Form({ isFamilyForm }) {
+export default function Form({ isFamilyForm, onCancelButtonClick }) {
 	const [nameInputValue, setNameInputValue] = useState('');
 
 	const inputChangeHandler = (event, setState) => setState(event.target.value);
-	const cancelButtonClickHandler = (event) => {
-		event.preventDefault();
-		setNameInputValue('');
-	};
 	const submitButtonClickHandler = (event) => event.preventDefault();
 
 	return (
@@ -31,7 +27,7 @@ export default function Form({ isFamilyForm }) {
 				type="button"
 				value="Cancel"
 				label="Annuler"
-				onClick={cancelButtonClickHandler}
+				onClick={onCancelButtonClick}
 			/>
 			<Button
 				type="submit"
@@ -46,7 +42,7 @@ export default function Form({ isFamilyForm }) {
 Form.propTypes = {
 	isFamilyForm: PropTypes.bool,
 	isActive: PropTypes.bool,
-	setIsFlipped: PropTypes.func.isRequired,
+	onCancelButtonClick: PropTypes.func,
 };
 Form.defaultProps = {
 	isFamilyForm: false,
