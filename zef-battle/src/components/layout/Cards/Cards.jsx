@@ -9,7 +9,7 @@ export default function Cards({ data, isFamilyCard }) {
 	return (
 		<div className="cards">
 			<Card
-				key={`${addNewCardIndex}addNewCard`}
+				key={isFamilyCard ? 'addNewFamily' : 'addNewCharacter'}
 				index={addNewCardIndex}
 				isAddNewCard={true}
 				isFamilyCard={isFamilyCard}
