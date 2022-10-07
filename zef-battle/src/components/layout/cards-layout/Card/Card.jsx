@@ -40,26 +40,26 @@ export default function Card({
 				onClick={clickHandler}
 			>
 				{isAddNewCard ? (
-					<AddCardFrontFace isFamilyCard={isFamilyCard} />
+					<>
+						<AddCardFrontFace isFamilyCard={isFamilyCard} />
+						<AddCardBackFace
+							isFamilyCard={isFamilyCard}
+							isActive={isFlipped}
+							onCancelButtonClick={() => setIsFlipped(false)}
+						/>
+					</>
 				) : (
-					<CardFrontFace
-						id={id}
-						title={title}
-						imageUrl={imageUrl}
-						isFamilyCard={isFamilyCard}
-					/>
-				)}
-
-				{isAddNewCard ? (
-					<AddCardBackFace
-						isFamilyCard={isFamilyCard}
-						isActive={isFlipped}
-						onCancelButtonClick={() => setIsFlipped(false)}
-					/>
-				) : (
-					!isFamilyCard && (
-						<CardBackFace title={title} capacities={capacities} />
-					)
+					<>
+						<CardFrontFace
+							id={id}
+							title={title}
+							imageUrl={imageUrl}
+							isFamilyCard={isFamilyCard}
+						/>
+						{!isFamilyCard && (
+							<CardBackFace title={title} capacities={capacities} />
+						)}
+					</>
 				)}
 			</div>
 		</div>
