@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
-import FamiliesPage from '../components/pages/FamiliesPage/FamiliesPage';
+import CardsPage from '../components/pages/CardsPage/CardsPage';
 import ErrorPage from '../components/pages/ErrorPage/ErrorPage';
 import App from '../components/App/App';
 
@@ -13,11 +13,11 @@ export const router = createBrowserRouter([
 		children: [
 			{
 				path: 'families',
-				element: <FamiliesPage />,
+				element: <CardsPage />,
 				children: [
 					{
 						path: ':id',
-						element: <FamiliesPage />,
+						element: <CardsPage />,
 					},
 				],
 			},
