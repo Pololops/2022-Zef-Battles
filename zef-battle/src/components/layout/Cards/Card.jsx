@@ -20,8 +20,10 @@ export default function Card({
 
 	const clickHandler = (event) => {
 		event.preventDefault();
-		if (!isFamilyCard || isAddNewCard)
-			setIsFlipped((previousSate) => !previousSate);
+		if (isFamilyCard && !isAddNewCard) return;
+		if (isAddNewCard && isFlipped === true) return;
+
+		setIsFlipped((previousSate) => !previousSate);
 	};
 
 	useEffect(() => {
@@ -54,7 +56,7 @@ export default function Card({
 				)}
 
 				{isAddNewCard ? (
-					<AddCardBackFace isFamilyCard={isFamilyCard} />
+					<AddCardBackFace isFamilyCard={isFamilyCard} isActive={isFlipped} />
 				) : (
 					!isFamilyCard && (
 						<CardBackFace title={title} capacities={capacities} />
