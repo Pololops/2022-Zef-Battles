@@ -6,6 +6,7 @@ export default function Input({
 	name,
 	value,
 	placeholder,
+	autoComplete,
 	onChange,
 	isFocus,
 }) {
@@ -18,6 +19,7 @@ export default function Input({
 			name={name}
 			value={value}
 			placeholder={placeholder}
+			autocomplete={autoComplete ? 'on' : 'off'}
 			onChange={onChange}
 		/>
 	);
@@ -28,10 +30,12 @@ Input.propTypes = {
 	name: PropTypes.string.isRequired,
 	value: PropTypes.string.isRequired,
 	placeholder: PropTypes.string.isRequired,
+	autoComplete: PropTypes.bool,
 	onChange: PropTypes.func.isRequired,
 	isFocus: PropTypes.bool,
 };
 
 Input.defaultProps = {
+	autoComplete: true,
 	isFocus: false,
 };

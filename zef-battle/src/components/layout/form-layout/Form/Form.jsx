@@ -23,6 +23,7 @@ export default function Form({ isFamilyForm }) {
 				name="name"
 				value={nameInputValue}
 				placeholder={isFamilyForm ? 'Nom de Famille' : 'Nom du personnage'}
+				autoComplete={false}
 				onChange={(event) => inputChangeHandler(event, setNameInputValue)}
 				isFocus={true}
 			/>
