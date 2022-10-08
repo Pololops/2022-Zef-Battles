@@ -15,20 +15,23 @@ export default function Cards({ data, isFamilyCard, familyName }) {
 				isFamilyCard={isFamilyCard}
 				familyName={familyName}
 			/>
-			{data.map((item, index) => (
-				<Card
-					key={item.id + item.name}
-					id={item.id}
-					index={index}
-					title={item.name}
-					imageUrl={!isFamilyCard ? item.picture : ''}
-					capacities={!isFamilyCard ? item.capacity : []}
-					familyId={item.family_id}
-					familyName={item.family_name}
-					totalLevel={item.total_level}
-					isFamilyCard={isFamilyCard}
-				/>
-			))}
+			{data.map(
+				(item, index) =>
+					item && (
+						<Card
+							key={item.id + item.name}
+							id={item.id}
+							index={index}
+							title={item.name}
+							imageUrl={!isFamilyCard ? item.picture : ''}
+							capacities={!isFamilyCard ? item.capacity : []}
+							familyId={item.family_id}
+							familyName={item.family_name}
+							totalLevel={item.total_level}
+							isFamilyCard={isFamilyCard}
+						/>
+					),
+			)}
 		</div>
 	);
 }

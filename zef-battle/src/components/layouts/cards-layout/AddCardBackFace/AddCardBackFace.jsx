@@ -5,18 +5,15 @@ import Form from '../../form-layout/Form/Form';
 export default function AddCardBackFace({
 	isFamilyCard,
 	isActive,
-	onCancelButtonClick,
+	formCloser,
 }) {
 	return (
 		<div className="card__inner__face card__inner__face--back">
-			<div
-				className="card__inner__face__close"
-				onClick={onCancelButtonClick}
-			></div>
+			<div className="card__inner__face__close" onClick={formCloser}></div>
 			<Form
 				isFamilyForm={isFamilyCard}
 				isActive={isActive}
-				onCancelButtonClick={onCancelButtonClick}
+				formCloser={formCloser}
 			/>
 		</div>
 	);
@@ -25,7 +22,7 @@ export default function AddCardBackFace({
 AddCardBackFace.propTypes = {
 	isFamilyCard: PropTypes.bool,
 	isActive: PropTypes.bool,
-	onCancelButtonClick: PropTypes.func,
+	formCloser: PropTypes.func,
 };
 
 AddCardBackFace.defaultProps = {

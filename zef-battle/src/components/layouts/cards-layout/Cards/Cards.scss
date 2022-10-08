@@ -3,11 +3,12 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 2rem;
+	transition: all 500ms;
 
 	.card {
 		position: relative;
-		min-width: 200px;
-		min-height: 300px;
+		width: 200px;
+		height: 300px;
 		transform-origin: bottom left;
 		transition: all 500ms;
 		perspective: 1000px;

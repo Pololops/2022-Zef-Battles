@@ -34,6 +34,7 @@ const CardsContextProvider = ({ children }) => {
 			value={{
 				isLoading,
 				families,
+				setFamilies,
 				infoMessage,
 				errorMessage,
 				loadData,

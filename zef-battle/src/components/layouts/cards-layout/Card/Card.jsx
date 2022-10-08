@@ -52,7 +52,7 @@ export default function Card({
 						<AddCardBackFace
 							isFamilyCard={isFamilyCard}
 							isActive={isFlipped}
-							onCancelButtonClick={() => setIsFlipped(false)}
+							formCloser={() => setIsFlipped(false)}
 						/>
 					</>
 				) : (

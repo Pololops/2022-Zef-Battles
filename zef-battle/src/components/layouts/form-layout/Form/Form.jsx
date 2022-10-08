@@ -1,14 +1,25 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+
+import { CardsContext } from '../../../../contexts/cardsContext';
+
+import { getFamilies, postNewFamily } from '../../../../apiClient/apiRequests';
 
 import Input from '../Input/Input';
 import Button from '../Button/Button';
 
-export default function Form({ isFamilyForm, onCancelButtonClick, isActive }) {
+export default function Form({ isFamilyForm, formCloser, isActive }) {
+	const { setFamilies } = useContext(CardsContext);
+
 	const [nameInputValue, setNameInputValue] = useState('');
 
 	const inputChangeHandler = (event, setState) => setState(event.target.value);
-	const submitButtonClickHandler = (event) => event.preventDefault();
+	const submitButtonClickHandler = async (event) => {
+		event.preventDefault();
+		await postNewFamily(nameInputValue);
+		setFamilies(await getFamilies());
+		formCloser();
+	};
 
 	useEffect(() => {
 		if (isActive) {
@@ -34,7 +45,7 @@ export default function Form({ isFamilyForm, onCancelButtonClick, isActive }) {
 				onChange={(event) => inputChangeHandler(event, setNameInputValue)}
 				isFocus={isActive}
 			/>
-			<Button type="reset" label="Annuler" onClick={onCancelButtonClick} />
+			<Button type="reset" label="Annuler" onClick={formCloser} />
 			<Button
 				type="submit"
 				label="Valider"
@@ -47,7 +58,7 @@ export default function Form({ isFamilyForm, onCancelButtonClick, isActive }) {
 Form.propTypes = {
 	isFamilyForm: PropTypes.bool,
 	isActive: PropTypes.bool,
-	onCancelButtonClick: PropTypes.func,
+	formCloser: PropTypes.func,
 };
 Form.defaultProps = {
 	isFamilyForm: false,
