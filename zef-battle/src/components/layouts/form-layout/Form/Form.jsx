@@ -16,7 +16,7 @@ export default function Form({ isFamilyForm, formCloser, isActive }) {
 	const inputChangeHandler = (event, setState) => setState(event.target.value);
 	const submitButtonClickHandler = async (event) => {
 		event.preventDefault();
-		await postNewFamily(nameInputValue);
+		await postNewFamily({ name: nameInputValue });
 		setFamilies(await getFamilies());
 		formCloser();
 	};
