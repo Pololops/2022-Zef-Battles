@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 
-import './Input.scss';
-
 import useAutoFocus from '../../../../hooks/useAutoFocusRef';
 
 export default function Input({

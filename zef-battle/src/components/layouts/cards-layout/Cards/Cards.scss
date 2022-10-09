@@ -92,6 +92,8 @@
 		}
 
 		&.card--add {
+			z-index: 1;
+			
 			&.before-fade-in {
 				opacity: 0;
 				transform: translateX(0);
@@ -127,6 +129,7 @@
 					right: 0;
 					padding: 10px;
 					display: flex;
+					overflow: visible;
 					border-radius: inherit;
 					flex-direction: column;
 					justify-content: center;
