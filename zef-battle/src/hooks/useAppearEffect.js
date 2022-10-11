@@ -6,7 +6,7 @@ const useAppearEffect = (index) => {
 	useEffect(() => {
 		setTimeout(() => {
 			setIsAppeared(true);
-		}, index * 100);
+		}, index * 50);
 	}, [index]);
 
 	return isAppeared;
