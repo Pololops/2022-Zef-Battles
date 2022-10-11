@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import './Form.scss';
 
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useCallback } from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
 import { getFamilies, postNewFamily } from '../../../../apiClient/apiRequests';
 
@@ -17,6 +17,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 	const { setFamilies } = useContext(CardsContext);
 
 	const [nameInputValue, setNameInputValue] = useState('');
+	const [droppedFiles, setDroppedFiles] = useState([]);
 	const [errorMessage, setErrorMessage] = useState('');
 
 	const inputChangeHandler = (event, setState) => {
@@ -33,6 +34,17 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 			setErrorMessage('');
 		}
 	};
+
+	const dropzoneHandler = useCallback((acceptedfiles) => {
+		setDroppedFiles(
+			acceptedfiles.map((files) =>
+				Object.assign(files, {
+					preview: URL.createObjectURL(files),
+				}),
+			),
+		);
+	}, []);
+
 	const submitButtonClickHandler = async (event) => {
 		event.preventDefault();
 		await postNewFamily({ name: nameInputValue });
@@ -48,6 +60,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 		return () =>
 			setTimeout(() => {
 				setNameInputValue('');
+				setDroppedFiles([]);
 			}, 500);
 	}, [isActive]);
 
@@ -75,7 +88,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 						isFocus={false}
 						readOnly
 					/>
-					<DropZone />
+					<DropZone droppedFiles={droppedFiles} onDrop={dropzoneHandler} />
 				</>
 			)}
 
