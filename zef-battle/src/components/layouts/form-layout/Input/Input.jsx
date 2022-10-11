@@ -6,10 +6,12 @@ export default function Input({
 	type,
 	name,
 	value,
+	defaultValue,
 	placeholder,
 	autoComplete,
 	onChange,
 	isFocus,
+	readOnly
 }) {
 	const focus = useAutoFocus(isFocus);
 
@@ -23,6 +25,7 @@ export default function Input({
 			placeholder={placeholder}
 			autoComplete={autoComplete ? 'on' : 'off'}
 			onChange={onChange}
+			readOnly={readOnly}
 		/>
 	);
 }
@@ -30,14 +33,19 @@ export default function Input({
 Input.propTypes = {
 	type: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
-	value: PropTypes.string.isRequired,
-	placeholder: PropTypes.string.isRequired,
+	value: PropTypes.string,
+	defaultValue: PropTypes.string,
+	placeholder: PropTypes.string,
 	autoComplete: PropTypes.bool,
-	onChange: PropTypes.func.isRequired,
+	onChange: PropTypes.func,
 	isFocus: PropTypes.bool,
 };
 
 Input.defaultProps = {
+	placeholder: '',
+	value: '',
+	defaultValue: '',
 	autoComplete: true,
+	onChange: null,
 	isFocus: false,
 };

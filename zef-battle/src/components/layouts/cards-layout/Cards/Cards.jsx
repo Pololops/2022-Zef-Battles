@@ -3,7 +3,7 @@ import './Cards.scss';
 import PropTypes from 'prop-types';
 import Card from '../Card/Card';
 
-export default function Cards({ data, isFamilyCard, familyName }) {
+export default function Cards({ data, isFamilyCard, familyName, familyId }) {
 	const addNewCardIndex = data.length + 4;
 
 	return (
@@ -14,6 +14,7 @@ export default function Cards({ data, isFamilyCard, familyName }) {
 				isAddCard={true}
 				isFamilyCard={isFamilyCard}
 				familyName={familyName}
+				familyId={familyId}
 			/>
 			{data.map(
 				(item, index) =>
@@ -40,9 +41,11 @@ Cards.propTypes = {
 	data: PropTypes.arrayOf(PropTypes.object).isRequired,
 	isFamilyCard: PropTypes.bool,
 	familyName: PropTypes.string,
+	familyId: PropTypes.number,
 };
 
 Cards.defaultProps = {
 	isFamilyCard: false,
 	familyName: '',
+	familyId: 0,
 };

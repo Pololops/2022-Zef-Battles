@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { CardsContext } from '../../../contexts/cardsContext';
 
@@ -10,26 +10,26 @@ export default function FamiliesPage() {
 	const { id } = useParams();
 	const [characters, setCharacters] = useState([]);
 	const [familyName, setFamilyName] = useState('');
+	const [familyId, setFamilyId] = useState(0);
 
-	const getFamilyCharacters = () => {
-		const familyId = Number(id);
-		const findFamily = families.find((family) => family.id === familyId);
-		if (findFamily) {
-			setFamilyName(findFamily.name);
-			setCharacters(findFamily.characters);
-		}
-	};
+	const getFamilyCharacters = useMemo(
+		() => () => {
+			const familyId = Number(id);
+			const findFamily = families.find((family) => family.id === familyId);
+			if (findFamily) {
+				setFamilyName(findFamily.name);
+				setFamilyId(findFamily.id);
+				setCharacters(findFamily.characters);
+			}
+		},
+		[families, id],
+	);
 
 	useEffect(() => {
 		if (id) {
 			getFamilyCharacters();
 		}
-
-		return () => {
-			setFamilyName('');
-			setCharacters([]);
-		};
-	}, [families, id]);
+	}, [getFamilyCharacters, id]);
 
 	return (
 		<>
@@ -45,6 +45,7 @@ export default function FamiliesPage() {
 							data={characters}
 							isFamilyCard={false}
 							familyName={familyName}
+							familyId={familyId}
 						/>
 				  )
 				: !isLoading && <Cards data={families} isFamilyCard={true} />}

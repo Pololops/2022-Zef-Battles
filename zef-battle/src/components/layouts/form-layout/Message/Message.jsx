@@ -7,5 +7,5 @@ export default function Message({ message }) {
 }
 
 Message.propTypes = {
-  prop: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
 };

@@ -14,7 +14,6 @@ export default function Card({
 	imageUrl,
 	capacities,
 	familyId,
-	family,
 	familyName,
 	totalLevel,
 	isFamilyCard,
@@ -51,6 +50,7 @@ export default function Card({
 						/>
 						<AddCardBackFace
 							isFamilyCard={isFamilyCard}
+							familyId={isFamilyCard ? id : familyId}
 							isActive={isFlipped}
 							formCloser={() => setIsFlipped(false)}
 						/>

@@ -8,11 +8,12 @@ import { getFamilies, postNewFamily } from '../../../../apiClient/apiRequests';
 
 import Input from '../Input/Input';
 import Button from '../Button/Button';
+import DropZone from '../DropZone/DropZone';
 import Message from '../Message/Message';
 
-const regexpToMatch = /^((?!_)[\w]{1})([\w' \-]*)$/;
+const regexpToMatch = /^[0-9@-Za-zÀ-ÖØ-öø-ÿ-& '_^]+$/;
 
-export default function Form({ isFamilyForm, formCloser, isActive }) {
+export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 	const { setFamilies } = useContext(CardsContext);
 
 	const [nameInputValue, setNameInputValue] = useState('');
@@ -20,15 +21,16 @@ export default function Form({ isFamilyForm, formCloser, isActive }) {
 
 	const inputChangeHandler = (event, setState) => {
 		const value = event.target.value;
-		if (value !== '') {
-			if (!value.match(regexpToMatch)) {
-				setErrorMessage(
-					'Attention : que des lettres, des chiffres, des espaces, des apostrophes ou des tirets !',
-				);
-			} else {
-				setState(value);
-				setErrorMessage('');
-			}
+
+		if (value === '') return setState('');
+
+		if (!value.match(regexpToMatch)) {
+			setErrorMessage(
+				'Attention : que des lettres, des chiffres, des espaces, des apostrophes ou des tirets !',
+			);
+		} else {
+			setState(value);
+			setErrorMessage('');
 		}
 	};
 	const submitButtonClickHandler = async (event) => {
@@ -62,12 +64,29 @@ export default function Form({ isFamilyForm, formCloser, isActive }) {
 				onChange={(event) => inputChangeHandler(event, setNameInputValue)}
 				isFocus={isActive}
 			/>
-			<Button type="reset" label="Annuler" onClick={formCloser} />
-			<Button
-				type="submit"
-				label="Valider"
-				onClick={submitButtonClickHandler}
-			/>
+
+			{!isFamilyForm && (
+				<>
+					<Input
+						type="hidden"
+						name="family_id"
+						value={familyId.toString()}
+						autoComplete={false}
+						isFocus={false}
+						readOnly
+					/>
+					<DropZone />
+				</>
+			)}
+
+			<div className="form__buttons">
+				<Button type="reset" label="Annuler" onClick={formCloser} />
+				<Button
+					type="submit"
+					label="Valider"
+					onClick={submitButtonClickHandler}
+				/>
+			</div>
 			{errorMessage !== '' && <Message message={errorMessage} />}
 		</form>
 	);
@@ -75,9 +94,11 @@ export default function Form({ isFamilyForm, formCloser, isActive }) {
 
 Form.propTypes = {
 	isFamilyForm: PropTypes.bool,
+	familyId: PropTypes.number.isRequired,
 	isActive: PropTypes.bool,
 	formCloser: PropTypes.func,
 };
+
 Form.defaultProps = {
 	isFamilyForm: false,
 	isActive: false,

@@ -1,9 +1,16 @@
 .form {
+	height: 100%;
+	font-size: 0.9rem;
+	margin-top: 2rem;
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	gap: 0.5rem;
 
 	.input {
 		width: 100%;
-		font-size: 0.9rem;
+		font-size: inherit;
 		padding: 0.2rem 0.3rem;
 		margin-bottom: 0.4rem;
 		border: 0;
@@ -15,6 +22,16 @@
 		&:focus {
 			box-shadow: none;
 		}
+	}
+
+	.dropzone {
+		flex-grow: 1;
+	}
+
+	&__buttons {
+		margin-inline: -5px;
+		display: flex;
+		justify-content: center;
 	}
 
 	.message {
@@ -41,5 +58,4 @@
 			transform: rotate(45deg);
 		}
 	}
-
 }
