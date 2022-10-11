@@ -1,8 +1,11 @@
+@use '../../../../styles/vars';
+
 .button {
 	cursor: pointer;
+	width: 100%;
 	font-size: 0.9rem;
 	padding: 0.2rem 0.7rem;
-  margin: 0.4rem;
+	margin: 0.4rem;
 	border: 0;
 	color: black;
 	text-transform: lowercase;
@@ -37,11 +40,11 @@
 		opacity: 1;
 	}
 
-  &--reset::before {
-		background: #a93838;
-  }
+	&--reset::before {
+		background: vars.$badColor;
+	}
 
-  &--submit::before {
-		background: #35a37d;
-  }
+	&--submit::before {
+		background: vars.$goodColor;
+	}
 }
