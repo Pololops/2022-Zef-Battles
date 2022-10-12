@@ -22,27 +22,25 @@ This project contains a back-end part with a server based on Node.js and Express
 
 &nbsp;
 
-___
+## Start the project
 
-&nbsp;
+### Back-end
 
-**Un jeu de bataille ouverte avec des cartes de personnages.**
+- In the [zef-battle-server](./zef-battle-server) folder, install Node globally and the NPM dependencies
+- Create a PostgreSQL database, install [sqitch](https://sqitch.org), configure sqitch configuration in a file named sqitch.conf by copying the sample file.
+- Then deploy the database structure with this sqitch command:
+ ```sh
+ sqitch deploy
+ ```
+- Configure environment variables in an .env file following the sample file
+- Finally, start the API :
+```sh
+npm start
+```
 
-&nbsp;
-
-## Règles du jeu
-
-Ce jeu est une simple bataille ouverte qui se joue à deux ou plus.
-
-Chaque joueur reçoit un certain nombre de cartes, distribuées au hasard, en début de partie. Ces cartes représentent chacune un personnage qui possède des caractéristiques avec un certain nombre de points pour chacune d'elles.
-
-A chaque tour, les joueurs choisissent une de leur carte et la joue face cachée. quand tous les joueurs ont joué leur carte, celles-ci sont retournées face visible et comparées.
-La carte dont la somme des points est la plus élevée remporte le tour et permet au joueur qui la possède de récupèrer les autres cartes jouées. Ces cartes ne pourront plus être jouées.
-
-Le jeu se termine quand tous les joueurs ont joué toutes leurs cartes et le gagnant est celui qui a récupéré le plus de carte.
-
-&nbsp;
-
-## Le projet
-
-Ce projet est constitué d'une partie back-end avec un serveur monté avec Node.js et Express ainsi qu'une base de données PostgreSQL, et une partie front-end réalisée avec React et Redux.
+### Front-end
+- In the [zef-battle](./zef-battle) folder, install the NPM dependencies
+- And just start the application :
+```sh
+npm start
+```
