@@ -77,7 +77,8 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 				onChange={(event) => inputChangeHandler(event, setNameInputValue)}
 				isFocus={isActive}
 			/>
-
+			{errorMessage !== '' && <Message message={errorMessage} />}
+			
 			{!isFamilyForm && (
 				<>
 					<Input
@@ -100,7 +101,6 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 					onClick={submitButtonClickHandler}
 				/>
 			</div>
-			{errorMessage !== '' && <Message message={errorMessage} />}
 		</form>
 	);
 }
