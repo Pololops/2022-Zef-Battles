@@ -3,7 +3,6 @@ const router = Router();
 
 import sanitize from '../../middlewares/sanitizerHandler.js';
 import validate from '../../validation/validator.js';
-import createSchema from '../../validation/schemas/characterCreateSchema.js';
 import updateSchema from '../../validation/schemas/characterUpdateSchema.js';
 
 import controllerHandler from '../../middlewares/controllerHandler.js';
@@ -57,43 +56,5 @@ router
 	 * @return {ApiError} 404 - character not found - application/json
 	 */
 	.delete(controllerHandler(controller.delete));
-
-router
-	.route('/family/:familyId(\\d+)')
-	/**
-	 * GET /api/family/{familyId}/character
-	 * @summary Get all families order by name
-	 * @tags Character
-	 * @param {number} familyId.path.required - character identifier
-	 * @return {array<Character>} 200 - success response - application/json
-	 */
-	.get(controllerHandler(controller.getAllInFamily))
-	/**
-	 * POST /api/family/{familyId}/character
-	 * @summary Create a character
-	 * @tags Character
-	 * @param {number} familyId.path.required - character identifier
-	 * @param {InputCharacter} request.body.required - character info
-	 * @return {Character} 200 - success response - application/json
-	 * @return {ApiError} 400 - Bad request response - application/json
-	 * @return {ApiError} 404 - character not found - application/json
-	 * @example request - example payload
-	 * {
-	 *		"name": "Schtroumpf Grognon",
-	 * 		"picture": "/",
-	 * 		"family_id": 2
-	 * }
-	 * @example request - other payload example
-	 * {
-	 *		"name": "Pikachu",
-	 * 		"picture": "/",
-	 * 		"family_id": 1
-	 * }
-	 */
-	.post(
-		sanitize('body'),
-		validate('body', createSchema),
-		controllerHandler(controller.createInFamily),
-	);
 
 export default router;

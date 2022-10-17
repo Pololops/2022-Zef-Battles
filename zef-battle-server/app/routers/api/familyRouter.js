@@ -4,10 +4,12 @@ const router = Router();
 import sanitize from '../../middlewares/sanitizerHandler.js';
 import validate from '../../validation/validator.js';
 import schema from '../../validation/schemas/familySchema.js';
+import createCharacterSchema from '../../validation/schemas/characterCreateSchema.js';
 
 import controllerHandler from '../../middlewares/controllerHandler.js';
 
-import controller from '../../controllers/familyController.js';
+import familyController from '../../controllers/familyController.js';
+import characterController from '../../controllers/characterController.js';
 
 router
 	.route('/')
@@ -17,7 +19,7 @@ router
 	 * @tags Family
 	 * @return {array<Family>} 200 - success response - application/json
 	 */
-	.get(controllerHandler(controller.getAll))
+	.get(controllerHandler(familyController.getAll))
 	/**
 	 * POST /api/family
 	 * @summary Create a family
@@ -38,7 +40,7 @@ router
 	.post(
 		sanitize('body'),
 		validate('body', schema),
-		controllerHandler(controller.create),
+		controllerHandler(familyController.create),
 	);
 
 router
@@ -64,7 +66,7 @@ router
 	.patch(
 		sanitize('body'),
 		validate('body', schema),
-		controllerHandler(controller.update),
+		controllerHandler(familyController.update),
 	)
 	/**
 	 * DELETE /api/family/{id}
@@ -75,6 +77,44 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Family not found - application/json
 	 */
-	.delete(controllerHandler(controller.delete));
+	.delete(controllerHandler(familyController.delete));
+
+router
+	.route('/:id(\\d+)/character')
+	/**
+	 * GET /api/family/{familyId}/character
+	 * @summary Get all character of a family order by name
+	 * @tags Character
+	 * @param {number} familyId.path.required - character identifier
+	 * @return {array<Character>} 200 - success response - application/json
+	 */
+	.get(controllerHandler(characterController.getAllInFamily))
+	/**
+	 * POST /api/family/{familyId}/character
+	 * @summary Create a character
+	 * @tags Character
+	 * @param {number} familyId.path.required - character identifier
+	 * @param {InputCharacter} request.body.required - character info
+	 * @return {Character} 200 - success response - application/json
+	 * @return {ApiError} 400 - Bad request response - application/json
+	 * @return {ApiError} 404 - character not found - application/json
+	 * @example request - example payload
+	 * {
+	 *		"name": "Schtroumpf Grognon",
+	 * 		"picture": "/",
+	 * 		"family_id": 2
+	 * }
+	 * @example request - other payload example
+	 * {
+	 *		"name": "Pikachu",
+	 * 		"picture": "/",
+	 * 		"family_id": 1
+	 * }
+	 */
+	.post(
+		sanitize('body'),
+		validate('body', createCharacterSchema),
+		controllerHandler(characterController.createInFamily),
+	);
 
 export default router;

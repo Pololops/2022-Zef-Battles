@@ -25,7 +25,7 @@ const characterController = {
 	},
 
 	async createInFamily(request, response) {
-		const paramsFamilyId = Number(request.params.familyId);
+		const paramsFamilyId = Number(request.params.id);
 		const bodyFamilyId = Number(request.body.family_id);
 
 		if (paramsFamilyId !== bodyFamilyId) {
