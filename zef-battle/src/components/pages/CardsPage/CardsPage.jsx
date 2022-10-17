@@ -14,9 +14,9 @@ export default function FamiliesPage() {
 	const [familyId, setFamilyId] = useState(0);
 
 	const getFamilyCharacters = useMemo(
-		() => () => {
+		() => async () => {
 			const familyId = Number(id);
-			const findFamily = families.find((family) => family.id === familyId);
+			const findFamily = await families.find((family) => family.id === familyId);
 			if (findFamily) {
 				setFamilyName(findFamily.name);
 				setFamilyId(findFamily.id);

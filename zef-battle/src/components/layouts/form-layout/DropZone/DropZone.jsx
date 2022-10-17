@@ -18,7 +18,7 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 			'image/jpeg': [],
 			'image/png': [],
 		},
-		maxfiless: 1,
+		maxFiles: 1,
 	});
 
 	const dropZoneStyles = useMemo(

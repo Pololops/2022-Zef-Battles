@@ -8,4 +8,6 @@ export const postNewFamily = async (newFamilyData) =>
 	await fetchAPI(familyUrl(), 'POST', { ...newFamilyData });
 
 export const postNewCharacter = async (newCharacterData) =>
-	await fetchAPI(characterUrl(), 'POST', { ...newCharacterData });
+	await fetchAPI(characterUrl(newCharacterData.family_id), 'POST', {
+		...newCharacterData,
+	});

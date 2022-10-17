@@ -4,7 +4,11 @@ import './Form.scss';
 
 import { useState, useEffect, useContext, useCallback } from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
-import { getFamilies, postNewFamily } from '../../../../apiClient/apiRequests';
+import {
+	getFamilies,
+	postNewFamily,
+	postNewCharacter,
+} from '../../../../apiClient/apiRequests';
 
 import Input from '../Input/Input';
 import Button from '../Button/Button';
@@ -47,8 +51,26 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 
 	const submitButtonClickHandler = async (event) => {
 		event.preventDefault();
-		await postNewFamily({ name: nameInputValue });
-		setFamilies(await getFamilies());
+
+		if (isFamilyForm) {
+			const newFamily = await postNewFamily({ name: nameInputValue });
+
+			setFamilies((previousState) => [
+				{ ...newFamily, characters: [] },
+				...previousState,
+			]);
+		} else {
+// ! Search how to get url image dropped into input type = file in the form MDN documentation
+			console.log(droppedFiles);
+			//const newCharacter = await postNewCharacter({
+			//	name: nameInputValue,
+			//	picture: droppedFiles[0].preview,
+			//	family_id: familyId,
+			//});
+//
+			//setFamilies(await getFamilies());
+		}
+
 		formCloser();
 	};
 
@@ -78,7 +100,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 				isFocus={isActive}
 			/>
 			{errorMessage !== '' && <Message message={errorMessage} />}
-			
+
 			{!isFamilyForm && (
 				<>
 					<Input
