@@ -1,7 +1,12 @@
 import { createContext, useState } from 'react';
 import { getFamilies } from '../apiClient/apiRequests.js';
 
-export const CardsContext = createContext();
+export const CardsContext = createContext({
+	cardsData: [],
+	isLoading: false,
+	infoMessage: '',
+	errorMessage: '',
+});
 
 const CardsContextProvider = ({ children }) => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -15,12 +20,10 @@ const CardsContextProvider = ({ children }) => {
 		try {
 			const data = await getFamilies();
 
+			if (typeof data === 'string') return setErrorMessage(data);
+
 			if (data && data !== undefined) {
-				if (data.length > 0) {
-					setFamilies(data);
-				} else {
-					setInfoMessage('Aucun élément trouvé !');
-				}
+				setFamilies(data);
 			}
 		} catch (error) {
 			setErrorMessage(`Une erreur inconnue est survenue`);

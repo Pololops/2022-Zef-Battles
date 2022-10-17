@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
+import './Card.scss';
+
 import CardFrontFace from '../CardFrontFace/CardFrontFace';
 import CardBackFace from '../CardBackFace/CardBackFace';
 import AddCardFrontFace from '../AddCardFrontFace/AddCardFrontFace';

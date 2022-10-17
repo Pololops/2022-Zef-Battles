@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types';
+
 import './Cards.scss';
 
-import PropTypes from 'prop-types';
 import Card from '../Card/Card';
 
 export default function Cards({ data, isFamilyCard, familyName, familyId }) {
