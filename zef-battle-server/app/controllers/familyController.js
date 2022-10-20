@@ -6,10 +6,25 @@ import ApiError from '../errors/apiError.js';
 import familyDatamapper from '../models/family.js';
 
 const familyController = {
-	async getAll(_, response) {
-		const families = await familyDatamapper.findAll();
+	async getAll(request, response) {
+		const getWithCharacters = request.query.withcharacters;
 
-		debug('getAll : ', families);
+		let families;
+		if (getWithCharacters === 'true') {
+			families = await familyDatamapper.findAllWithCharacters();
+			debug('getAll with characters : ', families);
+		} else {
+			families = await familyDatamapper.findAll();
+			debug('getAll : ', families);
+		}
+
+		return response.json(families);
+	},
+
+	async getAllWithCharacters(_, response) {
+		const families = await familyDatamapper.findAllWithCharacters();
+
+		debug('getAll with Characters : ', families);
 		return response.json(families);
 	},
 
@@ -44,17 +59,16 @@ const familyController = {
 			}
 		}
 
-		const savedFamily = await familyDatamapper.update(
-			id,
-			request.body,
-		);
+		const savedFamily = await familyDatamapper.update(id, request.body);
 
 		debug('update : ', savedFamily);
 		return response.json(savedFamily);
 	},
 
 	async delete(request, response) {
-		const deletedFamily = await familyDatamapper.delete(Number(request.params.id));
+		const deletedFamily = await familyDatamapper.delete(
+			Number(request.params.id),
+		);
 		if (!deletedFamily) {
 			throw new ApiError('This family does not exists', { statusCode: 404 });
 		}

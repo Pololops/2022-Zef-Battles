@@ -20,6 +20,16 @@ import client from '../database/index.js';
 export default {
 	async findAll() {
 		const result = await client.query(
+			`SELECT * FROM "family";
+`,
+		);
+
+		debug('findAll : ', result.rows);
+		return result.rows;
+	},
+
+	async findAllWithCharacters() {
+		const result = await client.query(
 			`SELECT * FROM "family_with_character";
 `,
 		);

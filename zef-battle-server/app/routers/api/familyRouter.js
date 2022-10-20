@@ -17,6 +17,7 @@ router
 	 * GET /api/family
 	 * @summary Get all families order by name
 	 * @tags Family
+	 * @param {boolean} withcharacters.query - get all characters in each family
 	 * @return {array<Family>} 200 - success response - application/json
 	 */
 	.get(controllerHandler(familyController.getAll))
