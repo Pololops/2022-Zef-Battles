@@ -2,23 +2,21 @@ import { createContext, useState } from 'react';
 import { getFamilies } from '../apiClient/apiRequests.js';
 
 export const CardsContext = createContext({
-	cardsData: [],
+	families: [],
 	isLoading: false,
-	infoMessage: '',
 	errorMessage: '',
 });
 
 const CardsContextProvider = ({ children }) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [families, setFamilies] = useState([]);
-	const [infoMessage, setInfoMessage] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
 
 	const loadData = async () => {
 		setIsLoading(true);
 
 		try {
-			const data = await getFamilies();
+			const data = await getFamilies(true);
 
 			if (typeof data === 'string') return setErrorMessage(data);
 
@@ -38,7 +36,6 @@ const CardsContextProvider = ({ children }) => {
 				isLoading,
 				families,
 				setFamilies,
-				infoMessage,
 				errorMessage,
 				loadData,
 			}}
