@@ -50,7 +50,9 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 				/>
 			) : (
 				<div className="dropzone__message">
-					Dépose l'image du personnage ici.
+					{dropZoneStyles.join(' ').includes('reject')
+						? <>ATTENTION :  <br/><br/> il faut une image au format JPEG ou PNG.</>
+						: `Dépose l'image du personnage ici.`}
 				</div>
 			)}
 		</div>

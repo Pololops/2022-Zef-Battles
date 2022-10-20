@@ -15,7 +15,8 @@ import Button from '../Button/Button';
 import DropZone from '../DropZone/DropZone';
 import Message from '../Message/Message';
 
-const regexpToMatch = /^[0-9@-Za-zÀ-ÖØ-öø-ÿ-& '_^]+$/;
+const regexpToMatch =
+	/^([0-9@-Za-zÀ-ÖØ-öø-ÿ-&'_^])([0-9@-Za-zÀ-ÖØ-öø-ÿ-&' _^]*)$/;
 
 export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 	const { setFamilies } = useContext(CardsContext);
@@ -31,7 +32,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 
 		if (!value.match(regexpToMatch)) {
 			setErrorMessage(
-				'Attention : que des lettres, des chiffres, des espaces, des apostrophes ou des tirets !',
+				'Il est bizarre ce character ici !?!',
 			);
 		} else {
 			setState(value);
@@ -52,6 +53,8 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 	const submitButtonClickHandler = async (event) => {
 		event.preventDefault();
 
+		if (nameInputValue === '') return setErrorMessage(`Tu as oublié d'écrire un nom.`);
+
 		if (isFamilyForm) {
 			const newFamily = await postNewFamily({ name: nameInputValue });
 
@@ -60,14 +63,14 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 				...previousState,
 			]);
 		} else {
-// ! Search how to get url image dropped into input type = file in the form MDN documentation
+			// ! Search how to get url image dropped into input type = file in the form MDN documentation
 			console.log(droppedFiles);
 			//const newCharacter = await postNewCharacter({
 			//	name: nameInputValue,
 			//	picture: droppedFiles[0].preview,
 			//	family_id: familyId,
 			//});
-//
+			//
 			//setFamilies(await getFamilies());
 		}
 
