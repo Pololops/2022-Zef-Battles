@@ -2,8 +2,6 @@ import { useContext, useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { CardsContext } from '../../../contexts/cardsContext';
 
-import './CardsPage.scss';
-
 import Cards from '../../layouts/cards-layout/Cards/Cards';
 
 export default function FamiliesPage() {
