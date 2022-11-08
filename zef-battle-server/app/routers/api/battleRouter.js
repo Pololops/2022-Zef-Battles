@@ -11,6 +11,7 @@ import controller from '../../controllers/battleController.js';
 
 router
 	.route('/')
+
 	/**
 	 * GET /api/battle
 	 * @summary Get all battles order by date with players
@@ -71,6 +72,7 @@ router
 		validate('body', schema),
 		controllerHandler(controller.update),
 	)
+
 	/**
 	 * DELETE /api/battle/{id}
 	 * @summary Delete one battle

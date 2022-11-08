@@ -25,6 +25,9 @@ const characterController = {
 	},
 
 	async createInFamily(request, response) {
+		debug('BODY : ', request.body);
+		debug('FILES : ', request.file);
+
 		const paramsFamilyId = Number(request.params.id);
 		const bodyFamilyId = Number(request.body.family_id);
 
@@ -45,7 +48,7 @@ const characterController = {
 		}
 
 		const savedCharacter = await characterDatamapper.insertInFamily(
-			request.body,
+			{ ...request.body, picture: '/' + request.file.path },
 			bodyFamilyId,
 		);
 

@@ -27,5 +27,8 @@
 **/.env
 **/sqitch.conf
 
+# uploads folder contains
+**/uploads/*
+
 # jest
 **/coverage

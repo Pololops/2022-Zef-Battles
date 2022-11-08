@@ -11,8 +11,11 @@ import controllerHandler from '../../middlewares/controllerHandler.js';
 import familyController from '../../controllers/familyController.js';
 import characterController from '../../controllers/characterController.js';
 
+import uploadFileMiddleware from '../../middlewares/upload.js';
+
 router
 	.route('/')
+
 	/**
 	 * GET /api/family
 	 * @summary Get all families order by name
@@ -21,6 +24,7 @@ router
 	 * @return {array<Family>} 200 - success response - application/json
 	 */
 	.get(controllerHandler(familyController.getAll))
+
 	/**
 	 * POST /api/family
 	 * @summary Create a family
@@ -46,6 +50,7 @@ router
 
 router
 	.route('/:id(\\d+)')
+
 	/**
 	 * PATCH /api/family/{id}
 	 * @summary Update one family
@@ -69,6 +74,7 @@ router
 		validate('body', schema),
 		controllerHandler(familyController.update),
 	)
+
 	/**
 	 * DELETE /api/family/{id}
 	 * @summary Delete one family
@@ -82,6 +88,7 @@ router
 
 router
 	.route('/:id(\\d+)/character')
+
 	/**
 	 * GET /api/family/{familyId}/character
 	 * @summary Get all character of a family order by name
@@ -90,6 +97,7 @@ router
 	 * @return {array<Character>} 200 - success response - application/json
 	 */
 	.get(controllerHandler(characterController.getAllInFamily))
+
 	/**
 	 * POST /api/family/{familyId}/character
 	 * @summary Create a character
@@ -114,7 +122,8 @@ router
 	 */
 	.post(
 		sanitize('body'),
-		validate('body', createCharacterSchema),
+		// validate('body', createCharacterSchema),
+		controllerHandler(uploadFileMiddleware),
 		controllerHandler(characterController.createInFamily),
 	);
 

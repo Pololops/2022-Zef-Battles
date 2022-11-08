@@ -5,7 +5,6 @@ export default Joi.object({
 		.min(1)
 		.required()
 		.label('character name'),
-	picture: Joi.string().label('character picture'),
 	family_id: Joi.number()
 		.integer()
 		.min(1)

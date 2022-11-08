@@ -12,6 +12,7 @@ import controller from '../../controllers/capacityController.js';
 
 router
 	.route('/')
+
 	/**
 	 * GET /api/capacity
 	 * @summary Get all families order by name
@@ -19,6 +20,7 @@ router
 	 * @return {array<Capacity>} 200 - success response - application/json
 	 */
 	.get(controllerHandler(controller.getAll))
+
 	/**
 	 * POST /api/capacity
 	 * @summary Create a capacity
@@ -46,6 +48,7 @@ router
 
 router
 	.route('/:id(\\d+)')
+
 	/**
 	 * PATCH /api/capacity/{id}
 	 * @summary Update one capacity
@@ -71,6 +74,7 @@ router
 		validate('body', updateSchema),
 		controllerHandler(controller.update),
 	)
+
 	/**
 	 * DELETE /api/capacity/{id}
 	 * @summary Delete one capacity

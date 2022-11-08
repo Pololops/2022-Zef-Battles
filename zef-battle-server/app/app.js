@@ -8,6 +8,8 @@ const app = express();
 import apiDocs from './helpers/apiDocs.js';
 apiDocs(app);
 
+app.use(express.static(`public`));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
