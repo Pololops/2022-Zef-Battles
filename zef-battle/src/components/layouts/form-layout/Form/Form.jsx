@@ -56,23 +56,20 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 		if (nameInputValue === '') return setErrorMessage(`Tu as oublié d'écrire un nom.`);
 
 		if (isFamilyForm) {
-			const newFamily = await postNewFamily({ name: nameInputValue });
-
-			setFamilies((previousState) => [
-				{ ...newFamily, characters: [] },
-				...previousState,
-			]);
+			await postNewFamily({ name: nameInputValue });
 		} else {
-			// ! Search how to get url image dropped into input type = file in the form MDN documentation
-			console.log(droppedFiles);
-			//const newCharacter = await postNewCharacter({
-			//	name: nameInputValue,
-			//	picture: droppedFiles[0].preview,
-			//	family_id: familyId,
-			//});
-			//
-			//setFamilies(await getFamilies());
+			const formData = new FormData();
+			formData.append('name', nameInputValue);
+			formData.append('family_id', familyId);
+			formData.append('file', droppedFiles[0]);
+
+			await postNewCharacter({
+				familyId,
+				body: formData,
+			});
 		}
+
+		setFamilies(await getFamilies(true));
 
 		formCloser();
 	};
@@ -92,6 +89,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 	return (
 		<form
 			className={`form ${isFamilyForm ? 'form--family' : 'form--character'}`}
+			method="post"
 		>
 			<Input
 				type="text"
