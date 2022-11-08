@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import './Cards.scss';
 
 import Card from '../Card/Card';
+import PreviousCardsButton from '../PreviousCardsButton/PreviousCardsButton';
 
 export default function Cards({ data, isFamilyCard, familyName, familyId }) {
 	const addNewCardIndex = data.length + 4;
 
 	return (
 		<div className="cards">
+			{!isFamilyCard && <PreviousCardsButton />}
 			<Card
 				key={isFamilyCard ? 'addNewFamily' : 'addNewCharacter'}
 				index={addNewCardIndex}

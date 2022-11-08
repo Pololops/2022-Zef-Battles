@@ -3,6 +3,7 @@
 	flex-wrap: wrap;
 	justify-content: center;
 	gap: 2rem;
+	padding-inline: calc(100px + 4rem);
 	transition: all 500ms;
 
 	.card {
@@ -18,17 +19,14 @@
 			transform: translateX(200px);
 		}
 
-		&.fade-in {
-			animation: slide-in 500ms ease-out 0s 1 normal none;
-		}
-
 		&:hover {
 			filter: brightness(1.2);
 			transform: rotateZ(-2deg);
 			cursor: pointer;
 		}
 
-		&.card--add {
+		&.card--add,
+		&.card--previous {
 			z-index: 1;
 
 			&.before-fade-in {
@@ -46,7 +44,7 @@
 				cursor: initial;
 
 				.card__inner:not(.is-flipped) {
-					border: 2px solid rgba(255, 255, 255, 0.7);
+					border-color: rgba(255, 255, 255, 0.7);
 				}
 
 				.card__inner__face--front {
@@ -121,18 +119,37 @@
 				}
 			}
 		}
+
+		&.card--previous {
+			position: absolute;
+			left: 0;
+			padding-left: 75px;
+			margin-left: -75px;
+			opacity: 0.5;
+			transform: translateX(-200px);
+			animation: slide-from-left 500ms ease-out 500ms 1 normal forwards;
+
+			& .card__inner {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+				border-left: 0;
+			}
+
+			&:hover {
+				padding-left: 60px;
+				margin-left: -60px;
+			}
+		}
 	}
 }
 
-@keyframes fade-in {
+@keyframes slide-from-left {
 	0% {
 		opacity: 0;
-		box-shadow: 0 1px 20px black;
-		transform: translateX(200px);
+		transform: translateX(-200px);
 	}
 	100% {
 		opacity: 1;
-		box-shadow: 0 1px 5px black;
 		transform: translateX(0);
 	}
 }

@@ -9,7 +9,9 @@ export default function CardFrontFace({ id, title, imageUrl, isFamilyCard }) {
 			className="card__inner__face card__inner__face--front"
 			style={{
 				backgroundImage: `url("${
-					imageUrl && imageUrl !== ('' || '/') ? imageUrl : defaultImage
+					imageUrl && imageUrl !== ('' || '/')
+						? process.env.REACT_APP_API_BASE_URL + imageUrl
+						: defaultImage
 				}")`,
 			}}
 		>

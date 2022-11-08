@@ -39,20 +39,16 @@ export default function FamiliesPage() {
 				{isLoading && '...chargement en cours...'}
 				{errorMessage !== '' && errorMessage}
 			</p>
-			{errorMessage === '' && (
-				<div className="cards">
-					{id
-						? !isLoading && (
-								<Cards
-									data={characters}
-									isFamilyCard={false}
-									familyName={familyName}
-									familyId={familyId}
-								/>
-						  )
-						: !isLoading && <Cards data={families} isFamilyCard={true} />}
-				</div>
-			)}
+			{errorMessage === '' && id? !isLoading && 
+				(
+					<Cards
+						data={characters}
+						isFamilyCard={false}
+						familyName={familyName}
+						familyId={familyId}
+					/>
+				)	: !isLoading && <Cards data={families} isFamilyCard={true} />
+			}
 		</>
 	);
 }
