@@ -27,8 +27,9 @@
 **/.env
 **/sqitch.conf
 
-# uploads folder contains
+# uploads folder contains except .gitkeep file
 **/uploads/*
+!**/uploads/.gitkeep
 
 # jest
 **/coverage
