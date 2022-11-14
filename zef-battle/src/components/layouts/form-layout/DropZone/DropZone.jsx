@@ -14,11 +14,9 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 		isDragReject,
 	} = useDropzone({
 		onDrop,
-		accept: {
-			'image/jpeg': [],
-			'image/png': [],
-		},
+		accept: { 'image/*': ['.jpeg', '.png'] },
 		maxFiles: 1,
+		maxSize: 2000000,
 	});
 
 	const dropZoneStyles = useMemo(
@@ -27,9 +25,12 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 			isDragActive ? 'active' : '',
 			isDragAccept ? 'accept' : '',
 			isDragReject ? 'reject' : '',
+			droppedFiles[0] ? 'dropped' : '',
 		],
-		[isDragActive, isDragReject, isDragAccept],
+		[isDragActive, isDragAccept, isDragReject, droppedFiles],
 	);
+
+	console.log(isDragAccept)
 
 	useEffect(() => {
 		return () =>
@@ -37,9 +38,27 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 	}, [droppedFiles]);
 
 	return (
-		<div className={dropZoneStyles.join(' ')} {...getRootProps()}>
+		<div
+			{...getRootProps({ className: `${dropZoneStyles.join(' ')}` })}
+		>
 			<input {...getInputProps()} />
-			{droppedFiles.length > 0 ? (
+			{
+				<div className="dropzone__message">
+					{dropZoneStyles.join(' ').includes('reject') ? (
+						<p>
+							ATTENTION : <br />
+							<br /> il faut une image au format JPEG ou PNG.
+						</p>
+					) : 
+						!dropZoneStyles.join(' ').includes('dropped') ? (
+							<p>Dépose l'image du personnage ici.</p>
+						) : (
+							<p>Dépose une autre image pour changer celle-ci.</p>
+						)
+					}
+				</div>
+			}
+			{droppedFiles.length > 0 && 
 				<img
 					src={droppedFiles[0].preview}
 					alt={droppedFiles[0].name}
@@ -48,13 +67,7 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 						URL.revokeObjectURL(droppedFiles[0].preview);
 					}}
 				/>
-			) : (
-				<div className="dropzone__message">
-					{dropZoneStyles.join(' ').includes('reject')
-						? <>ATTENTION :  <br/><br/> il faut une image au format JPEG ou PNG.</>
-						: `Dépose l'image du personnage ici.`}
-				</div>
-			)}
+			}
 		</div>
 	);
 }

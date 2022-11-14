@@ -2,10 +2,10 @@
 	position: relative;
 	height: 100%;
 	font-size: 0.9rem;
-	margin-top: 2rem;
+	padding-top: 2rem;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start;
+	justify-content: space-between;
 	gap: 0.5rem;
 
 	.input {
@@ -15,9 +15,10 @@
 		margin-bottom: 0.4rem;
 		border: 0;
 		outline: 0;
-		background-color: #121212;
+		background-color: rgba(18, 18, 18, 0.75);
 		color: white;
 		border-bottom: 2px solid gray;
+		z-index: 1;
 
 		&:focus {
 			box-shadow: none;
@@ -32,6 +33,7 @@
 		margin-inline: -5px;
 		display: flex;
 		justify-content: center;
+		z-index: 1;
 	}
 
 	.message {
