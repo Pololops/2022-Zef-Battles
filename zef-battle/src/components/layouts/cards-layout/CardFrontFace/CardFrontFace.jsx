@@ -11,12 +11,22 @@ export default function CardFrontFace({
 	isInEditionMode,
 	onClickEditorButton,
 	onClickCancelEditorButton,
-	clickKillCharacterButtonHandler,
+	onClickKillCharacterButton,
 }) {
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('');
 
 	const changeCapacityInputValueHandler = (event) => {
 		setCapacityNameInputValue(event.target.value);
+	};
+
+	const clickCancelEditorButtonHandler = (event) => {
+		onClickCancelEditorButton(event);
+		setCapacityNameInputValue('');
+	}
+
+	const clickKillCharacterButtonHandler = (event) => {
+		onClickKillCharacterButton(event);
+		setCapacityNameInputValue('');
 	};
 
 	return (
@@ -29,7 +39,7 @@ export default function CardFrontFace({
 						<Button
 							type=""
 							label="Annuler"
-							onClick={onClickCancelEditorButton}
+							onClick={clickCancelEditorButtonHandler}
 						/>
 						<Button
 							type="reset"
@@ -58,7 +68,7 @@ export default function CardFrontFace({
 					))}
 
 				{isInEditionMode && capacities.length < 4 && (
-					<form className="form form--capacity">
+					<div className="form form--capacity">
 						<Input
 							type="text"
 							name="name"
@@ -67,7 +77,7 @@ export default function CardFrontFace({
 							autoComplete={false}
 							onChange={changeCapacityInputValueHandler}
 						/>
-					</form>
+					</div>
 				)}
 			</div>
 		</div>
@@ -87,7 +97,7 @@ CardFrontFace.propTypes = {
 	isInEditionMode: PropTypes.bool,
 	onClickEditorButton: PropTypes.func.isRequired,
 	onClickCancelEditorButton: PropTypes.func.isRequired,
-	clickKillCharacterButtonHandler: PropTypes.func.isRequired,
+	onClickKillCharacterButton: PropTypes.func.isRequired,
 };
 
 CardFrontFace.defaultProps = {

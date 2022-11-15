@@ -109,9 +109,7 @@ export default function Card({
 								isInEditionMode={isInEditionMode}
 								onClickEditorButton={clickEditorButtonHandler}
 								onClickCancelEditorButton={clickCancelEditorButtonHandler}
-								clickKillCharacterButtonHandler={
-									clickKillCharacterButtonHandler
-								}
+								onClickKillCharacterButton={clickKillCharacterButtonHandler}
 							/>
 						)}
 						<CardBackFace
