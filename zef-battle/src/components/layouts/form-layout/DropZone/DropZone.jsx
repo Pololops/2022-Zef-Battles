@@ -30,8 +30,6 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 		[isDragActive, isDragAccept, isDragReject, droppedFiles],
 	);
 
-	console.log(isDragAccept)
-
 	useEffect(() => {
 		return () =>
 			droppedFiles.forEach((file) => URL.revokeObjectURL(file.preview));
