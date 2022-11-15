@@ -11,7 +11,7 @@ export default function CardBackFace({ id, title, imageUrl, isFamilyCard }) {
 				backgroundImage: `url("${
 					imageUrl && imageUrl !== ('' || '/')
 						? process.env.REACT_APP_API_BASE_URL + imageUrl
-						: defaultImage
+						: !isFamilyCard && defaultImage
 				}")`,
 			}}
 		>
