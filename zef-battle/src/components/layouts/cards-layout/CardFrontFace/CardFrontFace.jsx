@@ -1,24 +1,49 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 import Capacity from '../Capacity/Capacity';
+import Button from '../../form-layout/Button/Button';
+import Input from '../../form-layout/Input/Input';
 
-export default function CardFrontFace({ title, capacities }) {
+export default function CardFrontFace({
+	title,
+	capacities,
+	isInEditionMode,
+	onClickEditorButton,
+	onClickCancelEditorButton,
+	clickKillCharacterButtonHandler,
+}) {
+	const [capacityNameInputValue, setCapacityNameInputValue] = useState('');
+
+	const changeCapacityInputValueHandler = (event) => {
+		setCapacityNameInputValue(event.target.value);
+	};
+
 	return (
 		<div className="card__inner__face card__inner__face--front">
 			<div className="card__inner__face__infos">
 				<span className="card__inner__face__title">{title}</span>
 
-				<button className="button button--submit">Modifier</button>
-
-				<form className="form" style={{ display: 'none' }}>
-					<button className="button button--submit">
-						Ajouter une capacité
-					</button>
+				{isInEditionMode ? (
 					<div className="form__buttons">
-						<button className="button button--submit">Modifier</button>
-						<button className="button button--reset">Supprimer</button>
+						<Button
+							type=""
+							label="Annuler"
+							onClick={onClickCancelEditorButton}
+						/>
+						<Button
+							type="reset"
+							label="Zigouiller"
+							onClick={clickKillCharacterButtonHandler}
+						/>
 					</div>
-				</form>
+				) : (
+					<Button
+						type="submit"
+						label="Modifier"
+						onClick={onClickEditorButton}
+					/>
+				)}
 			</div>
 
 			<div className="capacities">
@@ -32,16 +57,18 @@ export default function CardFrontFace({ title, capacities }) {
 						/>
 					))}
 
-				<div className="capacity">
-					<span className="capacity__label">name</span>
-					<div className="capacity__meter">
-						<div
-							className="capacity__meter__level"
-							style={{ width: `50%`, backgroundColor: 'red' }}
-						></div>
-					</div>
-					<div className="capacity__description">desc</div>
-				</div>
+				{isInEditionMode && capacities.length < 4 && (
+					<form className="form form--capacity">
+						<Input
+							type="text"
+							name="name"
+							value={capacityNameInputValue}
+							placeholder="Ajouter une capacité"
+							autoComplete={false}
+							onChange={changeCapacityInputValueHandler}
+						/>
+					</form>
+				)}
 			</div>
 		</div>
 	);
@@ -57,8 +84,13 @@ CardFrontFace.propTypes = {
 			description: PropTypes.string,
 		}),
 	).isRequired,
+	isInEditionMode: PropTypes.bool,
+	onClickEditorButton: PropTypes.func.isRequired,
+	onClickCancelEditorButton: PropTypes.func.isRequired,
+	clickKillCharacterButtonHandler: PropTypes.func.isRequired,
 };
 
 CardFrontFace.defaultProps = {
 	capacities: [],
+	isInEditionMode: false,
 };

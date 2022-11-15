@@ -11,18 +11,33 @@
 		width: 200px;
 		height: 300px;
 		transform-origin: bottom left;
-		transition: all 500ms;
 		perspective: 1000px;
+		transition: all 200ms, transform-origin 200ms ease-out, transform 200ms ease-out,
+			width 300ms ease-out;
 
 		&.before-fade-in {
 			opacity: 0;
 			transform: translateX(200px);
 		}
 
-		&:hover {
+		&:not(.card--edited, .card--killing-progress):hover {
 			filter: brightness(1.2);
 			transform: rotateZ(-2deg);
 			cursor: pointer;
+		}
+
+		&--edited {
+			z-index: 2;
+			transform: scale(125%) rotateZ(0);
+			cursor: default;
+			transform-origin: 50% 50%;
+		}
+
+		&--killed {
+			width: 0;
+			margin-inline: -1em;
+			transform: rotateZ(0);
+			flex-basis: auto;
 		}
 
 		&.card--add,
@@ -68,7 +83,7 @@
 					border-radius: inherit;
 					flex-direction: column;
 					justify-content: center;
-					gap: 1rem;
+					gap: 1em;
 					color: rgba(255, 255, 255, 0.5);
 
 					&--front,
@@ -80,7 +95,7 @@
 						background-color: transparent;
 
 						span:first-child {
-							font-size: 8rem;
+							font-size: 8em;
 						}
 
 						span:last-child {
@@ -93,9 +108,9 @@
 					}
 
 					&__close {
-						font-size: 2rem;
-						height: 1rem;
-						width: 1rem;
+						font-size: 2em;
+						height: 1em;
+						width: 1em;
 						position: absolute;
 						top: 5px;
 						right: 5px;
@@ -151,5 +166,14 @@
 	100% {
 		opacity: 1;
 		transform: translateX(0);
+	}
+}
+
+@keyframes killing {
+	0% {
+		width: initial;
+	}
+	100% {
+		width: 0;
 	}
 }

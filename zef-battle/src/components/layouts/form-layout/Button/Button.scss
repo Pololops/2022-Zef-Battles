@@ -2,9 +2,9 @@
 
 .button {
 	cursor: pointer;
-	font-size: 0.9rem;
-	padding: 0.2rem 0.7rem;
-	margin: 0.4rem;
+	font-size: 0.9em;
+	padding: 0.2em 0.7em;
+	margin: 0.4em;
 	border: 0;
 	color: black;
 	text-transform: lowercase;
@@ -29,9 +29,9 @@
 		content: '';
 		position: absolute;
 		z-index: -1;
-		top: 0px;
-		left: 0px;
-		right: 0px;
+		top: 0;
+		left: 0;
+		right: 0;
 		bottom: 0;
 		background: #6f6f6f;
 		clip-path: circle(0% at 50% 50%);

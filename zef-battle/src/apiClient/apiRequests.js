@@ -1,12 +1,20 @@
 import fetchAPI from './apiFetcher';
-import { familyUrl, characterUrl } from './apiAdresses';
+import { familyUrl, characterInFamilyUrl, characterUrl } from './apiAdresses';
 
-export const getFamilies = async (withcharacters) =>
-	await fetchAPI(familyUrl(withcharacters));
+export const getFamilies = async (data) => await fetchAPI(familyUrl(data));
 
-export const postNewFamily = async (newFamilyData) =>
-	await fetchAPI(familyUrl(), 'POST', { ...newFamilyData });
+export const postNewFamily = async (data) =>
+	await fetchAPI(familyUrl(), 'POST', { ...data });
 
-export const postNewCharacter = async (newCharacterData) => {
-	return await fetchAPI(characterUrl(newCharacterData.familyId), 'POST', newCharacterData.body, 'formData');
+export const postNewCharacter = async (data) => {
+	return await fetchAPI(
+		characterInFamilyUrl(data.familyId),
+		'POST',
+		data.body,
+		'formData',
+	);
 }
+
+export const deleteCharacter = async (data) => {
+	return await fetchAPI(characterUrl(data.id), 'DELETE');
+};

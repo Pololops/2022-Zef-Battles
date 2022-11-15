@@ -77,6 +77,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 	useEffect(() => {
 		if (isActive) {
 			setNameInputValue('');
+			setErrorMessage('');
 		}
 
 		return () =>

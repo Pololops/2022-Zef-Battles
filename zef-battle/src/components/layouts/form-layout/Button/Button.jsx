@@ -4,14 +4,14 @@ import './Button.scss';
 
 export default function Button({ type, label, onClick }) {
 	return (
-		<button className={`button button--${type}`} type={type} onClick={onClick}>
+		<button className={`${type ? `button button--${type}` : 'button'}`} onClick={onClick}>
 			{label}
 		</button>
 	);
 }
 
 Button.propTypes = {
-	type: PropTypes.string.isRequired,
+	type: PropTypes.string,
 	label: PropTypes.string.isRequired,
 	onClick: PropTypes.func,
 };

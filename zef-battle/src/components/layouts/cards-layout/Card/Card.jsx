@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
 
 import './Card.scss';
 
@@ -8,6 +8,11 @@ import CardBackFace from '../CardBackFace/CardBackFace';
 import AddCardFrontFace from '../AddCardFrontFace/AddCardFrontFace';
 import AddCardBackFace from '../AddCardBackFace/AddCardBackFace';
 import useAppearEffect from '../../../../hooks/useAppearEffect';
+import { CardsContext } from '../../../../contexts/cardsContext';
+import {
+	deleteCharacter,
+	getFamilies,
+} from '../../../../apiClient/apiRequests';
 
 export default function Card({
 	id,
@@ -21,28 +26,65 @@ export default function Card({
 	isFamilyCard,
 	isAddCard,
 }) {
+	const { setFamilies } = useContext(CardsContext);
+
 	const [isFlipped, setIsFlipped] = useState(false);
+	const [isInEditionMode, setIsInEditionMode] = useState(false);
+	const [iskillingProgress, setIskillingProgress] = useState(false);
+	const [iskilled, setIskilled] = useState(false);
 	const isAppeared = useAppearEffect(index);
 
-	const clickHandler = (event) => {
+	const clickCardHandler = (event) => {
 		event.preventDefault();
 		if (isFamilyCard && !isAddCard) return;
-		if (isAddCard && isFlipped === true) return;
+		if (isAddCard && isFlipped) return;
+		if (isInEditionMode) return;
 
 		setIsFlipped((previousSate) => !previousSate);
 	};
+
+	const clickEditorButtonHandler = (event) => {
+		event.stopPropagation();
+		setIsInEditionMode((previousSate) => !previousSate);
+	};
+
+	const clickCancelEditorButtonHandler = (event) => {
+		clickEditorButtonHandler(event);
+		setTimeout(() => {
+			setIsFlipped((previousSate) => !previousSate);
+		}, 50);
+	};
+
+	const clickKillCharacterButtonHandler = (event) => {
+		setIskillingProgress(true);
+		clickCancelEditorButtonHandler(event);
+		setTimeout(() => setIskilled(true), 600);
+		setTimeout(async () => {
+			await deleteCharacter({ id: id });
+			setFamilies(await getFamilies(true));
+		}, 1600);
+	};
+
+	useEffect(() => {
+		if (!isFlipped && !iskilled) {
+			setTimeout(() => setIsInEditionMode(false), 300);
+		}
+	}, [isFlipped, iskilled]);
 
 	return (
 		<div
 			className={
 				'card' +
 				(isAddCard ? ' card--add' : '') +
-				(isAppeared ? ' fade-in' : ' before-fade-in')
+				(isAppeared ? ' fade-in' : ' before-fade-in') +
+				(isInEditionMode ? ' card--edited' : '') +
+				(iskillingProgress ? ' card--killing-progress' : '') +
+				(iskilled ? ' card--killed' : '')
 			}
 		>
 			<div
 				className={'card__inner' + (isFlipped ? ' is-flipped' : '')}
-				onClick={clickHandler}
+				onClick={clickCardHandler}
 			>
 				{isAddCard ? (
 					<>
@@ -60,7 +102,17 @@ export default function Card({
 				) : (
 					<>
 						{!isFamilyCard && (
-							<CardFrontFace title={title} capacities={capacities} />
+							<CardFrontFace
+								title={title}
+								capacities={capacities}
+								isActive={isFlipped}
+								isInEditionMode={isInEditionMode}
+								onClickEditorButton={clickEditorButtonHandler}
+								onClickCancelEditorButton={clickCancelEditorButtonHandler}
+								clickKillCharacterButtonHandler={
+									clickKillCharacterButtonHandler
+								}
+							/>
 						)}
 						<CardBackFace
 							id={id}
