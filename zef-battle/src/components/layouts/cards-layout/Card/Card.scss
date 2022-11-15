@@ -25,7 +25,7 @@
 		right: 10px;
 		display: flex;
 		flex-direction: column-reverse;
-		justify-content: flex-start;
+		justify-content: space-between;
 		border-radius: 5px;
 		overflow: hidden;
 		backface-visibility: hidden;
@@ -42,6 +42,12 @@
 			transform: rotateY(180deg);
 		}
 
+		&__infos {
+			display: flex;
+			flex-direction: column-reverse;
+			justify-content: flex-start;
+		}
+
 		&__title {
 			display: block;
 			color: inherit;
@@ -49,7 +55,6 @@
 			font-size: 1.2rem;
 			line-height: 1.2rem;
 			padding: 0.7rem;
-			margin-top: 0.5rem;
 			background-color: rgba(0, 0, 0, 0.5);
 		}
 
