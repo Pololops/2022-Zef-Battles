@@ -23,7 +23,7 @@ export default function AddCardBackFace({ isFamilyCard, familyName }) {
 			<span>
 				{isFamilyCard
 					? 'Créer une nouvelle famille'
-					: `Ajouter un nouveau ${
+					: `Créer un nouveau ${
 							singularFamilyName.length > 0 ? singularFamilyName : 'personnage'
 					  }`}
 			</span>
