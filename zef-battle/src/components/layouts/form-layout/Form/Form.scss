@@ -5,8 +5,6 @@
 	padding-top: 2rem;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	gap: 0.5rem;
 
 	.input {
 		width: 100%;
@@ -23,10 +21,6 @@
 		&:focus {
 			box-shadow: none;
 		}
-	}
-
-	.dropzone {
-		flex-grow: 1;
 	}
 
 	&__buttons {
@@ -59,6 +53,20 @@
 			height: 12px;
 			background-color: white;
 			transform: rotate(45deg);
+		}
+	}
+
+	&.form--family {
+		justify-content: center;
+		gap: 1rem;
+	}
+
+	&.form--character {
+		justify-content: space-between;
+		gap: 0.5rem;
+
+		& .dropzone {
+			flex-grow: 1;
 		}
 	}
 }
