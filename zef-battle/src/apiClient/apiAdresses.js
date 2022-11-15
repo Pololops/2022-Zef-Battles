@@ -8,3 +8,5 @@ export const characterInFamilyUrl = (familyId) =>
 
 export const characterUrl = (characterId) =>
 	`${baseApiUrl}/character/${characterId}`;
+
+export const capacityUrl = () => `${baseApiUrl}/capacity`;

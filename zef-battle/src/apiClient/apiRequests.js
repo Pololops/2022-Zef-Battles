@@ -1,10 +1,15 @@
 import fetchAPI from './apiFetcher';
-import { familyUrl, characterInFamilyUrl, characterUrl } from './apiAdresses';
+import {
+	familyUrl,
+	characterInFamilyUrl,
+	characterUrl,
+	capacityUrl,
+} from './apiAdresses';
 
 export const getFamilies = async (data) => await fetchAPI(familyUrl(data));
 
 export const postNewFamily = async (data) =>
-	await fetchAPI(familyUrl(), 'POST', { ...data });
+	await fetchAPI(familyUrl(), 'POST', data);
 
 export const postNewCharacter = async (data) => {
 	return await fetchAPI(
@@ -13,8 +18,12 @@ export const postNewCharacter = async (data) => {
 		data.body,
 		'formData',
 	);
-}
+};
 
 export const deleteCharacter = async (data) => {
 	return await fetchAPI(characterUrl(data.id), 'DELETE');
+};
+
+export const postCapacity = async (data) => {
+	return await fetchAPI(capacityUrl(), 'POST', data);
 };

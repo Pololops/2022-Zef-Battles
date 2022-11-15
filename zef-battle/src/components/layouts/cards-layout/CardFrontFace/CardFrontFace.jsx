@@ -1,5 +1,11 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+
+import { useState, useContext } from 'react';
+import { CardsContext } from '../../../../contexts/cardsContext';
+import {
+	getFamilies,
+	postCapacity,
+} from '../../../../apiClient/apiRequests';
 
 import Capacity from '../Capacity/Capacity';
 import Button from '../../form-layout/Button/Button';
@@ -13,6 +19,8 @@ export default function CardFrontFace({
 	onClickCancelEditorButton,
 	onClickKillCharacterButton,
 }) {
+	const { setFamilies } = useContext(CardsContext);
+
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('');
 
 	const changeCapacityInputValueHandler = (event) => {
@@ -28,6 +36,13 @@ export default function CardFrontFace({
 		onClickKillCharacterButton(event);
 		setCapacityNameInputValue('');
 	};
+
+	const inputKeyPressHandler = async (event) => {
+		if(event.key === 'Enter'){
+			await postCapacity({ name: capacityNameInputValue });
+			setFamilies(await getFamilies(true));
+		}
+	}
 
 	return (
 		<div className="card__inner__face card__inner__face--front">
@@ -76,6 +91,7 @@ export default function CardFrontFace({
 							placeholder="Ajouter une capacité"
 							autoComplete={false}
 							onChange={changeCapacityInputValueHandler}
+							onKeyPress={inputKeyPressHandler}
 						/>
 					</div>
 				)}

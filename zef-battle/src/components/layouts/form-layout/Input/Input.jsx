@@ -10,8 +10,9 @@ export default function Input({
 	placeholder,
 	autoComplete,
 	onChange,
+	onKeyPress,
 	isFocus,
-	readOnly
+	readOnly,
 }) {
 	const focus = useAutoFocus(isFocus);
 
@@ -25,6 +26,7 @@ export default function Input({
 			placeholder={placeholder}
 			autoComplete={autoComplete ? 'on' : 'off'}
 			onChange={onChange}
+			onKeyPress={onKeyPress}
 			readOnly={readOnly}
 		/>
 	);
@@ -38,6 +40,7 @@ Input.propTypes = {
 	placeholder: PropTypes.string,
 	autoComplete: PropTypes.bool,
 	onChange: PropTypes.func,
+	onKeyPress: PropTypes.func,
 	isFocus: PropTypes.bool,
 };
 
