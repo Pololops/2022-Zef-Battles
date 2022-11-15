@@ -21,7 +21,7 @@ const capacityController = {
 			});
 		}
 
-		const savedcapacity = await capacityDatamapper.insert(request.body);
+		const savedCapacity = await capacityDatamapper.insert(request.body);
 
 		debug('create : ', savedCapacity);
 		return response.json(savedCapacity);
