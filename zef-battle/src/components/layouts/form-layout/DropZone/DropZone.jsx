@@ -14,7 +14,7 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 		isDragReject,
 	} = useDropzone({
 		onDrop,
-		accept: { 'image/*': ['.jpeg', '.png'] },
+		accept: { 'image/*': ['.jpeg', '.jpg', '.png'] },
 		maxFiles: 1,
 		maxSize: 2000000,
 	});
