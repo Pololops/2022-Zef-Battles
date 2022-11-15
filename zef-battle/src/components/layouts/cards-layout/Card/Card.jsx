@@ -48,26 +48,26 @@ export default function Card({
 					<>
 						<AddCardFrontFace
 							isFamilyCard={isFamilyCard}
-							familyName={familyName}
-						/>
-						<AddCardBackFace
-							isFamilyCard={isFamilyCard}
 							familyId={isFamilyCard ? id : familyId}
 							isActive={isFlipped}
 							formCloser={() => setIsFlipped(false)}
 						/>
+						<AddCardBackFace
+							isFamilyCard={isFamilyCard}
+							familyName={familyName}
+						/>
 					</>
 				) : (
 					<>
-						<CardFrontFace
+						{!isFamilyCard && (
+							<CardFrontFace title={title} capacities={capacities} />
+						)}
+						<CardBackFace
 							id={id}
 							title={title}
 							imageUrl={imageUrl}
 							isFamilyCard={isFamilyCard}
 						/>
-						{!isFamilyCard && (
-							<CardBackFace title={title} capacities={capacities} />
-						)}
 					</>
 				)}
 			</div>

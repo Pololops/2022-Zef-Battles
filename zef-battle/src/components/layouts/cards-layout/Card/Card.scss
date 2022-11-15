@@ -33,11 +33,11 @@
 		background-repeat: no-repeat;
 		background-position: center center;
 
-		&--front {
+		&--back {
 			background-color: lightcoral;
 		}
 
-		&--back {
+		&--front {
 			background-color: #121212;
 			transform: rotateY(180deg);
 		}

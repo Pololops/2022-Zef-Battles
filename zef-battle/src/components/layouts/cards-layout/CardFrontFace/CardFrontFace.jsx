@@ -1,39 +1,36 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
-import defaultImage from '../../../../assets/images/card-default-image.png';
+import Capacity from '../Capacity/Capacity';
 
-export default function CardFrontFace({ id, title, imageUrl, isFamilyCard }) {
+export default function CardFrontFace({ title, capacities }) {
 	return (
-		<div
-			className="card__inner__face card__inner__face--front"
-			style={{
-				backgroundImage: `url("${
-					imageUrl && imageUrl !== ('' || '/')
-						? process.env.REACT_APP_API_BASE_URL + imageUrl
-						: defaultImage
-				}")`,
-			}}
-		>
-			{!isFamilyCard ? (
-				<span className="card__inner__face__title">{title}</span>
-			) : (
-				<Link to={`/families/${id}`}>
-					<span className="card__inner__face__title">{title}</span>
-				</Link>
-			)}
+		<div className="card__inner__face card__inner__face--front">
+			<span className="card__inner__face__title">{title}</span>
+			{capacities.length > 0 &&
+				capacities.map(({ id, name, level, description }) => (
+					<Capacity
+						key={id + name}
+						name={name}
+						level={level}
+						desc={description}
+					/>
+				))}
 		</div>
 	);
 }
 
 CardFrontFace.propTypes = {
-	id: PropTypes.number.isRequired,
 	title: PropTypes.string.isRequired,
-	imageUrl: PropTypes.string,
-	isFamilyCard: PropTypes.bool,
+	capacities: PropTypes.arrayOf(
+		PropTypes.shape({
+			id: PropTypes.number,
+			name: PropTypes.string,
+			level: PropTypes.number,
+			description: PropTypes.string,
+		}),
+	).isRequired,
 };
 
 CardFrontFace.defaultProps = {
-	imageUrl: defaultImage,
-	isFamilyCard: false,
+	capacities: [],
 };

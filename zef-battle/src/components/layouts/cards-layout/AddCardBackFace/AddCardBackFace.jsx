@@ -1,34 +1,42 @@
 import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
-import Form from '../../form-layout/Form/Form';
+export default function AddCardBackFace({ isFamilyCard, familyName }) {
+	const [singularFamilyName, setSingularFamilyName] = useState('');
 
-export default function AddCardBackFace({
-	isFamilyCard,
-	familyId,
-	isActive,
-	formCloser,
-}) {
+	const getSingularFamilyName = () => {
+		if (familyName.at(-1) !== 's') return setSingularFamilyName(familyName);
+
+		const arrayOfFamilyName = Array.from(familyName);
+		arrayOfFamilyName.splice(-1, 1);
+
+		setSingularFamilyName(arrayOfFamilyName.join(''));
+	};
+
+	useEffect(() => {
+		getSingularFamilyName();
+	}, [familyName]);
+
 	return (
 		<div className="card__inner__face card__inner__face--back">
-			<div className="card__inner__face__close" onClick={formCloser}></div>
-			<Form
-				isFamilyForm={isFamilyCard}
-				familyId={familyId}
-				isActive={isActive}
-				formCloser={formCloser}
-			/>
+			<span>+</span>
+			<span>
+				{isFamilyCard
+					? 'Créer une nouvelle famille'
+					: `Ajouter un nouveau ${
+							singularFamilyName.length > 0 ? singularFamilyName : 'personnage'
+					  }`}
+			</span>
 		</div>
 	);
 }
 
 AddCardBackFace.propTypes = {
+	familyName: PropTypes.string,
 	isFamilyCard: PropTypes.bool,
-	familyId: PropTypes.number.isRequired,
-	isActive: PropTypes.bool,
-	formCloser: PropTypes.func,
 };
 
 AddCardBackFace.defaultProps = {
+	familyName: '',
 	isFamilyCard: false,
-	isActive: false,
 };
