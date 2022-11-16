@@ -15,7 +15,7 @@ router
 
 	/**
 	 * GET /api/capacity
-	 * @summary Get all families order by name
+	 * @summary Get all capacities order by name
 	 * @tags Capacity
 	 * @return {array<Capacity>} 200 - success response - application/json
 	 */
