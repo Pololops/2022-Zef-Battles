@@ -3,17 +3,26 @@ import './App.scss';
 import { useContext, useEffect } from 'react';
 import { CardsContext } from '../../contexts/cardsContext';
 
+import { getFamilies } from '../../apiClient/apiRequests';
+
 import { Outlet } from 'react-router-dom';
 import Header from '../layouts/main-layout/Header/Header';
 import Main from '../layouts/main-layout/Main/Main';
 
 export default function App() {
-	const { loadData } = useContext(CardsContext);
+	const { families, setFamilies, setIsLoading } = useContext(CardsContext);
 
 	useEffect(() => {
-		(async () => {
-			await loadData();
-		})();
+		if (families.length === 0) {
+			setIsLoading(true);
+			(async () => {
+				const data = await getFamilies(true);
+				if (data) {
+					setIsLoading(false);
+					setFamilies(data);
+				}
+			})();
+		}
 	}, []);
 
 	return (

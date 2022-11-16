@@ -5,7 +5,6 @@ import './Form.scss';
 import { useState, useEffect, useContext, useCallback } from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
 import {
-	getFamilies,
 	postNewFamily,
 	postNewCharacter,
 } from '../../../../apiClient/apiRequests';
@@ -31,9 +30,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 		if (value === '') return setState('');
 
 		if (!value.match(regexpToMatch)) {
-			setErrorMessage(
-				'Il est bizarre ce character ici !?!',
-			);
+			setErrorMessage('Il est bizarre ce character ici !?!');
 		} else {
 			setState(value);
 			setErrorMessage('');
@@ -53,23 +50,42 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 	const submitButtonClickHandler = async (event) => {
 		event.preventDefault();
 
-		if (nameInputValue === '') return setErrorMessage(`Tu as oublié d'écrire un nom.`);
+		if (nameInputValue === '')
+			return setErrorMessage(`Tu as oublié d'écrire un nom.`);
 
 		if (isFamilyForm) {
-			await postNewFamily({ name: nameInputValue });
+			const newFamily = await postNewFamily({ name: nameInputValue });
+
+			if (newFamily) {
+				setFamilies((previousState) => {
+					const newState = [...previousState];
+					newState.unshift({...newFamily, characters: []});
+
+					return [ ...newState ];
+				});
+			}
 		} else {
 			const formData = new FormData();
 			formData.append('name', nameInputValue);
 			formData.append('family_id', familyId);
 			formData.append('file', droppedFiles[0]);
 
-			await postNewCharacter({
+			const newCharacter = await postNewCharacter({
 				familyId,
 				body: formData,
 			});
-		}
 
-		setFamilies(await getFamilies(true));
+			if (newCharacter) {
+				setFamilies((previousState) => {
+					const newState = [...previousState];
+					newState
+						.find(({ id }) => id === familyId)
+						.characters.unshift(newCharacter);
+
+					return [ ...newState ];
+				});
+			}
+		}
 
 		formCloser();
 	};

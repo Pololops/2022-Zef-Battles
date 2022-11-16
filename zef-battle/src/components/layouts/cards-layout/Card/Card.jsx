@@ -32,6 +32,7 @@ export default function Card({
 	const [isInEditionMode, setIsInEditionMode] = useState(false);
 	const [iskillingProgress, setIskillingProgress] = useState(false);
 	const [iskilled, setIskilled] = useState(false);
+	
 	const isAppeared = useAppearEffect(index);
 
 	const clickCardHandler = (event) => {
