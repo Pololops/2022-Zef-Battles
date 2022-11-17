@@ -30,7 +30,10 @@ export default async function fetchAPI(url, method, data, dataType) {
 
 		if (response.status === 404) throw new Error('Données introuvable');
 
-		return await response.json();
+		return {
+			statusCode: response.status,
+			data: response.status !== 204 ? await response.json() : null,
+		};
 	} catch (error) {
 		if (error.name === 'AbortError') return 'Operation timeout !';
 

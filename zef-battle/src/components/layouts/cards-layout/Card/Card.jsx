@@ -57,14 +57,29 @@ export default function Card({
 		}, 50);
 	};
 
-	const clickKillCharacterButtonHandler = (event) => {
-		setIskillingProgress(true);
-		clickCancelEditorButtonHandler(event);
-		setTimeout(() => setIskilled(true), 600);
-		setTimeout(async () => {
-			await deleteCharacter({ id: id });
-			setFamilies(await getFamilies(true));
-		}, 1600);
+	const clickKillCharacterButtonHandler = async (event) => {
+		const { statusCode } = await deleteCharacter({ id: id });
+
+		if (statusCode === 204) {
+			setIskillingProgress(true);
+			clickCancelEditorButtonHandler(event);
+			setTimeout(() => setIskilled(true), 600);
+			setTimeout(() => {
+				setFamilies((previousState) => {
+					const newState = [...previousState];
+
+					const characterToDeleteIndex = newState
+						.find(({ id }) => id === familyId)
+						.characters.findIndex((character) => character.id === id);
+						
+					newState
+						.find(({ id }) => id === familyId)
+						.characters.splice(characterToDeleteIndex, 1);
+
+					return [...newState];
+				});
+			}, 2000);
+		}
 	};
 
 	useEffect(() => {

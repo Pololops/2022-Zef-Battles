@@ -16,8 +16,9 @@ export default function App() {
 		if (families.length === 0) {
 			setIsLoading(true);
 			(async () => {
-				const data = await getFamilies(true);
-				if (data) {
+				const { statusCode, data } = await getFamilies(true);
+
+				if (statusCode === 200) {
 					setIsLoading(false);
 					setFamilies(data);
 				}

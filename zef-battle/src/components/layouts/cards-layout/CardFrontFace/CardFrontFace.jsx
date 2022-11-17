@@ -39,9 +39,9 @@ export default function CardFrontFace({
 
 	const inputKeyPressHandler = async (event) => {
 		if (event.key === 'Enter') {
-			const newCapacity = await postCapacity({ name: capacityNameInputValue });
+			const { statusCode, data } = await postCapacity({ name: capacityNameInputValue });
 
-			if (newCapacity) {
+			if (statusCode === 200) {
 				setCapacityNameInputValue('');
 
 				setFamilies((previousState) => {
@@ -50,11 +50,11 @@ export default function CardFrontFace({
 					newState
 						.find(({ id }) => id === familyId)
 						.characters.find((character) => character.id === id)
-						.capacity.push({ 
-							id: newCapacity.id, 
-							name: newCapacity.name,
-							level: newCapacity.level ?? 0,
-							description: newCapacity.description ?? '',
+						.capacity.push({
+							id: data.id,
+							name: data.name,
+							level: data.level ?? 0,
+							description: data.description ?? '',
 						});
 
 					return [...newState];

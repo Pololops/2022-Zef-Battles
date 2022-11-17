@@ -54,14 +54,15 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 			return setErrorMessage(`Tu as oublié d'écrire un nom.`);
 
 		if (isFamilyForm) {
-			const newFamily = await postNewFamily({ name: nameInputValue });
+			const { statusCode, data } = await postNewFamily({
+				name: nameInputValue,
+			});
 
-			if (newFamily) {
+			if (statusCode === 200) {
 				setFamilies((previousState) => {
 					const newState = [...previousState];
-					newState.unshift({...newFamily, characters: []});
-
-					return [ ...newState ];
+					newState.unshift({ ...data, characters: [] });
+					return [...newState];
 				});
 			}
 		} else {
@@ -70,19 +71,19 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 			formData.append('family_id', familyId);
 			formData.append('file', droppedFiles[0]);
 
-			const newCharacter = await postNewCharacter({
+			const { statusCode, data } = await postNewCharacter({
 				familyId,
 				body: formData,
 			});
 
-			if (newCharacter) {
+			if (statusCode === 200) {
 				setFamilies((previousState) => {
 					const newState = [...previousState];
 					newState
 						.find(({ id }) => id === familyId)
-						.characters.unshift(newCharacter);
+						.characters.unshift(data);
 
-					return [ ...newState ];
+					return [...newState];
 				});
 			}
 		}
