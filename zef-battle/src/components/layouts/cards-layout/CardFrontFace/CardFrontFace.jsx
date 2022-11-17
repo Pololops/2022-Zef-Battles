@@ -2,17 +2,16 @@ import PropTypes from 'prop-types';
 
 import { useState, useContext } from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
-import {
-	getFamilies,
-	postCapacity,
-} from '../../../../apiClient/apiRequests';
+import { getFamilies, postCapacity } from '../../../../apiClient/apiRequests';
 
 import Capacity from '../Capacity/Capacity';
 import Button from '../../form-layout/Button/Button';
 import Input from '../../form-layout/Input/Input';
 
 export default function CardFrontFace({
+	id,
 	title,
+	familyId,
 	capacities,
 	isInEditionMode,
 	onClickEditorButton,
@@ -22,6 +21,7 @@ export default function CardFrontFace({
 	const { setFamilies } = useContext(CardsContext);
 
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('');
+	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState(0);
 
 	const changeCapacityInputValueHandler = (event) => {
 		setCapacityNameInputValue(event.target.value);
@@ -30,7 +30,7 @@ export default function CardFrontFace({
 	const clickCancelEditorButtonHandler = (event) => {
 		onClickCancelEditorButton(event);
 		setCapacityNameInputValue('');
-	}
+	};
 
 	const clickKillCharacterButtonHandler = (event) => {
 		onClickKillCharacterButton(event);
@@ -38,11 +38,30 @@ export default function CardFrontFace({
 	};
 
 	const inputKeyPressHandler = async (event) => {
-		if(event.key === 'Enter'){
-			await postCapacity({ name: capacityNameInputValue });
-			setFamilies(await getFamilies(true));
+		if (event.key === 'Enter') {
+			const newCapacity = await postCapacity({ name: capacityNameInputValue });
+
+			if (newCapacity) {
+				setCapacityNameInputValue('');
+
+				setFamilies((previousState) => {
+					const newState = [...previousState];
+
+					newState
+						.find(({ id }) => id === familyId)
+						.characters.find((character) => character.id === id)
+						.capacity.push({ 
+							id: newCapacity.id, 
+							name: newCapacity.name,
+							level: newCapacity.level ?? 0,
+							description: newCapacity.description ?? '',
+						});
+
+					return [...newState];
+				});
+			}
 		}
-	}
+	};
 
 	return (
 		<div className="card__inner__face card__inner__face--front">
@@ -92,6 +111,7 @@ export default function CardFrontFace({
 							autoComplete={false}
 							onChange={changeCapacityInputValueHandler}
 							onKeyPress={inputKeyPressHandler}
+							isFocus={true}
 						/>
 					</div>
 				)}
@@ -101,7 +121,9 @@ export default function CardFrontFace({
 }
 
 CardFrontFace.propTypes = {
+	id: PropTypes.number.isRequired,
 	title: PropTypes.string.isRequired,
+	familyId: PropTypes.number.isRequired,
 	capacities: PropTypes.arrayOf(
 		PropTypes.shape({
 			id: PropTypes.number,

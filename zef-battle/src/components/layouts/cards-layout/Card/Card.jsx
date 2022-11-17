@@ -12,6 +12,7 @@ import { CardsContext } from '../../../../contexts/cardsContext';
 import {
 	deleteCharacter,
 	getFamilies,
+	postCapacity,
 } from '../../../../apiClient/apiRequests';
 
 export default function Card({
@@ -104,7 +105,9 @@ export default function Card({
 					<>
 						{!isFamilyCard && (
 							<CardFrontFace
+								id={id}
 								title={title}
+								familyId={familyId}
 								capacities={capacities}
 								isActive={isFlipped}
 								isInEditionMode={isInEditionMode}
