@@ -29,12 +29,12 @@
 		border-radius: 5px;
 		overflow: hidden;
 		backface-visibility: hidden;
-		background-size: cover;
+		background-size: 100%;
 		background-repeat: no-repeat;
 		background-position: center center;
 
 		&--back {
-			background-color: lightcoral;
+			background-color: white;
 		}
 
 		&--front {
