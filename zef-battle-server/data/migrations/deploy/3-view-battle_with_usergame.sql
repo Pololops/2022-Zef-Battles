@@ -18,4 +18,5 @@ JOIN "user" ON "user"."id" = "user_play_battle_with_character"."user_id"
 JOIN "battle" ON "battle"."id" = "user_play_battle_with_character"."battle_id" 
 LEFT JOIN "character_with_capacity" ON "character_with_capacity"."id" = "user_play_battle_with_character"."character_id"
 GROUP BY "user_play_battle_with_character"."battle_id", "user"."id", "battle"."is_started",  "battle"."wished_player_number";
+
 COMMIT;
