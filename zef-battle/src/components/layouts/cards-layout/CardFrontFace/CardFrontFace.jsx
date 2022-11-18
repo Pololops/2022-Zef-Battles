@@ -18,7 +18,7 @@ export default function CardFrontFace({
 	onClickCancelEditorButton,
 	onClickKillCharacterButton,
 }) {
-	const { setFamilies } = useContext(CardsContext);
+	const { families, setFamilies } = useContext(CardsContext);
 
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('');
 	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState(0);
@@ -39,26 +39,25 @@ export default function CardFrontFace({
 
 	const inputKeyPressHandler = async (event) => {
 		if (event.key === 'Enter') {
-			const { statusCode, data } = await postCapacity({ name: capacityNameInputValue });
+			const { statusCode, data } = await postCapacity({
+				name: capacityNameInputValue,
+			});
 
 			if (statusCode === 200) {
+				const newState = [...families];
+
+				newState
+					.find(({ id }) => id === familyId)
+					.characters.find((character) => character.id === id)
+					.capacity.push({
+						id: data.id,
+						name: data.name,
+						level: data.level ?? 0,
+						description: data.description ?? '',
+					});
+
 				setCapacityNameInputValue('');
-
-				setFamilies((previousState) => {
-					const newState = [...previousState];
-
-					newState
-						.find(({ id }) => id === familyId)
-						.characters.find((character) => character.id === id)
-						.capacity.push({
-							id: data.id,
-							name: data.name,
-							level: data.level ?? 0,
-							description: data.description ?? '',
-						});
-
-					return [...newState];
-				});
+				setFamilies([...newState]);
 			}
 		}
 	};

@@ -11,8 +11,6 @@ import useAppearEffect from '../../../../hooks/useAppearEffect';
 import { CardsContext } from '../../../../contexts/cardsContext';
 import {
 	deleteCharacter,
-	getFamilies,
-	postCapacity,
 } from '../../../../apiClient/apiRequests';
 
 export default function Card({
@@ -27,13 +25,13 @@ export default function Card({
 	isFamilyCard,
 	isAddCard,
 }) {
-	const { setFamilies } = useContext(CardsContext);
+	const { families, setFamilies } = useContext(CardsContext);
 
 	const [isFlipped, setIsFlipped] = useState(false);
 	const [isInEditionMode, setIsInEditionMode] = useState(false);
 	const [iskillingProgress, setIskillingProgress] = useState(false);
 	const [iskilled, setIskilled] = useState(false);
-	
+
 	const isAppeared = useAppearEffect(index);
 
 	const clickCardHandler = (event) => {
@@ -61,24 +59,20 @@ export default function Card({
 		const { statusCode } = await deleteCharacter({ id: id });
 
 		if (statusCode === 204) {
+			const newState = [...families];
+
+			const characterToDeleteIndex = newState
+				.find(({ id }) => id === familyId)
+				.characters.findIndex((character) => character.id === id);
+
+			newState
+				.find(({ id }) => id === familyId)
+				.characters.splice(characterToDeleteIndex, 1);
+
 			setIskillingProgress(true);
 			clickCancelEditorButtonHandler(event);
 			setTimeout(() => setIskilled(true), 600);
-			setTimeout(() => {
-				setFamilies((previousState) => {
-					const newState = [...previousState];
-
-					const characterToDeleteIndex = newState
-						.find(({ id }) => id === familyId)
-						.characters.findIndex((character) => character.id === id);
-						
-					newState
-						.find(({ id }) => id === familyId)
-						.characters.splice(characterToDeleteIndex, 1);
-
-					return [...newState];
-				});
-			}, 2000);
+			setTimeout(() => setFamilies([...newState]), 2000);
 		}
 	};
 
