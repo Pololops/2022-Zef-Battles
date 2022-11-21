@@ -10,7 +10,7 @@ import Header from '../layouts/main-layout/Header/Header';
 import Main from '../layouts/main-layout/Main/Main';
 
 export default function App() {
-	const { families, setFamilies, setIsLoading } = useContext(CardsContext);
+	const { families, setIsLoading, dispatch } = useContext(CardsContext);
 
 	useEffect(() => {
 		if (families.length === 0) {
@@ -20,11 +20,11 @@ export default function App() {
 
 				if (statusCode === 200) {
 					setIsLoading(false);
-					setFamilies(data);
+					dispatch({ type: 'GET_CARDS', payload: data });
 				}
 			})();
 		}
-	}, []);
+	}, [dispatch, families, setIsLoading]);
 
 	return (
 		<div className="App">

@@ -1,22 +1,19 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useReducer } from 'react';
+import reducer from './reducer';
 
-export const CardsContext = createContext({
-	families: [],
-	isLoading: false,
-	errorMessage: '',
-});
+export const CardsContext = createContext();
 
 const CardsContextProvider = ({ children }) => {
 	const [isLoading, setIsLoading] = useState(false);
-	const [families, setFamilies] = useState([]);
 	const [errorMessage, setErrorMessage] = useState('');
+	const [families, dispatch] = useReducer(reducer, []);
 
 	return (
 		<CardsContext.Provider
 			value={{
-				isLoading,
 				families,
-				setFamilies,
+				dispatch,
+				isLoading,
 				setIsLoading,
 				errorMessage,
 			}}

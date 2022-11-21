@@ -18,7 +18,7 @@ const regexpToMatch =
 	/^([0-9@-Za-zÀ-ÖØ-öø-ÿ-&'_^])([0-9@-Za-zÀ-ÖØ-öø-ÿ-&' _^]*)$/;
 
 export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
-	const { families, setFamilies } = useContext(CardsContext);
+	const { dispatch } = useContext(CardsContext);
 
 	const [nameInputValue, setNameInputValue] = useState('');
 	const [droppedFiles, setDroppedFiles] = useState([]);
@@ -59,10 +59,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 			});
 
 			if (statusCode === 200) {
-				const newState = [...families];
-				newState.unshift({ ...data, characters: [] });
-
-				setFamilies([...newState]);
+				dispatch({ type: 'CREATE_FAMILY_CARD', payload: data });
 			}
 		} else {
 			const formData = new FormData();
@@ -76,10 +73,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 			});
 
 			if (statusCode === 200) {
-				const newState = [...families];
-				newState.find(({ id }) => id === familyId).characters.unshift(data);
-
-				setFamilies([...newState]);
+				dispatch({ type: 'CREATE_CHARACTER_CARD', payload: data });
 			}
 		}
 

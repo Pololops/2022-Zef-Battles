@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { useState, useContext } from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
-import { getFamilies, postCapacity } from '../../../../apiClient/apiRequests';
+import { postCapacity } from '../../../../apiClient/apiRequests';
 
 import Capacity from '../Capacity/Capacity';
 import Button from '../../form-layout/Button/Button';
@@ -18,8 +18,7 @@ export default function CardFrontFace({
 	onClickCancelEditorButton,
 	onClickKillCharacterButton,
 }) {
-	const { families, setFamilies } = useContext(CardsContext);
-
+	const { dispatch } = useContext(CardsContext);
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('');
 	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState(0);
 
@@ -44,20 +43,11 @@ export default function CardFrontFace({
 			});
 
 			if (statusCode === 200) {
-				const newState = [...families];
-
-				newState
-					.find(({ id }) => id === familyId)
-					.characters.find((character) => character.id === id)
-					.capacity.push({
-						id: data.id,
-						name: data.name,
-						level: data.level ?? 0,
-						description: data.description ?? '',
-					});
-
 				setCapacityNameInputValue('');
-				setFamilies([...newState]);
+				dispatch({
+					type: 'CREATE_CAPACITY',
+					payload: { ...data, character_id: id, family_id: familyId },
+				});
 			}
 		}
 	};

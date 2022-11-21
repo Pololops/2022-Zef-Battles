@@ -9,9 +9,7 @@ import AddCardFrontFace from '../AddCardFrontFace/AddCardFrontFace';
 import AddCardBackFace from '../AddCardBackFace/AddCardBackFace';
 import useAppearEffect from '../../../../hooks/useAppearEffect';
 import { CardsContext } from '../../../../contexts/cardsContext';
-import {
-	deleteCharacter,
-} from '../../../../apiClient/apiRequests';
+import { deleteCharacter } from '../../../../apiClient/apiRequests';
 
 export default function Card({
 	id,
@@ -25,7 +23,7 @@ export default function Card({
 	isFamilyCard,
 	isAddCard,
 }) {
-	const { families, setFamilies } = useContext(CardsContext);
+	const { dispatch } = useContext(CardsContext);
 
 	const [isFlipped, setIsFlipped] = useState(false);
 	const [isInEditionMode, setIsInEditionMode] = useState(false);
@@ -59,20 +57,17 @@ export default function Card({
 		const { statusCode } = await deleteCharacter({ id: id });
 
 		if (statusCode === 204) {
-			const newState = [...families];
-
-			const characterToDeleteIndex = newState
-				.find(({ id }) => id === familyId)
-				.characters.findIndex((character) => character.id === id);
-
-			newState
-				.find(({ id }) => id === familyId)
-				.characters.splice(characterToDeleteIndex, 1);
-
 			setIskillingProgress(true);
 			clickCancelEditorButtonHandler(event);
 			setTimeout(() => setIskilled(true), 600);
-			setTimeout(() => setFamilies([...newState]), 2000);
+			setTimeout(
+				() =>
+					dispatch({
+						type: 'DELETE_CHARACTER_CARD',
+						payload: { character_id: id, family_id: familyId },
+					}),
+				2000,
+			);
 		}
 	};
 
