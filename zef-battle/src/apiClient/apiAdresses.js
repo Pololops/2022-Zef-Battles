@@ -6,7 +6,12 @@ export const familyUrl = (withcharacters) =>
 export const characterInFamilyUrl = (familyId) =>
 	`${baseApiUrl}/family/${familyId}/character`;
 
-export const characterUrl = (characterId) =>
-	`${baseApiUrl}/character/${characterId}`;
+export const characterUrl = (characterId) => 
+	characterId
+		? `${baseApiUrl}/character/${characterId}`
+		: `${baseApiUrl}/character`;
 
-export const capacityUrl = () => `${baseApiUrl}/capacity`;
+export const capacityUrl = (capacityId) =>
+	capacityId
+		? `${baseApiUrl}/capacity/${capacityId}`
+		: `${baseApiUrl}/capacity`;

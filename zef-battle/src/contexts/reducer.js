@@ -34,11 +34,13 @@ const reducer = (state, { type, payload }) => {
 		case 'DELETE_CHARACTER_CARD': {
 			const modifiedState = [...state];
 
-			const characterToDeleteIndex = modifiedState
-				.find((family) => family.id === payload.family_id)
-				.characters.findIndex(
-					(character) => character.id === payload.character_id,
-				);
+			const familyTarget = modifiedState.find(
+				(family) => family.id === payload.family_id,
+			).characters;
+
+			const characterToDeleteIndex = familyTarget.findIndex(
+				(character) => character.id === payload.character_id,
+			);
 
 			if (characterToDeleteIndex >= 0) {
 				modifiedState
@@ -49,7 +51,7 @@ const reducer = (state, { type, payload }) => {
 			return [...modifiedState];
 		}
 
-		case 'CREATE_CAPACITY': {
+		case 'CREATE_CHARACTER_CAPACITY': {
 			const modifiedState = [...state];
 
 			const characterTargetCapacities = modifiedState
@@ -68,6 +70,26 @@ const reducer = (state, { type, payload }) => {
 					level: payload.level ?? 0,
 					description: payload.description ?? '',
 				});
+			}
+
+			return [...modifiedState];
+		}
+
+		case 'DELETE_CHARACTER_CAPACITY': {
+			const modifiedState = [...state];
+
+			const characterTargetCapacities = modifiedState
+				.find((family) => family.id === payload.family_id)
+				.characters.find(
+					(character) => character.id === payload.character_id,
+				).capacity;
+
+			const capacityToDeleteIndex = characterTargetCapacities.findIndex(
+				({ id }) => id === payload.capacity_id,
+			);
+
+			if (capacityToDeleteIndex >= 0) {
+				characterTargetCapacities.splice(capacityToDeleteIndex, 1);
 			}
 
 			return [...modifiedState];

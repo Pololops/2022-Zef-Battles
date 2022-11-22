@@ -4,6 +4,7 @@ import {
 	characterInFamilyUrl,
 	characterUrl,
 	capacityUrl,
+	characterCapacityUrl,
 } from './apiAdresses';
 
 export const getFamilies = async (data) => await fetchAPI(familyUrl(data));
@@ -24,6 +25,12 @@ export const deleteCharacter = async (data) => {
 	return await fetchAPI(characterUrl(data.id), 'DELETE');
 };
 
-export const postCapacity = async (data) => {
+export const postCharacterCapacity = async (data) => {
 	return await fetchAPI(capacityUrl(), 'POST', data);
+	// return await fetchAPI(characterCapacityUrl(data.id), 'POST', data);
+};
+
+export const deleteCharacterCapacity = async (data) => {
+	return await fetchAPI(capacityUrl(data.id), 'DELETE');
+	// return await fetchAPI(characterCapacityUrl(data.id), 'DELETE');
 };

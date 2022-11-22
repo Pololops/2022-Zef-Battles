@@ -2,7 +2,10 @@ import PropTypes from 'prop-types';
 
 import { useState, useContext } from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
-import { postCapacity } from '../../../../apiClient/apiRequests';
+import {
+	postCharacterCapacity,
+	deleteCharacterCapacity,
+} from '../../../../apiClient/apiRequests';
 
 import Capacity from '../Capacity/Capacity';
 import Button from '../../form-layout/Button/Button';
@@ -36,21 +39,36 @@ export default function CardFrontFace({
 		setCapacityNameInputValue('');
 	};
 
-	const inputKeyPressHandler = async (event) => {
+	const inputKeyPressCapacityHandler = async (event) => {
 		if (event.key === 'Enter') {
-			const { statusCode, data } = await postCapacity({
+			const { statusCode, data } = await postCharacterCapacity({
 				name: capacityNameInputValue,
 			});
 
 			if (statusCode === 200) {
 				setCapacityNameInputValue('');
 				dispatch({
-					type: 'CREATE_CAPACITY',
+					type: 'CREATE_CHARACTER_CAPACITY',
 					payload: { ...data, character_id: id, family_id: familyId },
 				});
 			}
 		}
 	};
+
+	const clickDeleteCapacityHandler = async (event, capacityId) => {
+		event.stopPropagation();
+
+		const { statusCode } = await deleteCharacterCapacity({
+			id: capacityId,
+		});
+
+		if (statusCode === 204) {
+			dispatch({
+				type: 'DELETE_CHARACTER_CAPACITY',
+				payload: { capacity_id: capacityId, character_id: id, family_id: familyId },
+			});
+		}
+	}
 
 	return (
 		<div className="card__inner__face card__inner__face--front">
@@ -87,6 +105,7 @@ export default function CardFrontFace({
 							name={name}
 							level={level}
 							desc={description}
+							onClickDeleteButton={(event) => clickDeleteCapacityHandler(event, id)}
 						/>
 					))}
 
@@ -99,7 +118,7 @@ export default function CardFrontFace({
 							placeholder="Ajouter une capacité"
 							autoComplete={false}
 							onChange={changeCapacityInputValueHandler}
-							onKeyPress={inputKeyPressHandler}
+							onKeyPress={inputKeyPressCapacityHandler}
 							isFocus={true}
 						/>
 					</div>
