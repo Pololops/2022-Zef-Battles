@@ -18,6 +18,15 @@ import client from '../database/index.js';
  * @property {string} description - The capacity's description
  */
 
+/**
+ * AssociateCapacityToCharacter model
+ * @typedef {object} AssociateCapacityToCharacter
+ * @property {number} id - The capacity's id
+ * @property {string} name - The capacity's name
+ * @property {string} description - The capacity's description
+ * @property {number} level - The character capacity's level
+ */
+
 export default {
 	async findAll() {
 		const result = await client.query(
@@ -35,6 +44,16 @@ export default {
 		);
 
 		debug('findByPk : ', result.rows);
+		return result.rows[0];
+	},
+
+	async findByName(name) {
+		const result = await client.query(
+			`SELECT * FROM "capacity" WHERE "name" = $1;`,
+			[name],
+		);
+
+		debug('findByName : ', result.rows);
 		return result.rows[0];
 	},
 

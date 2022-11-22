@@ -4,10 +4,11 @@ const debug = Debug('Controller:characterController:log');
 import ApiError from '../errors/apiError.js';
 
 import characterDatamapper from '../models/character.js';
+import capacityDatamapper from '../models/capacity.js';
 
 const characterController = {
 	async getAllInFamily(request, response) {
-		const familyId = Number(request.params.id);
+		const familyId = ParseInt(request.params.id);
 
 		const characters = await characterDatamapper.findAllInFamily(familyId);
 
@@ -16,20 +17,17 @@ const characterController = {
 	},
 
 	async getOneByPk(request, response) {
-		const characterId = Number(request.params.id);
+		const characterId = ParseInt(request.params.id);
 
 		const character = await characterDatamapper.findByPk(characterId);
 
-		debug('getOneByPOk : ', character);
+		debug('getOneByPk : ', character);
 		return response.json(character);
 	},
 
 	async createInFamily(request, response) {
-		debug('BODY : ', request.body);
-		debug('FILES : ', request.file);
-
-		const paramsFamilyId = Number(request.params.id);
-		const bodyFamilyId = Number(request.body.family_id);
+		const paramsFamilyId = ParseInt(request.params.id);
+		const bodyFamilyId = ParseInt(request.body.family_id);
 
 		if (paramsFamilyId !== bodyFamilyId) {
 			throw new ApiError(
@@ -59,7 +57,7 @@ const characterController = {
 	},
 
 	async update(request, response) {
-		const id = Number(request.params.id);
+		const id = ParseInt(request.params.id);
 
 		const character = await characterDatamapper.findByPk(id);
 		if (!character) {
@@ -85,7 +83,7 @@ const characterController = {
 
 	async delete(request, response) {
 		const deletedCharacter = await characterDatamapper.delete(
-			Number(request.params.id),
+			ParseInt(request.params.id),
 		);
 		if (!deletedCharacter) {
 			throw new ApiError('This character does not exists', { statusCode: 404 });
@@ -93,6 +91,57 @@ const characterController = {
 
 		debug('delete : ', deletedCharacter);
 		return response.status(204).json();
+	},
+
+	async addCapacityToCharacter(request, response) {
+		const characterId = parseInt(request.params.id);
+		const capacity = request.body;
+
+		const foundCharacter = await characterDatamapper.findByPk(characterId);
+		if (!foundCharacter) {
+			throw new ApiError('This character does not exists', { statusCode: 404 });
+		}
+
+		let foundCapacity = null;
+		if (capacity.id) {
+			foundCapacity = await capacityDatamapper.findByPk(capacity.id);
+		} else if (capacity.name) {
+			foundCapacity = await capacityDatamapper.findByName(capacity.name);
+		}
+
+		if (foundCapacity) {
+			const hasAlreadyThisCapacity = await characterDatamapper.hasCapacity(
+				characterId,
+				foundCapacity.id,
+			);
+
+			if (hasAlreadyThisCapacity) {
+				throw new ApiError('This character already has this capacity', {
+					statusCode: 400,
+				});
+			}
+		} else {
+			if (!capacity.name) {
+				throw new ApiError('"capacity name" is required', {
+					statusCode: 400,
+				});
+			}
+
+			foundCapacity = await capacityDatamapper.insert({
+				name: capacity.name,
+				description: capacity.description ?? null
+			});
+		}
+
+		await characterDatamapper.addCapacityToCharacter(
+			characterId,
+			foundCapacity.id,
+			capacity.level ?? 0,
+		);
+
+		const character = await characterDatamapper.findByPk(characterId);
+		debug('getOneByPk : ', character);
+		return response.json(character);
 	},
 };
 

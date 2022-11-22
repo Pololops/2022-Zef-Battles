@@ -108,4 +108,28 @@ export default {
 		debug('delete : ', !!result.rowCount);
 		return !!result.rowCount;
 	},
+
+	async hasCapacity(characterId, capacityId) {
+		const result = await client.query(
+			`SELECT * FROM "character_has_capacity" WHERE "character_id" = $1 AND "capacity_id" = $2`,
+			[characterId, capacityId],
+		);
+
+		if (result.rowCount === 0) {
+			return null;
+		}
+
+		debug('hasCapacity : ', result.rows[0]);
+		return result.rows[0];
+	},
+
+	async addCapacityToCharacter(characterId, capacityId, level) {
+		const result = await client.query(
+			`INSERT INTO "character_has_capacity" ("character_id", "capacity_id", "level") VALUES ($1, $2, $3) RETURNING *;`,
+			[characterId, capacityId, level],
+		);
+
+		debug('addCapacityToCharacter : ', result.rows[0]);
+		return result.rows[0];
+	}
 };
