@@ -7,7 +7,7 @@ import characterDatamapper from '../models/character.js';
 
 const characterController = {
 	async getAllInFamily(request, response) {
-		const familyId = Number(request.params.familyId);
+		const familyId = Number(request.params.id);
 
 		const characters = await characterDatamapper.findAllInFamily(familyId);
 
@@ -47,8 +47,10 @@ const characterController = {
 			});
 		}
 
+		const uploadsFolder = process.env.UPLOADS_PATH ?? '/uploads/';
+
 		const savedCharacter = await characterDatamapper.insertInFamily(
-			{ ...request.body, picture: process.env.UPLOADS_PATH + request.file.filename },
+			{ ...request.body, picture: uploadsFolder + request.file.filename },
 			bodyFamilyId,
 		);
 
