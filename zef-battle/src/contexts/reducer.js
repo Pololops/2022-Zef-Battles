@@ -57,19 +57,21 @@ const reducer = (state, { type, payload }) => {
 			const characterTargetCapacities = modifiedState
 				.find((family) => family.id === payload.family_id)
 				.characters.find(
-					(character) => character.id === payload.character_id,
+					(character) => character.id === payload.id,
 				).capacity;
 
-			const foundCapacityId = characterTargetCapacities.find(
-				({ id }) => id === payload.id,
+			const newCapacity = payload.capacity.find(
+				({ name }) => name === payload.newCapacityName,
 			);
 
-			if (characterTargetCapacities && !foundCapacityId) {
-				characterTargetCapacities.push({
-					...payload,
-					level: payload.level ?? 0,
-					description: payload.description ?? '',
-				});
+			const foundCapacity = characterTargetCapacities.find(
+				({ name }) => name === newCapacity.name,
+			);
+
+			console.log(newCapacity);
+
+			if (characterTargetCapacities && !foundCapacity) {
+				characterTargetCapacities.push(newCapacity);
 			}
 
 			return [...modifiedState];

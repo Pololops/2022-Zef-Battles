@@ -25,12 +25,16 @@ export const deleteCharacter = async (data) => {
 	return await fetchAPI(characterUrl(data.id), 'DELETE');
 };
 
-export const postCharacterCapacity = async (data) => {
+export const postCapacity = async (data) => {
 	return await fetchAPI(capacityUrl(), 'POST', data);
 	// return await fetchAPI(characterCapacityUrl(data.id), 'POST', data);
 };
 
-export const deleteCharacterCapacity = async (data) => {
+export const addCharacterCapacity = async (characterId, data) => {
+	return await fetchAPI(characterCapacityUrl(characterId), 'POST', data);
+};
+
+export const removeCharacterCapacity = async (data) => {
 	return await fetchAPI(capacityUrl(data.id), 'DELETE');
 	// return await fetchAPI(characterCapacityUrl(data.id), 'DELETE');
 };

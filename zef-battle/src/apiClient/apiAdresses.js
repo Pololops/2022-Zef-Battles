@@ -15,3 +15,8 @@ export const capacityUrl = (capacityId) =>
 	capacityId
 		? `${baseApiUrl}/capacity/${capacityId}`
 		: `${baseApiUrl}/capacity`;
+
+export const characterCapacityUrl = (characterId, capacityId) =>
+	capacityId
+		? `${baseApiUrl}/character/${characterId}/capacity/${capacityId}`
+		: `${baseApiUrl}/character/${characterId}/capacity`;

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { useState, useContext } from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
 import {
-	postCharacterCapacity,
-	deleteCharacterCapacity,
+	postCapacity,
+	addCharacterCapacity,
+	removeCharacterCapacity,
 } from '../../../../apiClient/apiRequests';
 
 import Capacity from '../Capacity/Capacity';
@@ -41,16 +42,17 @@ export default function CardFrontFace({
 
 	const inputKeyPressCapacityHandler = async (event) => {
 		if (event.key === 'Enter') {
-			const { statusCode, data } = await postCharacterCapacity({
+			const { statusCode, data } = await addCharacterCapacity(id, {
 				name: capacityNameInputValue,
+				level: capacityLevelInputValue,
 			});
 
 			if (statusCode === 200) {
-				setCapacityNameInputValue('');
 				dispatch({
 					type: 'CREATE_CHARACTER_CAPACITY',
-					payload: { ...data, character_id: id, family_id: familyId },
+					payload: { ...data, newCapacityName: capacityNameInputValue },
 				});
+				setCapacityNameInputValue('');
 			}
 		}
 	};
@@ -58,17 +60,21 @@ export default function CardFrontFace({
 	const clickDeleteCapacityHandler = async (event, capacityId) => {
 		event.stopPropagation();
 
-		const { statusCode } = await deleteCharacterCapacity({
+		const { statusCode } = await removeCharacterCapacity({
 			id: capacityId,
 		});
 
 		if (statusCode === 204) {
 			dispatch({
 				type: 'DELETE_CHARACTER_CAPACITY',
-				payload: { capacity_id: capacityId, character_id: id, family_id: familyId },
+				payload: {
+					capacity_id: capacityId,
+					character_id: id,
+					family_id: familyId,
+				},
 			});
 		}
-	}
+	};
 
 	return (
 		<div className="card__inner__face card__inner__face--front">
@@ -105,7 +111,9 @@ export default function CardFrontFace({
 							name={name}
 							level={level}
 							desc={description}
-							onClickDeleteButton={(event) => clickDeleteCapacityHandler(event, id)}
+							onClickDeleteButton={(event) =>
+								clickDeleteCapacityHandler(event, id)
+							}
 						/>
 					))}
 
