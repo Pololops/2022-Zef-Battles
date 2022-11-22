@@ -4,27 +4,34 @@ const reducer = (state, { type, payload }) => {
 			return [...payload];
 
 		case 'CREATE_FAMILY_CARD': {
-			return [
-				{
-					...payload,
-					characters: [],
-				},
-				...state,
-			];
+			const modifiedState = [...state];
+
+			const foundFamilyId = modifiedState.find(({ id }) => id === payload.id);
+
+			if (!foundFamilyId) {
+				modifiedState.unshift({ ...payload, characters: [] });
+			}
+
+			return [...modifiedState];
 		}
 
 		case 'CREATE_CHARACTER_CARD': {
-      const familyTarget = [...state].find(({ id }) => id === payload.family_id);
-      familyTarget.characters.unshift(payload);
+			const modifiedState = [...state];
 
-			return [
-        ...state,
-        ...familyTarget,
-      ];
+			const familyTarget = modifiedState.find(
+				({ id }) => id === payload.family_id,
+			).characters;
+
+			const foundCharacterId = familyTarget.find(({ id }) => id === payload.id);
+
+			if (familyTarget && !foundCharacterId) {
+				familyTarget.unshift({ ...payload, capacity: [] });
+			}
+
+			return [...modifiedState];
 		}
 
 		case 'DELETE_CHARACTER_CARD': {
-			console.log('Input State : ', payload);
 			const modifiedState = [...state];
 
 			const characterToDeleteIndex = modifiedState
@@ -33,24 +40,35 @@ const reducer = (state, { type, payload }) => {
 					(character) => character.id === payload.character_id,
 				);
 
-			modifiedState
-				.find(({ id }) => id === payload.family_id)
-				.characters.splice(characterToDeleteIndex, 1);
+			if (characterToDeleteIndex >= 0) {
+				modifiedState
+					.find(({ id }) => id === payload.family_id)
+					.characters.splice(characterToDeleteIndex, 1);
+			}
 
 			return [...modifiedState];
 		}
 
 		case 'CREATE_CAPACITY': {
 			const modifiedState = [...state];
-			modifiedState
+
+			const characterTargetCapacities = modifiedState
 				.find((family) => family.id === payload.family_id)
-				.characters.find((character) => character.id === payload.character_id)
-				.capacity.push({
-					id: payload.id,
-					name: payload.name,
+				.characters.find(
+					(character) => character.id === payload.character_id,
+				).capacity;
+
+			const foundCapacityId = characterTargetCapacities.find(
+				({ id }) => id === payload.id,
+			);
+
+			if (characterTargetCapacities && !foundCapacityId) {
+				characterTargetCapacities.push({
+					...payload,
 					level: payload.level ?? 0,
 					description: payload.description ?? '',
 				});
+			}
 
 			return [...modifiedState];
 		}

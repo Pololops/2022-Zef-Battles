@@ -73,7 +73,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 			});
 
 			if (statusCode === 200) {
-				dispatch({ type: 'CREATE_CHARACTER_CARD', payload: data });
+				dispatch({ type: 'CREATE_CHARACTER_CARD', payload: {...data, family_id: familyId} });
 			}
 		}
 
