@@ -8,7 +8,7 @@ import capacityDatamapper from '../models/capacity.js';
 
 const characterController = {
 	async getAllInFamily(request, response) {
-		const familyId = ParseInt(request.params.id);
+		const familyId = parseInt(request.params.id);
 
 		const characters = await characterDatamapper.findAllInFamily(familyId);
 
@@ -17,7 +17,7 @@ const characterController = {
 	},
 
 	async getOneByPk(request, response) {
-		const characterId = ParseInt(request.params.id);
+		const characterId = parseInt(request.params.id);
 
 		const character = await characterDatamapper.findByPk(characterId);
 
@@ -26,8 +26,8 @@ const characterController = {
 	},
 
 	async createInFamily(request, response) {
-		const paramsFamilyId = ParseInt(request.params.id);
-		const bodyFamilyId = ParseInt(request.body.family_id);
+		const paramsFamilyId = parseInt(request.params.id);
+		const bodyFamilyId = parseInt(request.body.family_id);
 
 		if (paramsFamilyId !== bodyFamilyId) {
 			throw new ApiError(
@@ -57,7 +57,7 @@ const characterController = {
 	},
 
 	async update(request, response) {
-		const id = ParseInt(request.params.id);
+		const id = parseInt(request.params.id);
 
 		const character = await characterDatamapper.findByPk(id);
 		if (!character) {
@@ -83,7 +83,7 @@ const characterController = {
 
 	async delete(request, response) {
 		const deletedCharacter = await characterDatamapper.delete(
-			ParseInt(request.params.id),
+			parseInt(request.params.id),
 		);
 		if (!deletedCharacter) {
 			throw new ApiError('This character does not exists', { statusCode: 404 });

@@ -55,7 +55,9 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 
 		if (isFamilyForm) {
 			const { statusCode, data } = await postNewFamily({
-				name: nameInputValue,
+				body: {
+					name: nameInputValue,
+				},
 			});
 
 			if (statusCode === 200) {
@@ -72,8 +74,12 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 				body: formData,
 			});
 
+			console.log(statusCode, data)
 			if (statusCode === 200) {
-				dispatch({ type: 'CREATE_CHARACTER_CARD', payload: {...data, family_id: familyId} });
+				dispatch({
+					type: 'CREATE_CHARACTER_CARD',
+					payload: { ...data, family_id: familyId },
+				});
 			}
 		}
 
