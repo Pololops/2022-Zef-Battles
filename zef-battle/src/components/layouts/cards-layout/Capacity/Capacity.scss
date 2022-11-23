@@ -8,11 +8,9 @@
 
 	&__contain {
 		flex-grow: 1;
-
-		&__label {
-			font-size: 0.9em;
-			text-indent: 1em;
-		}
+		text-align: left;
+		text-indent: 1em;
+		font-size: 0.9em;
 
 		&__meter {
 			width: 100%;
@@ -30,9 +28,18 @@
 		}
 	}
 
-	&__delete {
+	.button.capacity__delete {
 		display: none;
-		width: 0;
+		padding: 0;
+		margin: 0;
+		border-radius: 1em;
+		rotate: 45deg;
+		font-size: 1.3em;
+		width: 0.8em;
+		height: 0.8em;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
 	}
 
 	&__description {
@@ -40,7 +47,6 @@
 	}
 }
 
-.card--edited .capacity__delete {
-	display: block;
-	width: initial;
+.card--edited .button.capacity__delete {
+	display: flex;
 }

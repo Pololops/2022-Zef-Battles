@@ -1,8 +1,14 @@
 import PropTypes from 'prop-types';
 
 import './Capacity.scss';
+import Button from '../../form-layout/Button/Button';
 
-export default function Capacity({ name, level, desc, onClickDeleteButton }) {
+export default function Capacity({
+	name,
+	level,
+	description,
+	onClickDeleteButton,
+}) {
 	const bgColorLevel = () => {
 		if (level > 66) {
 			return '#8bcf69';
@@ -24,10 +30,15 @@ export default function Capacity({ name, level, desc, onClickDeleteButton }) {
 					></div>
 				</div>
 			</div>
-			<button className="capacity__delete" onClick={onClickDeleteButton}>
-				x
-			</button>
-			<div className="capacity__description">{desc}</div>
+			<Button
+				className="capacity__delete"
+				type="reset"
+				label="+"
+				onClick={onClickDeleteButton}
+			/>
+			{description && (
+				<div className="capacity__description">${description}</div>
+			)}
 		</div>
 	);
 }
@@ -35,6 +46,6 @@ export default function Capacity({ name, level, desc, onClickDeleteButton }) {
 Capacity.propTypes = {
 	name: PropTypes.string.isRequired,
 	level: PropTypes.number.isRequired,
-	desc: PropTypes.string.isRequired,
+	description: PropTypes.string,
 	onClickDeleteButton: PropTypes.func.isRequired,
 };

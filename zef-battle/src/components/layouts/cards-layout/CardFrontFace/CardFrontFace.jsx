@@ -110,7 +110,7 @@ export default function CardFrontFace({
 							key={id + name}
 							name={name}
 							level={level}
-							desc={description}
+							description={description}
 							onClickDeleteButton={(event) =>
 								clickDeleteCapacityHandler(event, id)
 							}
