@@ -129,7 +129,7 @@ const characterController = {
 
 			foundCapacity = await capacityDatamapper.insert({
 				name: capacity.name,
-				description: capacity.description ?? null
+				description: capacity.description ?? null,
 			});
 		}
 
@@ -142,6 +142,24 @@ const characterController = {
 		const character = await characterDatamapper.findByPk(characterId);
 		debug('getOneByPk : ', character);
 		return response.json(character);
+	},
+
+	async removeCapacityToCharacter(request, response) {
+		const characterId = parseInt(request.params.id);
+		const capacityId = parseInt(request.params.capacityId);
+
+		const deletedCharacterHasCapacity =
+			await characterDatamapper.removeCapacityToCharacter(
+				characterId,
+				capacityId,
+			);
+
+		if (!deletedCharacterHasCapacity) {
+			throw new ApiError('This character does not exists', { statusCode: 404 });
+		}
+
+		debug('removeCapacityToCharacter : ', deletedCharacterHasCapacity);
+		return response.status(204).json();
 	},
 };
 

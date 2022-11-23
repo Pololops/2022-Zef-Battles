@@ -7,7 +7,7 @@ export default function Capacity({
 	name,
 	level,
 	description,
-	onClickDeleteButton,
+	onClickRemoveButton,
 }) {
 	const bgColorLevel = () => {
 		if (level > 66) {
@@ -34,7 +34,7 @@ export default function Capacity({
 				className="capacity__delete"
 				type="reset"
 				label="+"
-				onClick={onClickDeleteButton}
+				onClick={onClickRemoveButton}
 			/>
 			{description && (
 				<div className="capacity__description">${description}</div>
@@ -47,5 +47,5 @@ Capacity.propTypes = {
 	name: PropTypes.string.isRequired,
 	level: PropTypes.number.isRequired,
 	description: PropTypes.string,
-	onClickDeleteButton: PropTypes.func.isRequired,
+	onClickRemoveButton: PropTypes.func.isRequired,
 };

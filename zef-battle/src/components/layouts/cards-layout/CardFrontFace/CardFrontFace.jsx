@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useState, useContext } from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
 import {
-	postCapacity,
 	addCharacterCapacity,
 	removeCharacterCapacity,
 } from '../../../../apiClient/apiRequests';
@@ -57,11 +56,12 @@ export default function CardFrontFace({
 		}
 	};
 
-	const clickDeleteCapacityHandler = async (event, capacityId) => {
+	const clickRemoveCapacityHandler = async (event, capacityId) => {
 		event.stopPropagation();
 
 		const { statusCode } = await removeCharacterCapacity({
-			id: capacityId,
+			characterId: id,
+			capacityId,
 		});
 
 		if (statusCode === 204) {
@@ -111,8 +111,8 @@ export default function CardFrontFace({
 							name={name}
 							level={level}
 							description={description}
-							onClickDeleteButton={(event) =>
-								clickDeleteCapacityHandler(event, id)
+							onClickRemoveButton={(event) =>
+								clickRemoveCapacityHandler(event, id)
 							}
 						/>
 					))}

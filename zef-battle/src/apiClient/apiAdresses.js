@@ -6,7 +6,7 @@ export const familyUrl = (withcharacters) =>
 export const characterInFamilyUrl = (familyId) =>
 	`${baseApiUrl}/family/${familyId}/character`;
 
-export const characterUrl = (characterId) => 
+export const characterUrl = (characterId) =>
 	characterId
 		? `${baseApiUrl}/character/${characterId}`
 		: `${baseApiUrl}/character`;

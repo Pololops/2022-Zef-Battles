@@ -68,8 +68,6 @@ const reducer = (state, { type, payload }) => {
 				({ name }) => name === newCapacity.name,
 			);
 
-			console.log(newCapacity);
-
 			if (characterTargetCapacities && !foundCapacity) {
 				characterTargetCapacities.push(newCapacity);
 			}
@@ -86,12 +84,12 @@ const reducer = (state, { type, payload }) => {
 					(character) => character.id === payload.character_id,
 				).capacity;
 
-			const capacityToDeleteIndex = characterTargetCapacities.findIndex(
+			const capacityToRemoveIndex = characterTargetCapacities.findIndex(
 				({ id }) => id === payload.capacity_id,
 			);
 
-			if (capacityToDeleteIndex >= 0) {
-				characterTargetCapacities.splice(capacityToDeleteIndex, 1);
+			if (capacityToRemoveIndex >= 0) {
+				characterTargetCapacities.splice(capacityToRemoveIndex, 1);
 			}
 
 			return [...modifiedState];

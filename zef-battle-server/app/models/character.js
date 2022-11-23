@@ -131,5 +131,15 @@ export default {
 
 		debug('addCapacityToCharacter : ', result.rows[0]);
 		return result.rows[0];
-	}
+	},
+
+	async removeCapacityToCharacter(characterId, capacityId) {
+		const result = await client.query(
+			`DELETE FROM "character_has_capacity" WHERE character_id = $1 AND capacity_id = $2`,
+			[characterId, capacityId],
+		);
+
+		debug('removeCapacityToCharacter : ', !!result.rowCount);
+		return !!result.rowCount;
+	},
 };
