@@ -1,6 +1,8 @@
 import { Router } from 'express';
 const router = Router();
 
+import ApiError from '../../errors/apiError.js';
+
 import sanitize from '../../middlewares/sanitizerHandler.js';
 import validate from '../../validation/validator.js';
 import schema from '../../validation/schemas/familySchema.js';
@@ -11,7 +13,7 @@ import controllerHandler from '../../middlewares/controllerHandler.js';
 import familyController from '../../controllers/familyController.js';
 import characterController from '../../controllers/characterController.js';
 
-import uploadFileMiddleware from '../../middlewares/upload.js';
+import uploadFile from '../../middlewares/upload.js';
 
 router
 	.route('/')
@@ -121,9 +123,9 @@ router
 	 * }
 	 */
 	.post(
+		controllerHandler(uploadFile),
 		sanitize('body'),
-		// validate('body', createCharacterSchema),
-		controllerHandler(uploadFileMiddleware),
+		validate('body', createCharacterSchema),
 		controllerHandler(characterController.createInFamily),
 	);
 

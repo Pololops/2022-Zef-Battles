@@ -1,26 +1,56 @@
-// const util = require('util');
+import Debug from 'debug';
+const debug = Debug('Controller:characterController:log');
+
+import ApiError from '../errors/apiError.js';
+
 import multer from 'multer';
-const maxSize = 2 * 1024 * 1024; // = 2 MB
+
+export const maxSize = 2 * 1024 * 1024; // = 2 MB
 
 const storage = multer.diskStorage({
-	destination: (req, file, cb) => {
-		cb(null, 'public' + process.env.UPLOADS_PATH);
+	destination: (request, file, cb) => {
+		cb(null, process.env.UPLOADS_PATH ?? 'public/uploads');
 	},
-	filename: function (request, file, cb) {
-		const baseName = request.body.name
+	filename: (request, file, cb) => {
+		if (!request.body.name) {
+			return cb(
+				new ApiError('"character name" is required', {
+					statusCode: 400,
+				}),
+				false,
+			);
+		}
+
+		const name = request.body.name
 			.toLowerCase()
+			.replace(' ', '-')
 			.replace(/.(?<![a-z0-9-])/g, '');
-		const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
 		const extension = file.originalname.split('.').reverse()[0].toLowerCase();
 
-		const fileName = `${baseName}-${uniqueSuffix}.${extension}`;
-		cb(null, fileName);
+		const formatName = `${name}.${extension}`;
+		cb(null, formatName);
 	},
 });
 
-export default multer({
-	storage: storage,
-	limits: { fileSize: maxSize },
-}).single('file');
+const fileFilter = (_, file, cb) => {
+	if (
+		file.mimetype != 'image/png' &&
+		file.mimetype != 'image/jpg' &&
+		file.mimetype != 'image/jpeg'
+	) {
+		return cb(
+			new ApiError('Only .png, .jpg and .jpeg format allowed!', {
+				statusCode: 415,
+			}),
+			false,
+		);
+	}
 
-// export default util.promisify(uploadFile);
+	cb(null, true);
+};
+
+export default multer({
+	fileFilter,
+	limits: { fileSize: maxSize, files: 1 },
+	storage,
+}).single('file'); // .array('file', 2); change single to array to uload 2 or more files

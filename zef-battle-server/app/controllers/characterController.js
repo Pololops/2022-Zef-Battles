@@ -3,6 +3,8 @@ const debug = Debug('Controller:characterController:log');
 
 import ApiError from '../errors/apiError.js';
 
+import { maxSize } from '../middlewares/upload.js';
+
 import characterDatamapper from '../models/character.js';
 import capacityDatamapper from '../models/capacity.js';
 
@@ -26,6 +28,18 @@ const characterController = {
 	},
 
 	async createInFamily(request, response) {
+		if (!request.file) {
+			throw new ApiError('You have to upload an image file.', {
+				statusCode: 400,
+			});
+		}
+
+		if (Number(request.file.size) > maxSize) {
+			throw new ApiError('The image file is too large! 2GB maximum.', {
+				statusCode: 415,
+			});
+		}
+
 		const paramsFamilyId = parseInt(request.params.id);
 		const bodyFamilyId = parseInt(request.body.family_id);
 
@@ -45,11 +59,9 @@ const characterController = {
 			});
 		}
 
-		const uploadsFolder = process.env.UPLOADS_PATH ?? '/uploads/';
-
 		const savedCharacter = await characterDatamapper.insertInFamily(
-			{ ...request.body, picture: uploadsFolder + request.file.filename },
-			bodyFamilyId,
+			{ ...request.body, picture: request.file.path },
+			request.body.family_id,
 		);
 
 		debug('createInFamily : ', savedCharacter);
