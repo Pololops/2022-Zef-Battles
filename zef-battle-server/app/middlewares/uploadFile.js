@@ -1,5 +1,5 @@
 import Debug from 'debug';
-const debug = Debug('Controller:characterController:log');
+const debug = Debug('Middleware:uploadFile:log');
 
 import ApiError from '../errors/apiError.js';
 

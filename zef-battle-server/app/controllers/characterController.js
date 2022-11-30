@@ -3,10 +3,11 @@ const debug = Debug('Controller:characterController:log');
 
 import ApiError from '../errors/apiError.js';
 
-import { maxSize } from '../middlewares/upload.js';
+import { maxSize } from '../middlewares/uploadFile.js';
 
 import characterDatamapper from '../models/character.js';
 import capacityDatamapper from '../models/capacity.js';
+import deleteFile from '../middlewares/deleteFile.js';
 
 const characterController = {
 	async getAllInFamily(request, response) {
@@ -101,7 +102,9 @@ const characterController = {
 			throw new ApiError('This character does not exists', { statusCode: 404 });
 		}
 
-		debug('delete : ', deletedCharacter);
+		deleteFile(deletedCharacter.picture);
+
+		debug('delete : ', !!deletedCharacter);
 		return response.status(204).json();
 	},
 

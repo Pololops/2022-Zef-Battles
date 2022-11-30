@@ -13,7 +13,7 @@ import controllerHandler from '../../middlewares/controllerHandler.js';
 import familyController from '../../controllers/familyController.js';
 import characterController from '../../controllers/characterController.js';
 
-import uploadFile from '../../middlewares/upload.js';
+import uploadFile from '../../middlewares/uploadFile.js';
 
 router
 	.route('/')

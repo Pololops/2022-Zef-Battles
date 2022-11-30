@@ -101,12 +101,13 @@ export default {
 	},
 
 	async delete(id) {
-		const result = await client.query(`DELETE FROM "character" WHERE id = $1`, [
-			id,
-		]);
+		const result = await client.query(
+			`DELETE FROM "character" WHERE id = $1 RETURNING *`,
+			[id],
+		);
 
-		debug('delete : ', !!result.rowCount);
-		return !!result.rowCount;
+		debug('delete : ', !!result.rowCount, result.rows[0]);
+		return result.rows[0];
 	},
 
 	async hasCapacity(characterId, capacityId) {
