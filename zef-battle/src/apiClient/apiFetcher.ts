@@ -1,10 +1,26 @@
-export default async function fetchAPI(url, method, data, dataType) {
+interface FetchOptions {
+	method: string,
+	headers: {[key: string]: string},
+	body?: BodyInit | null | undefined
+}
+
+type fetchApi = {
+	statusCode: number,
+	data: {[key: string]: unknown}[] | null
+} | string;
+
+export default async function fetchAPI(
+	url: string, 
+	method?: string, 
+	data?: BodyInit | null | undefined, 
+	dataType?: string
+): Promise<fetchApi> {
 	const timeBeforeAbort = 4000;
 	const controller = new AbortController();
 	const { signal } = controller;
 	const timeout = setTimeout(() => controller.abort(), timeBeforeAbort);
 
-	const options = {
+	const options: FetchOptions = {
 		method: method ?? 'GET',
 		headers: {
 			Accept: 'application/json',
@@ -35,9 +51,13 @@ export default async function fetchAPI(url, method, data, dataType) {
 			data: response.status !== 204 ? await response.json() : null,
 		};
 	} catch (error) {
-		if (error.name === 'AbortError') return 'Operation timeout !';
+		if (error instanceof Error) {
+			if (error.name === 'AbortError') return 'Operation timeout !';
 
-		return error.message;
+			return error.message;
+		} else {
+			return `Une erreur s'est produite`;
+		}
 	} finally {
 		clearTimeout(timeout);
 	}

@@ -1,12 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import CardsContextProvider from './contexts/cardsContext';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router/router';
 
 import './styles/index.scss';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const container = document.getElementById('root')!;
+const root = createRoot(container);
 root.render(
 	<React.StrictMode>
 		<CardsContextProvider>
