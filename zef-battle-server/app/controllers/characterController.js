@@ -8,6 +8,7 @@ import { maxSize } from '../middlewares/uploadFile.js';
 import characterDatamapper from '../models/character.js';
 import capacityDatamapper from '../models/capacity.js';
 import deleteFile from '../middlewares/deleteFile.js';
+import saveFile from '../middlewares/saveFile.js';
 
 const characterController = {
 	async getAllInFamily(request, response) {
@@ -60,10 +61,22 @@ const characterController = {
 			});
 		}
 
+		const name = request.body.name
+			.toLowerCase()
+			.replace(' ', '-')
+			.replace(/.(?<![a-z0-9-])/g, '');
+		const extension = request.file.originalname
+			.split('.')
+			.reverse()[0]
+			.toLowerCase();
+		const formatedFilename = `${name}.${extension}`;
+
 		const savedCharacter = await characterDatamapper.insertInFamily(
-			{ ...request.body, picture: request.file.filename },
+			{ ...request.body, picture: formatedFilename },
 			request.body.family_id,
 		);
+
+		saveFile(formatedFilename, request.file.buffer);
 
 		debug('createInFamily : ', savedCharacter);
 		return response.json(savedCharacter);

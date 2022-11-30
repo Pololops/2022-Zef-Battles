@@ -52,5 +52,5 @@ const fileFilter = (_, file, cb) => {
 export default multer({
 	fileFilter,
 	limits: { fileSize: maxSize, files: 1 },
-	storage,
+	// storage, //? we let the file in buffer and save it after verification, in the controller
 }).single('file'); // .array('file', 2); change single to array to uload 2 or more files
