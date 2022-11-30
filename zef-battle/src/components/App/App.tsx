@@ -18,7 +18,7 @@ export default function App() {
 			(async () => {
 				const { statusCode, data } = await getFamilies(true);
 
-				if (statusCode === 200) {
+				if (statusCode && statusCode === 200) {
 					setIsLoading(false);
 					dispatch({ type: 'GET_CARDS', payload: data });
 				}

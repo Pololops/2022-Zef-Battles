@@ -4,17 +4,17 @@ interface FetchOptions {
 	body?: BodyInit | null | undefined
 }
 
-type fetchApi = {
+type fetchReturn = {
 	statusCode: number,
-	data: {[key: string]: unknown}[] | null
-} | string;
+	data: {[key: string]: unknown}[] | string
+};
 
 export default async function fetchAPI(
 	url: string, 
 	method?: string, 
 	data?: BodyInit | null | undefined, 
 	dataType?: string
-): Promise<fetchApi> {
+): Promise<fetchReturn> {
 	const timeBeforeAbort = 4000;
 	const controller = new AbortController();
 	const { signal } = controller;
@@ -52,12 +52,18 @@ export default async function fetchAPI(
 		};
 	} catch (error) {
 		if (error instanceof Error) {
-			if (error.name === 'AbortError') return 'Operation timeout !';
+			if (error.name === 'AbortError') {
+				return {
+					statusCode: 408,
+					data: 'Operation timeout !'
+				};
+			}
+		} 
 
-			return error.message;
-		} else {
-			return `Une erreur s'est produite`;
-		}
+		return {
+				statusCode: 500,
+				data: 'Une erreur est survenue !',
+			};
 	} finally {
 		clearTimeout(timeout);
 	}
