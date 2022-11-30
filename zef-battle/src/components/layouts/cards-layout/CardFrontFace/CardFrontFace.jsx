@@ -41,9 +41,12 @@ export default function CardFrontFace({
 
 	const inputKeyPressCapacityHandler = async (event) => {
 		if (event.key === 'Enter') {
-			const { statusCode, data } = await addCharacterCapacity(id, {
-				name: capacityNameInputValue,
-				level: capacityLevelInputValue,
+			const { statusCode, data } = await addCharacterCapacity({
+				characterId: id,
+				body: {
+					name: capacityNameInputValue,
+					level: capacityLevelInputValue,
+				},
 			});
 
 			if (statusCode === 200) {

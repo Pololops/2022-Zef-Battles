@@ -10,7 +10,7 @@ export default function CardBackFace({ id, title, imageUrl, isFamilyCard }) {
 			style={{
 				backgroundImage: `url("${
 					imageUrl && imageUrl !== ('' || '/')
-						? process.env.REACT_APP_API_BASE_URL + imageUrl
+						? process.env.REACT_APP_API_BASE_URL + '/' + imageUrl
 						: !isFamilyCard && defaultImage
 				}")`,
 			}}

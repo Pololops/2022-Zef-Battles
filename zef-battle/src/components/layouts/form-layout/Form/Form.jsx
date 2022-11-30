@@ -74,7 +74,6 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 				body: formData,
 			});
 
-			console.log(statusCode, data)
 			if (statusCode === 200) {
 				dispatch({
 					type: 'CREATE_CHARACTER_CARD',

@@ -54,7 +54,7 @@ export default function Card({
 	};
 
 	const clickKillCharacterButtonHandler = async (event) => {
-		const { statusCode } = await deleteCharacter({ id: id });
+		const { statusCode } = await deleteCharacter({ characterId: id });
 
 		if (statusCode === 204) {
 			setIskillingProgress(true);
