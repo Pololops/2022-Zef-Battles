@@ -7,8 +7,7 @@ import { maxSize } from '../middlewares/uploadFile.js';
 
 import characterDatamapper from '../models/character.js';
 import capacityDatamapper from '../models/capacity.js';
-import deleteFile from '../middlewares/deleteFile.js';
-import saveFile from '../middlewares/saveFile.js';
+import { saveFile, deleteFile } from '../middlewares/saveAndDeleteFile.js';
 
 const characterController = {
 	async getAllInFamily(request, response) {
