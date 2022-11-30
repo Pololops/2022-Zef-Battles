@@ -8,7 +8,7 @@ const app = express();
 import apiDocs from './helpers/apiDocs.js';
 apiDocs(app);
 
-app.use(express.static(process.env.UPLOADS_PATH ?? `public/uploads`));
+app.use(express.static(process.env.UPLOADS_PATH));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

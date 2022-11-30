@@ -9,7 +9,7 @@ export const maxSize = 2 * 1024 * 1024; // = 2 MB
 
 const storage = multer.diskStorage({
 	destination: (request, file, cb) => {
-		cb(null, process.env.UPLOADS_PATH ?? 'public/uploads');
+		cb(null, process.env.UPLOADS_PATH);
 	},
 	filename: (request, file, cb) => {
 		if (!request.body.name) {

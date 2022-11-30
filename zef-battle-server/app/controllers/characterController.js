@@ -60,7 +60,7 @@ const characterController = {
 		}
 
 		const savedCharacter = await characterDatamapper.insertInFamily(
-			{ ...request.body, picture: request.file.path },
+			{ ...request.body, picture: request.file.filename },
 			request.body.family_id,
 		);
 

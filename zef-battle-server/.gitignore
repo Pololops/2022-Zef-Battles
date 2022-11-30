@@ -29,7 +29,7 @@
 
 # uploads folder contains except .gitkeep file
 **/uploads/*
-!**/uploads/.gitkeep
+!**/uploads/index.html
 
 # jest
 **/coverage
