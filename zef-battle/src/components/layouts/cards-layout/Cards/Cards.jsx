@@ -10,11 +10,24 @@ export default function Cards({ data, isFamilyCard, familyName, familyId }) {
 			<Card
 				key={isFamilyCard ? 'addNewFamily' : 'addNewCharacter'}
 				index={0}
-				isAddCard={true}
+				isManageCard={true}
 				isFamilyCard={isFamilyCard}
 				familyName={familyName}
 				familyId={familyId}
 			/>
+
+			{!isFamilyCard && data.length < 1 && (
+				<Card
+					key="removeFamily"
+					index={1}
+					isManageCard={true}
+					isRemoveFamilyCard={true}
+					isFamilyCard={true}
+					familyName={familyName}
+					familyId={familyId}
+				/>
+			)}
+
 			{data.map(
 				(item, index) =>
 					item && (

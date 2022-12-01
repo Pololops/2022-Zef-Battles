@@ -39,8 +39,7 @@
 			margin-inline: -1em;
 		}
 
-		&.card--add,
-		&.card--previous {
+		&.card--manage {
 			z-index: 1;
 
 			&.before-fade-in {
@@ -131,27 +130,6 @@
 						}
 					}
 				}
-			}
-		}
-
-		&.card--previous {
-			position: absolute;
-			left: 0;
-			padding-left: 75px;
-			margin-left: -75px;
-			opacity: 0.5;
-			transform: translateX(-200px);
-			animation: slide-from-left 500ms ease-out 500ms 1 normal forwards;
-
-			& .card__inner {
-				border-top-left-radius: 0;
-				border-bottom-left-radius: 0;
-				border-left: 0;
-			}
-
-			&:hover {
-				padding-left: 60px;
-				margin-left: -60px;
 			}
 		}
 	}

@@ -12,10 +12,14 @@ type Arg = {
 	[key: string]: number,
 } & { body?: BodyInit };
 
-export const getFamilies = async (data: boolean) => await fetchAPI(familyUrl(data));
+export const getFamilies = async (withCharacters: boolean) => await fetchAPI(familyUrl(withCharacters));
 
 export const postNewFamily = async ({body}: Arg) =>
 	await fetchAPI(familyUrl(), 'POST', body);
+
+export const deleteFamily = async ({familyId}: Arg) => {
+	return await fetchAPI(familyUrl(familyId), 'DELETE');
+};
 
 export const postNewCharacter = async ({familyId, body}: Arg) => {
 	return await fetchAPI(
