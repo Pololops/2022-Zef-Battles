@@ -1,3 +1,5 @@
+@use './../../../../styles/vars';
+
 .capacity {
 	display: flex;
 	width: 100%;
@@ -13,6 +15,7 @@
 		font-size: 0.9em;
 
 		&__meter {
+			
 			width: 100%;
 			height: 0.6em;
 			border-radius: 0.3em;
@@ -24,6 +27,18 @@
 
 			&__level {
 				height: 100%;
+
+				&.level--min {
+					background-color: vars.$capacityMinLevelBgColor;
+				}
+				
+				&.level--mid {
+					background-color: vars.$capacityMidLevelBgColor;
+				}
+
+				&.level--max {
+					background-color: vars.$capacityMaxLevelBgColor;
+				}
 			}
 		}
 	}

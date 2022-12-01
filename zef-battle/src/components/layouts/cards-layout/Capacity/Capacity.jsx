@@ -3,30 +3,34 @@ import PropTypes from 'prop-types';
 import './Capacity.scss';
 import Button from '../../form-layout/Button/Button';
 
+const levelClassName = (level) => {
+	let className = 'capacity__contain__meter__level';
+
+	if (level > 66) {
+		className += ' level--max';
+	} else if (level > 33) {
+		className += ' level--mid';
+	} else {
+		className += ' level--min';
+	}
+
+	return className;
+};
+
 export default function Capacity({
 	name,
 	level,
 	description,
 	onClickRemoveButton,
 }) {
-	const bgColorLevel = () => {
-		if (level > 66) {
-			return '#8bcf69';
-		} else if (level > 33) {
-			return '#cfa369';
-		} else {
-			return '#cf6969';
-		}
-	};
-
 	return (
 		<div className="capacity">
 			<div className="capacity__contain">
 				<span className="capacity__contain__label">{name}</span>
 				<div className="capacity__contain__meter">
 					<div
-						className="capacity__contain__meter__level"
-						style={{ width: `${level}%`, backgroundColor: bgColorLevel() }}
+						className={levelClassName(level)}
+						style={{ width: `${level}%` }}
 					></div>
 				</div>
 			</div>

@@ -23,20 +23,26 @@ export default function CardFrontFace({
 }) {
 	const { dispatch } = useContext(CardsContext);
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('');
-	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState(0);
+	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState('0');
 
 	const changeCapacityInputValueHandler = (event) => {
 		setCapacityNameInputValue(event.target.value);
 	};
 
+	const changeCapacityLevelInputValueHandler = (event) => {
+		setCapacityLevelInputValue(event.target.value);
+	};
+
 	const clickCancelEditorButtonHandler = (event) => {
 		onClickCancelEditorButton(event);
 		setCapacityNameInputValue('');
+		setCapacityLevelInputValue('0');
 	};
 
 	const clickKillCharacterButtonHandler = (event) => {
 		onClickKillCharacterButton(event);
 		setCapacityNameInputValue('');
+		setCapacityLevelInputValue('0');
 	};
 
 	const inputKeyPressCapacityHandler = async (event) => {
@@ -55,6 +61,7 @@ export default function CardFrontFace({
 					payload: { ...data, newCapacityName: capacityNameInputValue },
 				});
 				setCapacityNameInputValue('');
+				setCapacityLevelInputValue('0');
 			}
 		}
 	};
@@ -98,11 +105,7 @@ export default function CardFrontFace({
 						/>
 					</div>
 				) : (
-					<Button
-						type=""
-						label="Modifier"
-						onClick={onClickEditorButton}
-					/>
+					<Button type="" label="Modifier" onClick={onClickEditorButton} />
 				)}
 			</div>
 
@@ -122,16 +125,28 @@ export default function CardFrontFace({
 
 				{isInEditionMode && capacities.length < 4 && (
 					<div className="form form--capacity">
+						<div>
+							<Input
+								type="text"
+								name="name"
+								value={capacityNameInputValue}
+								placeholder="Ajouter une capacité"
+								autoComplete={false}
+								onChange={changeCapacityInputValueHandler}
+								onKeyPress={inputKeyPressCapacityHandler}
+								isFocus={true}
+							/>
+							{capacityLevelInputValue}
+						</div>
 						<Input
-							type="text"
-							name="name"
-							value={capacityNameInputValue}
-							placeholder="Ajouter une capacité"
-							autoComplete={false}
-							onChange={changeCapacityInputValueHandler}
-							onKeyPress={inputKeyPressCapacityHandler}
-							isFocus={true}
-						/>
+							type="range"
+							name="level"
+							value={capacityLevelInputValue}
+							onChange={changeCapacityLevelInputValueHandler}
+							min="0"
+							max="100"
+							step="5"
+						></Input>
 					</div>
 				)}
 			</div>
