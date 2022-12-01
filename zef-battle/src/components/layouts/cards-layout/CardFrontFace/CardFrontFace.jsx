@@ -87,8 +87,8 @@ export default function CardFrontFace({
 				{isInEditionMode ? (
 					<div className="form__buttons">
 						<Button
-							type=""
-							label="Annuler"
+							type="submit"
+							label="Garder"
 							onClick={clickCancelEditorButtonHandler}
 						/>
 						<Button
@@ -99,7 +99,7 @@ export default function CardFrontFace({
 					</div>
 				) : (
 					<Button
-						type="submit"
+						type=""
 						label="Modifier"
 						onClick={onClickEditorButton}
 					/>
