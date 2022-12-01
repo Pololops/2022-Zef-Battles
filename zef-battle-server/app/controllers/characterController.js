@@ -64,11 +64,12 @@ const characterController = {
 			.toLowerCase()
 			.replace(' ', '-')
 			.replace(/.(?<![a-z0-9-])/g, '');
+		const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
 		const extension = request.file.originalname
 			.split('.')
 			.reverse()[0]
 			.toLowerCase();
-		const formatedFilename = `${name}.${extension}`;
+		const formatedFilename = `${name}-${uniqueSuffix}.${extension}`;
 
 		const savedCharacter = await characterDatamapper.insertInFamily(
 			{ ...request.body, picture: formatedFilename },

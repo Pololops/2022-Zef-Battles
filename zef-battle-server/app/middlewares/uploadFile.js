@@ -23,9 +23,10 @@ export const maxSize = 2 * 1024 * 1024; // = 2 MB
 // 			.toLowerCase()
 // 			.replace(' ', '-')
 // 			.replace(/.(?<![a-z0-9-])/g, '');
+//		const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
 // 		const extension = file.originalname.split('.').reverse()[0].toLowerCase();
 // 
-// 		const formatName = `${name}.${extension}`;
+// 		const formatName = `${name}-${uniqueSuffix}.${extension}`;
 // 		cb(null, formatName);
 // 	},
 // });
