@@ -37,7 +37,7 @@ export default function Capacity({
 			<Button
 				className="capacity__delete"
 				type="reset"
-				label="+"
+				label="×"
 				onClick={onClickRemoveButton}
 			/>
 			{description && (

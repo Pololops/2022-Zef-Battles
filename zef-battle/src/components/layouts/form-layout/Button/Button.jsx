@@ -4,12 +4,12 @@ import './Button.scss';
 
 export default function Button({ className, type, label, onClick }) {
 	return (
-		<button
+		<div
 			className={`${type ? `button button--${type}` : 'button'} ${className}`}
 			onClick={onClick}
 		>
 			{label}
-		</button>
+		</div>
 	);
 }
 

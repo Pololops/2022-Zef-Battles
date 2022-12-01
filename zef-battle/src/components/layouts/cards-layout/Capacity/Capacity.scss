@@ -31,7 +31,7 @@
 				&.level--min {
 					background-color: vars.$capacityMinLevelBgColor;
 				}
-				
+
 				&.level--mid {
 					background-color: vars.$capacityMidLevelBgColor;
 				}
@@ -48,10 +48,9 @@
 		padding: 0;
 		margin: 0;
 		border-radius: 1em;
-		rotate: 45deg;
-		font-size: 1.3em;
-		width: 0.8em;
-		height: 0.8em;
+		font-size: 1em;
+		width: 1em;
+		height: 1em;
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;
