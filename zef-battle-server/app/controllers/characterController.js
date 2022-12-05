@@ -90,7 +90,7 @@ const characterController = {
 			throw new ApiError('This character does not exists', { statusCode: 404 });
 		}
 
-		if ((request.body.name, id)) {
+		if (request.body.name || id) {
 			const existingCharacter = await characterDatamapper.isUnique(
 				request.body,
 			);
