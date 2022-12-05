@@ -1,3 +1,5 @@
+@use './../../../../styles/vars';
+
 .capacity {
 	display: flex;
 	width: 100%;
@@ -13,6 +15,7 @@
 		font-size: 0.9em;
 
 		&__meter {
+			
 			width: 100%;
 			height: 0.6em;
 			border-radius: 0.3em;
@@ -24,6 +27,18 @@
 
 			&__level {
 				height: 100%;
+
+				&.level--min {
+					background-color: vars.$capacityMinLevelBgColor;
+				}
+
+				&.level--mid {
+					background-color: vars.$capacityMidLevelBgColor;
+				}
+
+				&.level--max {
+					background-color: vars.$capacityMaxLevelBgColor;
+				}
 			}
 		}
 	}
@@ -33,10 +48,9 @@
 		padding: 0;
 		margin: 0;
 		border-radius: 1em;
-		rotate: 45deg;
-		font-size: 1.3em;
-		width: 0.8em;
-		height: 0.8em;
+		font-size: 1em;
+		width: 1em;
+		height: 1em;
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;

@@ -69,6 +69,16 @@
 
 	&.form--capacity {
 		padding: .5em;
+
+		& > div:first-child {
+			display: flex;
+			align-items: baseline;
+		}
+
+		& .input {
+			border: 0;
+			margin-bottom: 0;
+		}
 	}
 }
 

@@ -3,13 +3,18 @@ import { useState, useEffect, useContext } from 'react';
 
 import './Card.scss';
 
+import { useNavigate } from 'react-router-dom';
+
 import CardFrontFace from '../CardFrontFace/CardFrontFace';
 import CardBackFace from '../CardBackFace/CardBackFace';
 import AddCardFrontFace from '../AddCardFrontFace/AddCardFrontFace';
 import AddCardBackFace from '../AddCardBackFace/AddCardBackFace';
 import useAppearEffect from '../../../../hooks/useAppearEffect';
 import { CardsContext } from '../../../../contexts/cardsContext';
-import { deleteCharacter } from '../../../../apiClient/apiRequests';
+import {
+	deleteCharacter,
+	deleteFamily,
+} from '../../../../apiClient/apiRequests';
 
 export default function Card({
 	id,
@@ -21,9 +26,11 @@ export default function Card({
 	familyName,
 	totalLevel,
 	isFamilyCard,
-	isAddCard,
+	isManageCard,
+	isRemoveFamilyCard,
 }) {
 	const { dispatch } = useContext(CardsContext);
+	const navigate = useNavigate();
 
 	const [isFlipped, setIsFlipped] = useState(false);
 	const [isInEditionMode, setIsInEditionMode] = useState(false);
@@ -34,12 +41,28 @@ export default function Card({
 
 	const clickCardHandler = (event) => {
 		event.preventDefault();
-		if (isFamilyCard && !isAddCard) return;
-		if (isAddCard && isFlipped) return;
+		if (isRemoveFamilyCard) return clickToDeleteFamily();
+
+		if (isFamilyCard && !isManageCard) return;
+		if (isManageCard && isFlipped) return;
 		if (isInEditionMode) return;
 
 		setIsFlipped((previousSate) => !previousSate);
 	};
+
+	const clickToDeleteFamily = async () => {
+		const { statusCode } = await deleteFamily({ familyId });
+
+		if (statusCode === 204) {
+			dispatch({
+				type: 'DELETE_FAMILY_CARD',
+				payload: {
+					family_id: familyId,
+				},
+			});
+			navigate('/families');
+		}
+	}
 
 	const clickEditorButtonHandler = (event) => {
 		event.stopPropagation();
@@ -81,7 +104,8 @@ export default function Card({
 		<div
 			className={
 				'card' +
-				(isAddCard ? ' card--add' : '') +
+				(isManageCard ? ' card--manage' : '') +
+				(isRemoveFamilyCard ? ' card--remove' : '') +
 				(isAppeared ? ' fade-in' : ' before-fade-in') +
 				(isInEditionMode ? ' card--edited' : '') +
 				(iskillingProgress ? ' card--killing-progress' : '') +
@@ -92,7 +116,7 @@ export default function Card({
 				className={'card__inner' + (isFlipped ? ' is-flipped' : '')}
 				onClick={clickCardHandler}
 			>
-				{isAddCard ? (
+				{isManageCard ? (
 					<>
 						<AddCardFrontFace
 							isFamilyCard={isFamilyCard}
@@ -100,9 +124,11 @@ export default function Card({
 							isActive={isFlipped}
 							formCloser={() => setIsFlipped(false)}
 						/>
+
 						<AddCardBackFace
 							isFamilyCard={isFamilyCard}
 							familyName={familyName}
+							isRemoveFamilyCard={isRemoveFamilyCard}
 						/>
 					</>
 				) : (
@@ -151,7 +177,8 @@ Card.propTypes = {
 	familyName: PropTypes.string,
 	totalLevel: PropTypes.number,
 	isFamilyCard: PropTypes.bool,
-	isAddCard: PropTypes.bool,
+	isManageCard: PropTypes.bool,
+	isRemoveFamilyCard: PropTypes.bool,
 };
 
 Card.defaultProps = {
@@ -163,5 +190,6 @@ Card.defaultProps = {
 	familyName: '',
 	totalLevel: 0,
 	isFamilyCard: false,
-	isAddCard: false,
+	isManageCard: false,
+	isRemoveFamilyCard: false,
 };

@@ -1,22 +1,44 @@
 const baseApiUrl = process.env.REACT_APP_API_BASE_URL + '/api';
 
-export const familyUrl = (withcharacters?: boolean): string =>
-	`${baseApiUrl}/family?withcharacters=${withcharacters}`;
+// Families URL
+export const familyUrl = (arg?: boolean | number): string => {
+	if (arg) {
+		if (typeof arg === 'number') {
+			return `${baseApiUrl}/family/${arg}`;
+		} else {
+			return `${baseApiUrl}/family?withcharacters=${arg}`;
+		}
+	}
 
-export const characterInFamilyUrl = (familyId: number): string =>
-	`${baseApiUrl}/family/${familyId}/character`;
+	return `${baseApiUrl}/family`;
+}
 
-export const characterUrl = (characterId: number): string =>
-	characterId
-		? `${baseApiUrl}/character/${characterId}`
-		: `${baseApiUrl}/character`;
+// Characters URL
+export const characterInFamilyUrl = (familyId: number): string => {
+	return `${baseApiUrl}/family/${familyId}/character`;
+}
 
-export const capacityUrl = (capacityId: number): string =>
-	capacityId
-		? `${baseApiUrl}/capacity/${capacityId}`
-		: `${baseApiUrl}/capacity`;
+export const characterUrl = (characterId: number): string => {
+	if (characterId) {
+		return `${baseApiUrl}/character/${characterId}`;
+	}
+	
+	return`${baseApiUrl}/character`;
+}
 
-export const characterCapacityUrl = (characterId: number, capacityId?: number): string =>
-	capacityId
-		? `${baseApiUrl}/character/${characterId}/capacity/${capacityId}`
-		: `${baseApiUrl}/character/${characterId}/capacity`;
+// Capacities URL
+export const capacityUrl = (capacityId: number): string => {
+	if (capacityId) {
+		return `${baseApiUrl}/capacity/${capacityId}`;
+	}
+
+	return `${baseApiUrl}/capacity`;
+}
+
+export const characterCapacityUrl = (characterId: number, capacityId?: number): string => {
+	if (capacityId) {
+		return `${baseApiUrl}/character/${characterId}/capacity/${capacityId}`;
+	}
+
+	return `${baseApiUrl}/character/${characterId}/capacity`;
+}

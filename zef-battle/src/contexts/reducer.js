@@ -15,6 +15,14 @@ const reducer = (state, { type, payload }) => {
 			return [...modifiedState];
 		}
 
+		case 'DELETE_FAMILY_CARD': {
+			const modifiedState = [...state].filter(
+				({ id }) => id !== payload.family_id,
+			);
+
+			return [...modifiedState];
+		}
+
 		case 'CREATE_CHARACTER_CARD': {
 			const modifiedState = [...state];
 
@@ -56,9 +64,7 @@ const reducer = (state, { type, payload }) => {
 
 			const characterTargetCapacities = modifiedState
 				.find((family) => family.id === payload.family_id)
-				.characters.find(
-					(character) => character.id === payload.id,
-				).capacity;
+				.characters.find((character) => character.id === payload.id).capacity;
 
 			const newCapacity = payload.capacity.find(
 				({ name }) => name === payload.newCapacityName,

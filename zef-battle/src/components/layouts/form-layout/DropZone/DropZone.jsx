@@ -14,7 +14,9 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 		isDragReject,
 	} = useDropzone({
 		onDrop,
-		accept: { 'image/*': ['.jpeg', '.jpg', '.png'] },
+		accept: {
+			'image/png': ['.jpeg', '.jpg', '.png'],
+		},
 		maxFiles: 1,
 		maxSize: 2000000,
 	});
@@ -36,9 +38,7 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 	}, [droppedFiles]);
 
 	return (
-		<div
-			{...getRootProps({ className: `${dropZoneStyles.join(' ')}` })}
-		>
+		<div {...getRootProps({ className: `${dropZoneStyles.join(' ')}` })}>
 			<input {...getInputProps()} />
 			{
 				<div className="dropzone__message">
@@ -47,16 +47,14 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 							ATTENTION : <br />
 							<br /> il faut une image au format JPEG ou PNG.
 						</p>
-					) : 
-						!dropZoneStyles.join(' ').includes('dropped') ? (
-							<p>Dépose l'image du personnage ici.</p>
-						) : (
-							<p>Dépose une autre image pour changer celle-ci.</p>
-						)
-					}
+					) : !dropZoneStyles.join(' ').includes('dropped') ? (
+						<p>Dépose l'image du personnage ici.</p>
+					) : (
+						<p>Dépose une autre image pour changer celle-ci.</p>
+					)}
 				</div>
 			}
-			{droppedFiles.length > 0 && 
+			{droppedFiles.length > 0 && (
 				<img
 					src={droppedFiles[0].preview}
 					alt={droppedFiles[0].name}
@@ -65,7 +63,7 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 						URL.revokeObjectURL(droppedFiles[0].preview);
 					}}
 				/>
-			}
+			)}
 		</div>
 	);
 }

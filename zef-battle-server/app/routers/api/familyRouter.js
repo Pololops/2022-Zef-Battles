@@ -1,8 +1,6 @@
 import { Router } from 'express';
 const router = Router();
 
-import ApiError from '../../errors/apiError.js';
-
 import sanitize from '../../middlewares/sanitizerHandler.js';
 import validate from '../../validation/validator.js';
 import schema from '../../validation/schemas/familySchema.js';
