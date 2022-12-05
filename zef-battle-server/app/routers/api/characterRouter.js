@@ -106,6 +106,6 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character or capacity not found - application/json
 	 */
-	.delete(controllerHandler(controller.removeCapacityToCharacter));
+	.post(controllerHandler(controller.removeCapacityToCharacter));
 
 export default router;
