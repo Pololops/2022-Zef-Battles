@@ -29,9 +29,9 @@
 		border-radius: 5px;
 		overflow: hidden;
 		backface-visibility: hidden;
-		background-size: 105%;
+		background-size: calc(100% - 10px);
 		background-repeat: no-repeat;
-		background-position: center top;
+		background-position: center 20%;
 		transform: rotateX(0deg);
 
 		&--back {
