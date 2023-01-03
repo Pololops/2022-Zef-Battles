@@ -1,7 +1,7 @@
-import Debug from 'debug';
-const debug = Debug('Datamapper:characterDatamapper:log');
+import Debug from 'debug'
+const debug = Debug('Datamapper:characterDatamapper:log')
 
-import client from '../database/index.js';
+import client from '../database/index.js'
 
 /**
  * Character model
@@ -25,122 +25,142 @@ import client from '../database/index.js';
  */
 
 export default {
-	async findAllInFamily(familyId) {
+	findAllInFamily: async (familyId) => {
 		const result = await client.query(
 			`SELECT * FROM "character_with_capacity" WHERE "family_id" = $1 ORDER BY "name"`,
 			[familyId],
-		);
+		)
 
-		debug('findAllInFamily : ', result.rows);
-		return result.rows;
+		debug('findAllInFamily : ', result.rows)
+		return result.rows
 	},
 
-	async findByPk(id) {
+	findByPk: async (id) => {
 		const result = await client.query(
 			`SELECT * FROM "character_with_capacity" WHERE "id" = $1;`,
 			[id],
-		);
+		)
 
-		debug('findByPk : ', result.rows);
-		return result.rows[0];
+		debug('findByPk : ', result.rows)
+		return result.rows[0]
 	},
 
-	async isUnique(inputData, id) {
-		const values = [inputData.name];
+	isUnique: async (inputData, id) => {
+		const values = [inputData.name]
 
 		const preparedQuery = {
 			text: `SELECT * FROM "character" WHERE "name" = $1;`,
 			values,
-		};
+		}
 
 		if (id) {
-			preparedQuery.text += ` AND id <> $${values.length + 1}`;
-			preparedQuery.values.push(id);
-		}
-		const result = await client.query(preparedQuery);
-
-		if (result.rowCount === 0) {
-			return null;
+			preparedQuery.text += ` AND id <> $${values.length + 1}`
+			preparedQuery.values.push(id)
 		}
 
-		debug('isUnique : ', result.rows[0]);
-		return result.rows[0];
+		const result = await client.query(preparedQuery)
+
+		if (result.rowCount === 0) return null
+
+		debug('isUnique : ', result.rows[0])
+		return result.rows[0]
 	},
 
-	async insertInFamily(character) {
-		const fields = Object.keys(character).map((key) => `"${key}"`);
+	insertInFamily: async (character) => {
+		const fields = Object.keys(character).map((key) => `"${key}"`)
 		const numberFields = Object.keys(character).map(
 			(_, index) => `$${index + 1}`,
-		);
-		const values = Object.values(character);
+		)
+		const values = Object.values(character)
 
 		const result = await client.query(
 			`INSERT INTO "character" (${fields}) VALUES (${numberFields}) RETURNING *;`,
 			values,
-		);
+		)
 
-		debug('insertInFamily : ', result.rows[0]);
-		return result.rows[0];
+		debug('insertInFamily : ', result.rows[0])
+		return result.rows[0]
 	},
 
-	async update(id, character) {
+	update: async (id, character) => {
 		const fields = Object.keys(character).map(
 			(prop, index) => `"${prop}" = $${index + 1}`,
-		);
-		const values = Object.values(character);
+		)
+		const values = Object.values(character)
 
 		const result = await client.query(
 			`UPDATE "character" SET ${fields} WHERE "id" = $${
 				fields.length + 1
 			} RETURNING *`,
 			[...values, id],
-		);
+		)
 
-		debug('update : ', result.rows[0]);
-		return result.rows[0];
+		debug('update : ', result.rows[0])
+		return result.rows[0]
 	},
 
-	async delete(id) {
+	delete: async (id) => {
 		const result = await client.query(
 			`DELETE FROM "character" WHERE id = $1 RETURNING *`,
 			[id],
-		);
+		)
 
-		debug('delete : ', !!result.rowCount, result.rows[0]);
-		return result.rows[0];
+		debug('delete : ', !!result.rowCount, result.rows[0])
+		return result.rows[0]
 	},
 
-	async hasCapacity(characterId, capacityId) {
+	hasCapacity: async (characterId, capacityId) => {
 		const result = await client.query(
 			`SELECT * FROM "character_has_capacity" WHERE "character_id" = $1 AND "capacity_id" = $2`,
 			[characterId, capacityId],
-		);
+		)
 
 		if (result.rowCount === 0) {
-			return null;
+			return null
 		}
 
-		debug('hasCapacity : ', result.rows[0]);
-		return result.rows[0];
+		debug('hasCapacity : ', result.rows[0])
+		return result.rows[0]
 	},
 
-	async addCapacityToCharacter(characterId, capacityId, level) {
+	addAssociationBetweenCapacityAndCharacter: async (
+		characterId,
+		capacityId,
+		level,
+	) => {
 		const result = await client.query(
 			`INSERT INTO "character_has_capacity" ("character_id", "capacity_id", "level") VALUES ($1, $2, $3) RETURNING *;`,
 			[characterId, capacityId, level],
-		);
+		)
 
-		debug('addCapacityToCharacter : ', result.rows[0]);
-		return result.rows[0];
+		debug('addAssociationBetweenCapacityAndCharacter : ', result.rows[0])
+		return result.rows[0]
 	},
 
-	async removeCapacityToCharacter(characterId, capacityId) {
+	updateAssociationBetweenCapacityAndCharacter: async (
+		characterId,
+		capacityId,
+		level,
+	) => {
+		const result = await client.query(
+			`UPDATE "character_has_capacity" SET "level" = $3 WHERE "character_id" = $1 AND "capacity_id" = $2 RETURNING *`,
+			[characterId, capacityId, level],
+		)
+
+		debug('updateAssociationBetweenCapacityAndCharacter : ', result.rows[0])
+		return result.rows[0]
+	},
+
+	removeAssociationBetweenCapacityAndCharacter: async (
+		characterId,
+		capacityId,
+	) => {
 		const result = await client.query(
 			`DELETE FROM "character_has_capacity" WHERE character_id = $1 AND capacity_id = $2`,
 			[characterId, capacityId],
-		);
+		)
 
-		debug('removeCapacityToCharacter : ', !!result.rowCount);
-		return !!result.rowCount;
+		debug('removeAssociationBetweenCapacityAndCharacter : ', !!result.rowCount)
+		return !!result.rowCount
 	},
-};
+}

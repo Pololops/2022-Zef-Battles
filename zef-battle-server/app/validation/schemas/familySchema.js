@@ -1,8 +1,5 @@
-import Joi from 'joi';
+import Joi from 'joi'
 
 export default Joi.object({
-	name: Joi.string()
-		.min(1)
-		.required()
-		.label('family name'),
-}).required();
+	name: Joi.string().min(1).required().label('family name'),
+}).required()

@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from 'joi'
 
 export default Joi.object({
 	name: Joi.string().min(1).required().label('character name'),
@@ -6,9 +6,9 @@ export default Joi.object({
 		.integer()
 		.min(1)
 		.required()
-		.label('character family')
+		.label('family id')
 		.messages({
 			'any.required':
 				'Specify the Family_id to indicate the family of this new character',
 		}),
-}).required();
+}).required()

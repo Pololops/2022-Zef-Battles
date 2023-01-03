@@ -52,6 +52,16 @@ router
 	.route('/:id(\\d+)')
 
 	/**
+	 * GET /api/family/{id}
+	 * @summary Get a family
+	 * @tags Family
+	 * @param {number} id.path.required - family identifier
+	 * @return {Family} 200 - success response - application/json
+	 * @return {ApiError} 404 - Family not found - application/json
+	 */
+	.get(controllerHandler(familyController.getOneByPk))
+
+	/**
 	 * PATCH /api/family/{id}
 	 * @summary Update one family
 	 * @tags Family
@@ -84,7 +94,7 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Family not found - application/json
 	 */
-	.delete(controllerHandler(familyController.delete));
+	.delete(controllerHandler(familyController.delete))
 
 router
 	.route('/:id(\\d+)/character')

@@ -1,81 +1,70 @@
-import Debug from 'debug';
-const debug = Debug('Controller:familyController:log');
+import Debug from 'debug'
+const debug = Debug('Controller:familyController:log')
 
-import ApiError from '../errors/apiError.js';
+import familyDatamapper from '../models/family.js'
+import ApiError from '../errors/apiError.js'
 
-import familyDatamapper from '../models/family.js';
+export default {
+	getAll: async (request, response) => {
+		const { withcharacters } = request.query
 
-const familyController = {
-	async getAll(request, response) {
-		const getWithCharacters = request.query.withcharacters;
-
-		let families;
-		if (getWithCharacters === 'true') {
-			families = await familyDatamapper.findAllWithCharacters();
-			debug('getAll with characters : ', families);
+		let families
+		if (withcharacters === 'true') {
+			families = await familyDatamapper.findAllWithCharacters()
+			debug('getAll with characters : ', families)
 		} else {
-			families = await familyDatamapper.findAll();
-			debug('getAll : ', families);
+			families = await familyDatamapper.findAll()
+			debug('getAll : ', families)
 		}
 
-		return response.json(families);
+		return response.status(200).json(families)
 	},
 
-	async getAllWithCharacters(_, response) {
-		const families = await familyDatamapper.findAllWithCharacters();
+	getOneByPk: async (request, response) => {
+		const family = await familyDatamapper.findByPk(parseInt(request.params.id))
 
-		debug('getAll with Characters : ', families);
-		return response.json(families);
+		if (!family) throw new ApiError('This family does not exist', { statusCode: 404 })
+
+		debug('getOneByPk : ', family)
+		return response.status(200).json(family)
 	},
 
-	async create(request, response) {
-		const family = await familyDatamapper.isUnique(request.body);
-		if (family) {
-			throw new ApiError('This family name already exists', {
-				statusCode: 400,
-			});
-		}
+	create: async (request, response) => {
+		const family = await familyDatamapper.isUnique(request.body)
+		if (family) throw new ApiError('This family name already exists', { statusCode: 400 })
 
-		const savedFamily = await familyDatamapper.insert(request.body);
+		const savedFamily = await familyDatamapper.insert(request.body)
 
-		debug('create : ', savedFamily);
-		return response.json(savedFamily);
+		debug('create : ', savedFamily)
+		return response.status(200).json(savedFamily)
 	},
 
-	async update(request, response) {
-		const id = Number(request.params.id);
+	update: async (request, response) => {
+		const id = parseInt(request.params.id)
 
-		const family = await familyDatamapper.findByPk(id);
-		if (!family) {
-			throw new ApiError('This family does not exists', { statusCode: 404 });
-		}
+		const family = await familyDatamapper.findByPk(id)
+		if (!family) throw new ApiError('This family does not exists', { statusCode: 404 })
 
 		if (request.body.name) {
-			const existingFamily = await familyDatamapper.isUnique(request.body);
-			if (existingFamily) {
+			const existingFamily = await familyDatamapper.isUnique(request.body)
+			if (existingFamily && existingFamily.id !== id) {
 				throw new ApiError('Other family already exists with this name', {
 					statusCode: 400,
-				});
+				})
 			}
 		}
 
-		const savedFamily = await familyDatamapper.update(id, request.body);
+		const savedFamily = await familyDatamapper.update(id, request.body)
 
-		debug('update : ', savedFamily);
-		return response.json(savedFamily);
+		debug('update : ', savedFamily)
+		return response.status(200).json(savedFamily)
 	},
 
-	async delete(request, response) {
-		const deletedFamily = await familyDatamapper.delete(
-			Number(request.params.id),
-		);
-		if (!deletedFamily) {
-			throw new ApiError('This family does not exists', { statusCode: 404 });
-		}
+	delete: async (request, response) => {
+		const deletedFamily = await familyDatamapper.delete(parseInt(request.params.id))
+		if (!deletedFamily) throw new ApiError('This family does not exists', { statusCode: 404 })
 
-		debug('delete : ', deletedFamily);
-		return response.status(204).json();
+		debug('delete : ', deletedFamily)
+		return response.status(204).json()
 	},
-};
-
-export default familyController;
+}

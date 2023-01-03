@@ -97,7 +97,7 @@ router
 	.route('/:id(\\d+)/capacity/:capacityId(\\d+)')
 
 	/**
-	 * POST /api/character/{characterId}/capacity/{capacityId}
+	 * DELETE /api/character/{characterId}/capacity/{capacityId}
 	 * @summary Remove a capacity to a character
 	 * @tags Capacity
 	 * @param {number} id.path.required - character identifier
@@ -106,6 +106,6 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character or capacity not found - application/json
 	 */
-	.post(controllerHandler(controller.removeCapacityToCharacter));
+	.delete(controllerHandler(controller.removeCapacityToCharacter));
 
 export default router;
