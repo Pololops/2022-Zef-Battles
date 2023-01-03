@@ -74,7 +74,7 @@ export default function CardFrontFace({
 			capacityId,
 		});
 
-		if (statusCode === 204) {
+		if (statusCode === 200) {
 			dispatch({
 				type: 'DELETE_CHARACTER_CAPACITY',
 				payload: {
