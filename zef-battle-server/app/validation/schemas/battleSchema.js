@@ -1,6 +1,6 @@
 import Joi from 'joi'
 
-export default Joi.object({
+export const createSchema = Joi.object({
 	start_date: Joi.date()
 		.timestamp('javascript')
 		.min('now')

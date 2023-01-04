@@ -10,7 +10,7 @@ import ApiError from '../errors/apiError.js'
  * @returns {Function} - A middleware for express that validate the request using the schema in parameter.
  * Returns an 400 error if the validation failed.
  */
-const validate = (prop, schema) => async (request, _, next) => {
+const validate = (prop, schema) => async (request, _response, next) => {
     try {
         debug(request[prop]);
         await schema.validateAsync(request[prop]);

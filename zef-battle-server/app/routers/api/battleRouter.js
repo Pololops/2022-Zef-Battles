@@ -1,13 +1,12 @@
-import { Router } from 'express';
-const router = Router();
+import { Router } from 'express'
+const router = Router()
 
-import sanitize from '../../middlewares/sanitizerHandler.js';
-import validate from '../../validation/validator.js';
-import schema from '../../validation/schemas/battleSchema.js';
+import sanitize from '../../middlewares/sanitizerHandler.js'
+import validate from '../../validation/validator.js'
+import { createSchema } from '../../validation/schemas/battleSchema.js'
 
-import controllerHandler from '../../middlewares/controllerHandler.js';
-
-import controller from '../../controllers/battleController.js';
+import controllerHandler from '../../middlewares/controllerHandler.js'
+import controller from '../../controllers/battleController.js'
 
 router
 	.route('/')
@@ -41,13 +40,13 @@ router
 	 */
 	.post(
 		sanitize('body'),
-		validate('body', schema),
+		validate('body', createSchema),
 		controllerHandler(controller.create),
-	);
+	)
 
 router
 	.route('/:id(\\d+)')
-	
+
 	// TODO : adapt PATCH route to battle
 	/**
 	 * PATCH /api/battle/{id}
@@ -69,7 +68,7 @@ router
 	 */
 	.patch(
 		sanitize('body'),
-		validate('body', schema),
+		validate('body', createSchema),
 		controllerHandler(controller.update),
 	)
 
@@ -82,6 +81,6 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Battle not found - application/json
 	 */
-	.delete(controllerHandler(controller.delete));
+	.delete(controllerHandler(controller.delete))
 
-export default router;
+export default router

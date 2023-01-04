@@ -5,7 +5,7 @@ import ApiError from '../errors/apiError.js'
 
 import capacityDatamapper from '../models/capacity.js'
 
-const capacityController = {
+export default {
 	getAll: async (request, response) => {
 		const capacities = await capacityDatamapper.findAll()
 
@@ -61,5 +61,3 @@ const capacityController = {
 		return response.status(204).json()
 	},
 }
-
-export default capacityController

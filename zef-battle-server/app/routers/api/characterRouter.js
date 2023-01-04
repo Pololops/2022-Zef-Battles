@@ -1,14 +1,13 @@
-import { Router } from 'express';
-const router = Router();
+import { Router } from 'express'
+const router = Router()
 
-import sanitize from '../../middlewares/sanitizerHandler.js';
-import validate from '../../validation/validator.js';
-import updateSchema from '../../validation/schemas/characterUpdateSchema.js';
-import characterCapacityAssociateSchema from '../../validation/schemas/characterCapacityAssociateSchema.js';
+import sanitize from '../../middlewares/sanitizerHandler.js'
+import validate from '../../validation/validator.js'
+import { updateSchema } from '../../validation/schemas/characterSchema.js'
+import { createSchema as characterCapacityAssociateSchema } from '../../validation/schemas/characterCapacityAssociateSchema.js'
 
-import controllerHandler from '../../middlewares/controllerHandler.js';
-
-import controller from '../../controllers/characterController.js';
+import controllerHandler from '../../middlewares/controllerHandler.js'
+import controller from '../../controllers/characterController.js'
 
 router
 	.route('/:id(\\d+)')
@@ -59,7 +58,7 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character not found - application/json
 	 */
-	.delete(controllerHandler(controller.delete));
+	.delete(controllerHandler(controller.delete))
 
 router
 	.route('/:id(\\d+)/capacity')
@@ -91,7 +90,7 @@ router
 	.post(
 		validate('body', characterCapacityAssociateSchema),
 		controllerHandler(controller.addCapacityToCharacter),
-	);
+	)
 
 router
 	.route('/:id(\\d+)/capacity/:capacityId(\\d+)')
@@ -106,6 +105,6 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character or capacity not found - application/json
 	 */
-	.delete(controllerHandler(controller.removeCapacityToCharacter));
+	.delete(controllerHandler(controller.removeCapacityToCharacter))
 
-export default router;
+export default router

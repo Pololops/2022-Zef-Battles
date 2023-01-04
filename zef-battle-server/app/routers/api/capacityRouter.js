@@ -3,8 +3,7 @@ const router = Router();
 
 import sanitize from '../../middlewares/sanitizerHandler.js';
 import validate from '../../validation/validator.js';
-import createSchema from '../../validation/schemas/capacityCreateSchema.js';
-import updateSchema from '../../validation/schemas/capacityUpdateSchema.js';
+import { createSchema, updateSchema } from '../../validation/schemas/capacitySchema.js';
 
 import controllerHandler from '../../middlewares/controllerHandler.js';
 

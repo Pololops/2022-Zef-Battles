@@ -3,8 +3,8 @@ const router = Router();
 
 import sanitize from '../../middlewares/sanitizerHandler.js';
 import validate from '../../validation/validator.js';
-import schema from '../../validation/schemas/familySchema.js';
-import createCharacterSchema from '../../validation/schemas/characterCreateSchema.js';
+import { createSchema as familyCreateSchema } from '../../validation/schemas/familySchema.js'
+import { createSchema as characterCreateSchema } from '../../validation/schemas/characterSchema.js';
 
 import controllerHandler from '../../middlewares/controllerHandler.js';
 
@@ -44,9 +44,9 @@ router
 	 */
 	.post(
 		sanitize('body'),
-		validate('body', schema),
+		validate('body', familyCreateSchema),
 		controllerHandler(familyController.create),
-	);
+	)
 
 router
 	.route('/:id(\\d+)')
@@ -81,7 +81,7 @@ router
 	 */
 	.patch(
 		sanitize('body'),
-		validate('body', schema),
+		validate('body', familyCreateSchema),
 		controllerHandler(familyController.update),
 	)
 
@@ -133,8 +133,8 @@ router
 	.post(
 		controllerHandler(uploadFile),
 		sanitize('body'),
-		validate('body', createCharacterSchema),
+		validate('body', characterCreateSchema),
 		controllerHandler(characterController.createInFamily),
-	);
+	)
 
 export default router;

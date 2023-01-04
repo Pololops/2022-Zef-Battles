@@ -1,12 +1,11 @@
 import Joi from 'joi'
 
 export const createSchema = Joi.object({
-	id: Joi.number().label('capacity id'),
 	name: Joi.string().min(1).required().label('capacity name'),
 	description: Joi.string().label('capacity description'),
-	level: Joi.number()
-		.min(0)
-		.max(100)
-		.required()
-		.label("capacity's level for character"),
+}).required()
+
+export const updateSchema = Joi.object({
+	name: Joi.string().min(1).required().label('capacity name'),
+	description: Joi.string().label('capacity description'),
 }).required()
