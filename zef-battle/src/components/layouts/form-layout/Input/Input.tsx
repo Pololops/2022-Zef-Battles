@@ -1,11 +1,24 @@
-import PropTypes from 'prop-types';
-
 import './Input.scss';
 import { useEffect, useState } from 'react';
 
 import useAutoFocus from '../../../../hooks/useAutoFocusRef';
 
-const levelClassName = (className, level) => {
+interface Props {
+	type: string,
+	name: string,
+	value?: string,
+	min?: number,
+	max?: number,
+	step?: number,
+	placeholder?: string,
+	autoComplete?: boolean,
+	onChange?: React.ChangeEventHandler,
+	onKeyPress?: React.KeyboardEventHandler,
+	isFocus?: boolean,
+	readOnly?: true,
+}
+
+const levelClassName = (className: string, level: number): string => {
 	let formatClassName = className + ' input--range';
 
 	if (level > 66) {
@@ -22,29 +35,29 @@ const levelClassName = (className, level) => {
 export default function Input({
 	type,
 	name,
-	value,
-	min,
-	max,
-	step,
-	placeholder,
-	autoComplete,
+	value = '',
+	min = 0,
+	max = 100,
+	step = 1,
+	placeholder = '',
+	autoComplete = true,
 	onChange,
 	onKeyPress,
-	isFocus,
+	isFocus = false,
 	readOnly,
-}) {
+}: Props) {
 	const [className, setClassName] = useState('input');
 	let focus = useAutoFocus(isFocus);
 
 	useEffect(() => {
-		setClassName(levelClassName('input', parseInt(value)));
+		setClassName(levelClassName('input', Number(value)));
 	}, [value])
 
 	return (
 		<input
 			className={className}
-			style={{ backgroundSize: `${(value - min) * 100 / (max - min)}% 100%` }}
-			ref={focus}
+			style={{ backgroundSize: `${(Number(value) - min) * 100 / (max - min)}% 100%` }}
+			ref={focus} 
 			type={type}
 			name={name}
 			value={value}
@@ -57,29 +70,3 @@ export default function Input({
 		/>
 	);
 }
-
-Input.propTypes = {
-	type: PropTypes.string.isRequired,
-	name: PropTypes.string.isRequired,
-	value: PropTypes.string,
-	min: PropTypes.string,
-	max: PropTypes.string,
-	step: PropTypes.string,
-	placeholder: PropTypes.string,
-	autoComplete: PropTypes.bool,
-	onChange: PropTypes.func,
-	onKeyPress: PropTypes.func,
-	isFocus: PropTypes.bool,
-};
-
-Input.defaultProps = {
-	placeholder: '',
-	value: '',
-	min: '0',
-	max: '100',
-	step: '1',
-	autoComplete: true,
-	onChange: null,
-	onKeyPress: null,
-	isFocus: false,
-};
