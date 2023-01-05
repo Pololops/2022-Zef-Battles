@@ -1,6 +1,3 @@
-import Debug from 'debug'
-const debug = Debug('tokenManager:log')
-
 import jwt  from 'jsonwebtoken'
 import ApiError from '../errors/apiError.js'
 
@@ -8,7 +5,7 @@ export const tokenVerifier = (request, _response, next) => {
   const headerAuth =
     request.headers['x-access-token'] || request.headers.authorization
   if (!headerAuth)
-    throw new ApiError('Accès refusé : Token introuvable', {
+    throw new ApiError('Unauthorized: token not found', {
 			statusCode: 401,
 		})
 
@@ -16,16 +13,16 @@ export const tokenVerifier = (request, _response, next) => {
 
   jwt.verify(token, process.env.SECRET_TOKEN_KEY, (error, decoded) => {
     if (error)
-      throw new ApiError('Accès refusé : Token invalide', { statusCode: 401 })
+      throw new ApiError('Unauthorized: invalid token', { statusCode: 401 })
 
-    request.body.user = decoded
+    request.connectedUser = decoded
     next()
   })
 }
 
 export const tokenGenerator = (user) => {
 	return jwt.sign(
-		{ userId: user.id },
+		{ id: user.id, role: user.role },
 		process.env.SECRET_TOKEN_KEY,
 		{ expiresIn: '2h' },
 	)

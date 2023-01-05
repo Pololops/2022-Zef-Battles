@@ -7,12 +7,27 @@ import userDatamapper from '../models/user.js'
 import { tokenGenerator } from '../middlewares/tokenManager.js'
 
 export default {
-	// TODO : debug the getAll user method to prevent players from running it
 	getAll: async (_request, response) => {
 		const users = await userDatamapper.findAll()
 
 		debug('getAll : ', users)
 		return response.status(200).json(users)
+	},
+
+	getByPk: async (request, response) => {
+		const user = await userDatamapper.findByPk(parseInt(request.params.id))
+		if (!user)
+			throw new ApiError('This user does not exist', {
+				statusCode: 404,
+			})
+
+		if (user.id !== parseInt(request.params.id))
+			throw new ApiError('This user does not exist', {
+				statusCode: 404,
+			})
+
+		debug('getAll : ', user)
+		return response.status(200).json(user)
 	},
 
 	create: async (request, response) => {
@@ -29,7 +44,6 @@ export default {
 		return response.status(200).json(savedUser)
 	},
 
-	// TODO : debug the update user method with token verifier and admin or the right player
 	update: async (request, response) => {
 		const id = parseInt(request.params.id)
 
@@ -46,13 +60,20 @@ export default {
 			}
 		}
 
-		const savedUser = await userDatamapper.update(id, request.body)
+		const userToSave = {
+			name: request.body.name,
+			password: request.body.password
+		}
+		if (request.connectedUser.role === 'admin') {
+			userToSave.role = request.body.role
+		}
+
+		const savedUser = await userDatamapper.update(id, userToSave)
 
 		debug('update : ', savedUser)
 		return response.status(200).json(savedUser)
 	},
 
-	// TODO : debug the delete user method to prevent players from running it
 	delete: async (request, response) => {
 		const deletedUser = await userDatamapper.delete(parseInt(request.params.id))
 
@@ -65,7 +86,7 @@ export default {
 
 	login: async (request, response) => {
 		const foundUser = await userDatamapper.findByName(request.body.login)
-		if (!foundUser)
+		if (!foundUser || foundUser.password !== request.body.password)
 			throw new ApiError('Login and password are not correct', {
 				statusCode: 400,
 			})
@@ -77,6 +98,8 @@ export default {
 			user: {
 				id: foundUser.id,
 				name: foundUser.name,
+				victory_number: foundUser.victory_number,
+				role: foundUser.role
 			},
 		})
 	},

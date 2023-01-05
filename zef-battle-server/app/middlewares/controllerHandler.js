@@ -1,5 +1,4 @@
 // Middleware pour factoriser tous les try...catch des controllers et appeler dans les routers
-
 /**
  * Controller wrapper to manage errors
  * @param {object} controller a controller to execute inside a try… catch… block

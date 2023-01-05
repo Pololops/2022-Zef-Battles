@@ -10,6 +10,10 @@ import {
 } from '../../validation/schemas/userSchema.js'
 
 import { tokenVerifier } from '../../middlewares/tokenManager.js'
+import {
+	isAdmin,
+	isLegitOrAdmin,
+} from '../../middlewares/userAccessVerifier.js'
 import controllerHandler from '../../middlewares/controllerHandler.js'
 import controller from '../../controllers/userController.js'
 
@@ -22,7 +26,11 @@ router
 	 * @return {array<User>} 200 - success response - application/json
 	 * @return {ApiError} 401 - Unauthorized response - application/json
 	 */
-	.get(controllerHandler(tokenVerifier), controllerHandler(controller.getAll))
+	.get(
+		controllerHandler(tokenVerifier),
+		controllerHandler(isAdmin),
+		controllerHandler(controller.getAll)
+	)
 
 	/**
 	 * POST /api/user
@@ -66,7 +74,11 @@ router
 	 * @return {User} 200 - success response - application/json
 	 * @return {ApiError} 401 - Unauthorized response - application/json
 	 */
-	.get(controllerHandler(tokenVerifier), controllerHandler(controller.getByPk))
+	.get(
+		controllerHandler(tokenVerifier),
+		controllerHandler(isLegitOrAdmin),
+		controllerHandler(controller.getByPk),
+	)
 
 	/**
 	 * PATCH /v1/user/{id}
@@ -87,9 +99,10 @@ router
 	 * }
 	 */
 	.patch(
-		controllerHandler(tokenVerifier),
 		sanitize('body'),
 		validate('body', updateSchema),
+		controllerHandler(tokenVerifier),
+		controllerHandler(isLegitOrAdmin),
 		controllerHandler(controller.update),
 	)
 
@@ -105,6 +118,7 @@ router
 	 */
 	.delete(
 		controllerHandler(tokenVerifier),
+		controllerHandler(isLegitOrAdmin),
 		controllerHandler(controller.delete),
 	)
 
