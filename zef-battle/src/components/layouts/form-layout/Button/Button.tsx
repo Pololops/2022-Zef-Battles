@@ -10,7 +10,7 @@ interface Props {
 export default function Button({ className, type, label, onClick }: Props) {
 	return (
 		<div
-			className={`${type ? `button button--${type}` : 'button'} ${className}`}
+			className={`${type ? `button button--${type}` : 'button'} ${className ? className : ''}`}
 			onClick={onClick}
 		>
 			{label}

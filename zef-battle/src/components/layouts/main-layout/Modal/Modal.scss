@@ -1,0 +1,25 @@
+.modal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9;
+
+
+  &__content {
+    max-width: 500px;
+    padding-inline: 1em;
+  
+    &__buttons {
+      display: flex;
+      justify-content: center;
+      gap: 2em;
+    }
+  }
+}
