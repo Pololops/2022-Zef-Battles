@@ -12,8 +12,6 @@ import ApiError from '../errors/apiError.js'
 import userDatamapper from '../models/user.js'
 import { tokenGenerator } from '../middlewares/tokenManager.js'
 
-const bcryptSalt = await bcryptGenSalt(10)
-
 export default {
 	getAll: async (_request, response) => {
 		const users = await userDatamapper.findAll()
@@ -46,6 +44,7 @@ export default {
 			})
 		}
 
+		const bcryptSalt = await bcryptGenSalt(10)
 		const encryptedPassword = await bcryptHash(
 			request.body.password,
 			bcryptSalt,
@@ -74,11 +73,16 @@ export default {
 			}
 		}
 
-		const encryptedPassword = await bcryptHash(user.password, bcryptSalt)
+		const bcryptSalt = await bcryptGenSalt(10)
+		const encryptedPassword = await bcryptHash(
+			request.body.password,
+			bcryptSalt,
+		)
+		request.body.password = encryptedPassword
 
 		const userToSave = {
 			name: request.body.name,
-			password: encryptedPassword,
+			password: request.body.password,
 		}
 		if (request.connectedUser.role === 'admin') {
 			userToSave.role = request.body.role
