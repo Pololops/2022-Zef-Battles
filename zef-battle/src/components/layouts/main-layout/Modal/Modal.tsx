@@ -1,29 +1,52 @@
 import './Modal.scss'
 
-import { useContext, useState } from 'react'
+import { useContext, useState } from 'react';
 import { ModalContext } from '../../../../contexts/modalContext'
 
 import Button from '../../form-layout/Button/Button'
 import Input from '../../form-layout/Input/Input'
 
+import { login as loginRequest } from "../../../../apiClient/apiRequests";
+
 export default function ModalLog() {
 	const { setIsVisible } = useContext(ModalContext)
 
-	const [login, setLogin] = useState('')
-	const [password, setPassword] = useState('')
+	const [loginInputValue, setLoginInputValue] = useState('')
+	const [passwordInputValue, setPasswordInputValue] = useState('')
 
-	const loginInputHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setLogin(event.target.value)
-	const passwordInputHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setPassword(event.target.value)
+	const loginInputHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setLoginInputValue(event.target.value)
+	const passwordInputHandler = (event: React.ChangeEvent<HTMLInputElement>): void => setPasswordInputValue(event.target.value)
+	const submitButtonHandler = async (event: React.FormEvent) => {
+		event.preventDefault();
+
+		if (loginInputValue.length > 0 && passwordInputValue.length > 0) {
+			const { statusCode, data } = await loginRequest({
+				login: loginInputValue,
+				password: passwordInputValue
+			});
+
+			if (statusCode === 200 && typeof data !== 'string') {
+				localStorage.setItem('token', data.token)
+				localStorage.setItem('userName', data.user.name)
+				localStorage.setItem('userVictory', data.user.victory_number.toString())
+				localStorage.setItem('userRole', data.user.role)
+
+				setIsVisible(false);
+			}
+		}
+
+		
+	}
 
 	return (
 		<div className="modal">
-			<div className="modal__content">
+			<form className="modal__content">
 				<Input
 					type="text"
 					name="name"
 					placeholder="Mon pseudo de connexion"
 					isFocus={true}
-					value={login}
+					value={loginInputValue}
 					onChange={loginInputHandler}
 					autoComplete={false}
 				/>
@@ -31,7 +54,7 @@ export default function ModalLog() {
 					type="password"
 					name="password"
 					placeholder="Mon mot de passe"
-					value={password}
+					value={passwordInputValue}
 					onChange={passwordInputHandler}
 					autoComplete={false}
 				/>
@@ -44,9 +67,10 @@ export default function ModalLog() {
 					<Button
 						type="submit"
 						label="Valider"
+						onClick={submitButtonHandler}
 					/>
 				</div>
-			</div>
+			</form>
 		</div>
 	)
 }
