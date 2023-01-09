@@ -1,5 +1,10 @@
 const baseApiUrl = process.env.REACT_APP_API_BASE_URL + '/api';
 
+// Login URL
+export const loginUrl = () => {
+	return `${baseApiUrl}/user/login`;
+}
+
 // Families URL
 export const familyUrl = (arg?: boolean | number): string => {
 	if (arg) {

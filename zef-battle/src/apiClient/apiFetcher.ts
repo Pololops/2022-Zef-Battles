@@ -1,20 +1,23 @@
-interface FetchOptions {
-	method: string,
-	headers: {[key: string]: string},
-	body?: BodyInit | null | undefined
+type APIFetcherArgumentsType = {
+	url: string
+	method?: 'GET' | 'POST' | 'UPDATE' | 'DELETE'
+	body?: BodyInit
+	dataType?: 'formData'
 }
 
-type fetchReturn = {
-	statusCode: number,
-	data: {[key: string]: unknown}[] | string
-};
+type FetchOptions = {
+	method: string,
+	headers: {[key: string]: string},
+	body?: BodyInit,
+	signal?: AbortSignal
+}
 
-export default async function fetchAPI(
-	url: string, 
-	method?: string, 
-	data?: BodyInit | null | undefined, 
-	dataType?: string
-): Promise<fetchReturn> {
+const fetchAPI = async ({
+	url, 
+	method, 
+	body, 
+	dataType
+}: APIFetcherArgumentsType) => {
 	const timeBeforeAbort = 4000;
 	const controller = new AbortController();
 	const { signal } = controller;
@@ -28,13 +31,13 @@ export default async function fetchAPI(
 		},
 	};
 
-	if (method !== 'GET' && method !== 'DELETE' && data) {
+	if (method !== 'GET' && method !== 'DELETE' && body) {
 		if (dataType && dataType === 'formData') {
 			options.headers.Accept = 'application/json, text/plain, */*';
 			delete options.headers['Content-Type']; // = 'Content-Type': 'multipart/form-data'
-			options.body = data;
+			options.body = body;
 		} else {
-			options.body = JSON.stringify(data);
+			options.body = JSON.stringify(body);
 		}
 	}
 
@@ -68,3 +71,5 @@ export default async function fetchAPI(
 		clearTimeout(timeout);
 	}
 }
+
+export default fetchAPI;
