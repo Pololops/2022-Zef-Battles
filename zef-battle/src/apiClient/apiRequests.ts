@@ -26,9 +26,7 @@ type FamilyReturnType = []
 
 
 type CharacterCreateBodyType = {
-	name: string,
-	family_id: number,
-	file: string
+	data: FormData
 }
 type CharacterReturnType = []
 
@@ -69,7 +67,7 @@ export const postNewCharacter: APIRequestWithIdAndBodyType<CharacterCreateBodyTy
 	return await fetchAPI({
 		url: characterInFamilyUrl(familyId),
 		method: 'POST',
-		body: { ...data } as BodyInit & CharacterCreateBodyType,
+		body: data as BodyInit & CharacterCreateBodyType,
 		dataType: 'formData',
 	});
 };
