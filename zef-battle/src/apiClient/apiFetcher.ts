@@ -33,7 +33,7 @@ const fetchAPI = async ({
 
 	if (method !== 'GET' && method !== 'DELETE' && body) {
 		if (dataType && dataType === 'formData') {
-			options.headers.Accept = 'application/json, text/plain, */*';
+			options.headers.Accept = 'application/json, text/plain, text/html, */*';
 			delete options.headers['Content-Type']; // = 'Content-Type': 'multipart/form-data'
 			options.body = body;
 		} else {

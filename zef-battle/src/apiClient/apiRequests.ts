@@ -28,7 +28,7 @@ type FamilyReturnType = []
 type CharacterCreateBodyType = {
 	data: FormData
 }
-type CharacterReturnType = []
+type CharacterReturnType = {}
 
 type CapacityCreateBodyType = {
 	name: string
@@ -63,7 +63,7 @@ export const deleteFamily: APIRequestWithIdType<DeleteReturnType> = async (famil
 	return await fetchAPI({url: familyUrl(familyId), method: 'DELETE'});
 };
 
-export const postNewCharacter: APIRequestWithIdAndBodyType<CharacterCreateBodyType, CharacterReturnType> = async (familyId, data) => {
+export const postNewCharacter: APIRequestWithIdAndBodyType<CharacterCreateBodyType, CharacterReturnType> = async (familyId, { data }) => {
 	return await fetchAPI({
 		url: characterInFamilyUrl(familyId),
 		method: 'POST',
@@ -79,11 +79,11 @@ export const deleteCharacter: APIRequestWithIdType<DeleteReturnType> = async (ch
 	});
 };
 
-export const addCharacterCapacity: APIRequestWithIdAndBodyType<CapacityCreateBodyType, CapacityReturnType> = async (characterId, data) => {
+export const addCharacterCapacity: APIRequestWithIdAndBodyType<FormData, CapacityReturnType> = async (characterId, data) => {
 	return await fetchAPI({ 
 		url: characterCapacityUrl(characterId), 
 		method: 'POST', 
-		body: { ...data } as BodyInit & CapacityCreateBodyType,
+		body: data as BodyInit,
 	});
 };
 
