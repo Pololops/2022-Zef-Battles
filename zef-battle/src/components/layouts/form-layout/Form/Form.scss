@@ -12,7 +12,7 @@
 
 	.message {
 		position: absolute;
-		top: 1.9em;
+		margin-top: 2.5em;
 		left: -0.5em;
 		width: calc(100% + 1em);
 		text-align: justify;
@@ -22,7 +22,7 @@
 		font-size: 0.9rem;
 		padding: 0.5rem 0.7em;
 		box-shadow: 0 1px 30px black;
-		z-index: 1;
+		z-index: 2;
 
 		&::before {
 			content: '';
