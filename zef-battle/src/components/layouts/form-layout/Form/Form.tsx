@@ -7,7 +7,9 @@ import {
 	useCallback, 
 	SetStateAction, 
 	ChangeEvent, 
-	Dispatch 
+	Dispatch, 
+	FormEvent,
+	ChangeEventHandler
 } from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
 import {
@@ -20,6 +22,7 @@ import Button from '../Button/Button';
 import DropZone from '../DropZone/DropZone';
 import Message from '../Message/Message';
 import { FileWithPath } from 'react-dropzone';
+import { FormEventHandler } from 'react';
 
 interface FileWithPreview extends File {
   readonly preview?: string;
@@ -63,7 +66,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 		})));
 	}, []);
 
-	const submitHandler = async (event: { preventDefault: () => void }) => {
+	const submitHandler: FormEventHandler = async (event) => {
 		event.preventDefault();
 
 		if (nameInputValue === '') {
@@ -71,12 +74,13 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 			return setMissingValue('name')
 		}
 
-		if (!isFamilyForm &&droppedFiles.length === 0) {
+		if (!isFamilyForm && droppedFiles.length === 0) {
 			setErrorMessage(`Tu as oublié de déposer une image.`)
 			return setMissingValue('file')
 		}
 
-		if (isFamilyForm) {
+		try {
+			if (isFamilyForm) {
 			const { statusCode, data } = await postNewFamily({
 				name: nameInputValue,
 			});
@@ -101,10 +105,11 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 				});
 
 				formCloser();
-			} else {}
+			}
 		}
-
-		
+		} catch (error) {
+			console.log(error)
+		}
 	};
 
 	const unloadAfterDelay = () => {

@@ -9,7 +9,8 @@
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 9;
-
+  animation-duration: 300ms;
+  animation-name: fadein;
 
   &__content {
     max-width: 500px;
@@ -25,5 +26,15 @@
       justify-content: center;
       gap: 2em;
     }
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+     opacity: 1;
   }
 }
