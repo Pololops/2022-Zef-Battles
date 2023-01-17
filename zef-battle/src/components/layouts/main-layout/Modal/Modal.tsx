@@ -1,6 +1,6 @@
 import './Modal.scss'
 
-import { useContext, useState, KeyboardEventHandler, FormEventHandler, FormEvent, MouseEventHandler, FormHTMLAttributes } from 'react';
+import { useContext, useState, KeyboardEventHandler, FormEventHandler } from 'react';
 import { ModalContext } from '../../../../contexts/modalContext'
 
 import Button from '../../form-layout/Button/Button'
@@ -8,7 +8,6 @@ import Input from '../../form-layout/Input/Input'
 import Message from '../../form-layout/Message/Message'
 
 import { login as loginRequest } from "../../../../apiClient/apiRequests";
-import Form from '../../form-layout/Form/Form';
 
 export default function ModalLog() {
 	const { setIsVisible } = useContext(ModalContext)
