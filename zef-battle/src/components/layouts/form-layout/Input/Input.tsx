@@ -14,7 +14,7 @@ interface Props {
 	autoComplete?: boolean,
 	onChange?: React.ChangeEventHandler,
 	onKeyPress?: React.KeyboardEventHandler,
-	isFocus?: boolean,
+	isFocus?: boolean | 'alwaysFocus',
 	readOnly?: true,
 }
 
@@ -43,11 +43,11 @@ export default function Input({
 	autoComplete = true,
 	onChange,
 	onKeyPress,
-	isFocus = false,
+	isFocus,
 	readOnly,
 }: Props) {
 	const [className, setClassName] = useState('input');
-	let focus = useAutoFocus(isFocus);
+	let focus = useAutoFocus(isFocus ?? false);
 
 	useEffect(() => {
 		setClassName(levelClassName('input', Number(value)));
@@ -65,7 +65,7 @@ export default function Input({
 			placeholder={placeholder}
 			autoComplete={autoComplete ? 'on' : 'off'}
 			onChange={onChange}
-			onKeyPress={onKeyPress}
+			onKeyDown={onKeyPress}
 			readOnly={readOnly}
 		/>
 	);

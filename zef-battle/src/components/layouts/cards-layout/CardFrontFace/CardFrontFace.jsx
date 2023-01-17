@@ -105,7 +105,11 @@ export default function CardFrontFace({
 						/>
 					</div>
 				) : (
-					<Button type="" label="Modifier" onClick={onClickEditorButton} />
+					<Button
+						type=""
+						label="Modifier"
+						onClick={onClickEditorButton}
+					/>
 				)}
 			</div>
 
@@ -134,7 +138,7 @@ export default function CardFrontFace({
 								autoComplete={false}
 								onChange={changeCapacityInputValueHandler}
 								onKeyPress={inputKeyPressCapacityHandler}
-								isFocus={true}
+								isFocus="alwaysFocus"
 							/>
 							{capacityLevelInputValue}
 						</div>
@@ -151,7 +155,7 @@ export default function CardFrontFace({
 				)}
 			</div>
 		</div>
-	);
+	)
 }
 
 CardFrontFace.propTypes = {

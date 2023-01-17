@@ -110,7 +110,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 				placeholder={isFamilyForm ? 'Nom de Famille' : 'Nom du personnage'}
 				autoComplete={false}
 				onChange={(event) => inputChangeHandler(event, setNameInputValue)}
-				isFocus={isActive}
+				isFocus='alwaysFocus'
 			/>
 			{errorMessage !== '' && <Message message={errorMessage} />}
 
