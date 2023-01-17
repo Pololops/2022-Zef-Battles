@@ -1,11 +1,14 @@
 import './DropZone.scss';
 
 import { useMemo, useEffect } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { DropzoneProps, useDropzone } from 'react-dropzone';
 
-import PropTypes from 'prop-types';
+interface FileWithPreview extends File {
+    readonly preview?: string;
+}
+type Props = DropzoneProps & { droppedFiles: FileWithPreview[] }
 
-export default function Dropzone({ droppedFiles, onDrop }) {
+export default function Dropzone({ droppedFiles, onDrop }: Props) {
 	const {
 		getRootProps,
 		getInputProps,
@@ -34,7 +37,7 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 
 	useEffect(() => {
 		return () =>
-			droppedFiles.forEach((file) => URL.revokeObjectURL(file.preview));
+			droppedFiles.forEach(({ preview }) => preview && URL.revokeObjectURL(preview));
 	}, [droppedFiles]);
 
 	return (
@@ -59,16 +62,9 @@ export default function Dropzone({ droppedFiles, onDrop }) {
 					src={droppedFiles[0].preview}
 					alt={droppedFiles[0].name}
 					className="dropzone__preview-img"
-					onLoad={() => {
-						URL.revokeObjectURL(droppedFiles[0].preview);
-					}}
+					onLoad={() => droppedFiles[0].preview && URL.revokeObjectURL(droppedFiles[0].preview)}
 				/>
 			)}
 		</div>
 	);
 }
-
-Dropzone.propTypes = {
-	droppedFiles: PropTypes.array.isRequired,
-	onDrop: PropTypes.func.isRequired,
-};

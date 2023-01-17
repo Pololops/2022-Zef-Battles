@@ -1,8 +1,14 @@
-import PropTypes from 'prop-types';
-
 import './Form.scss';
 
-import { useState, useEffect, useContext, useCallback } from 'react';
+import { 
+	useState, 
+	useEffect, 
+	useContext, 
+	useCallback, 
+	SetStateAction, 
+	ChangeEvent, 
+	Dispatch 
+} from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
 import {
 	postNewFamily,
@@ -13,19 +19,31 @@ import Input from '../Input/Input';
 import Button from '../Button/Button';
 import DropZone from '../DropZone/DropZone';
 import Message from '../Message/Message';
+import { FileWithPath } from 'react-dropzone';
+
+interface FileWithPreview extends File {
+  readonly preview?: string;
+}
+
+interface Props {
+	familyId: number,
+	isFamilyForm?: boolean,
+	formCloser: () => SetStateAction<boolean>,
+	isActive?: boolean
+}
 
 const regexpToMatch =
 	/^([0-9@-Za-zÀ-ÖØ-öø-ÿ-&'_^])([0-9@-Za-zÀ-ÖØ-öø-ÿ-&' _^]*)$/;
 
-export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
+export default function Form({ isFamilyForm, familyId, formCloser, isActive }: Props) {
 	const { dispatch } = useContext(CardsContext);
 
 	const [nameInputValue, setNameInputValue] = useState('');
-	const [droppedFiles, setDroppedFiles] = useState([]);
+	const [droppedFiles, setDroppedFiles] = useState([] as FileWithPath[]);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	const inputChangeHandler = (event, setState) => {
-		const value = event.target.value;
+	const inputChangeHandler = (event: ChangeEvent<HTMLInputElement>, setState: Dispatch<SetStateAction<string>>) => {
+		const value = event.currentTarget.value;
 
 		if (value === '') return setState('');
 
@@ -37,17 +55,13 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 		}
 	};
 
-	const dropzoneHandler = useCallback((acceptedfiles) => {
-		setDroppedFiles(
-			acceptedfiles.map((files) =>
-				Object.assign(files, {
-					preview: URL.createObjectURL(files),
-				}),
-			),
-		);
+	const dropzoneHandler = useCallback((acceptedfiles: FileWithPreview[]) => {
+		setDroppedFiles(acceptedfiles.map((files) => Object.assign(files, {
+			preview: URL.createObjectURL(files),
+		})));
 	}, []);
 
-	const submitButtonClickHandler = async (event) => {
+	const submitButtonClickHandler = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 
 		if (nameInputValue === '')
@@ -55,9 +69,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 
 		if (isFamilyForm) {
 			const { statusCode, data } = await postNewFamily({
-				body: {
-					name: nameInputValue,
-				},
+				name: nameInputValue,
 			});
 
 			if (statusCode === 200) {
@@ -66,24 +78,32 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 		} else {
 			const formData = new FormData();
 			formData.append('name', nameInputValue);
-			formData.append('family_id', familyId);
+			formData.append('family_id', familyId.toString());
 			formData.append('file', droppedFiles[0]);
 
-			const { statusCode, data } = await postNewCharacter({
-				familyId,
-				body: formData,
+			const { statusCode, data } = await postNewCharacter(familyId, {
+				data: formData
 			});
 
 			if (statusCode === 200) {
 				dispatch({
 					type: 'CREATE_CHARACTER_CARD',
-					payload: { ...data, family_id: familyId },
+					payload: { data, family_id: familyId },
 				});
-			}
+
+				formCloser();
+			} else {}
 		}
 
-		formCloser();
+		
 	};
+
+	const unloadAfterDelay = () => {
+		setTimeout(() => {
+			setNameInputValue('');
+			setDroppedFiles([]);
+		}, 500);
+	}
 
 	useEffect(() => {
 		if (isActive) {
@@ -91,11 +111,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 			setErrorMessage('');
 		}
 
-		return () =>
-			setTimeout(() => {
-				setNameInputValue('');
-				setDroppedFiles([]);
-			}, 500);
+		return () => unloadAfterDelay()
 	}, [isActive]);
 
 	return (
@@ -139,15 +155,3 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }) {
 		</form>
 	);
 }
-
-Form.propTypes = {
-	isFamilyForm: PropTypes.bool,
-	familyId: PropTypes.number.isRequired,
-	isActive: PropTypes.bool,
-	formCloser: PropTypes.func,
-};
-
-Form.defaultProps = {
-	isFamilyForm: false,
-	isActive: false,
-};

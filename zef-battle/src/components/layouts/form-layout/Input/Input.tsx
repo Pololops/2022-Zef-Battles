@@ -12,7 +12,7 @@ interface Props {
 	step?: number,
 	placeholder?: string,
 	autoComplete?: boolean,
-	onChange?: React.ChangeEventHandler,
+	onChange?: React.ChangeEventHandler<HTMLInputElement>,
 	onKeyPress?: React.KeyboardEventHandler,
 	isFocus?: boolean | 'alwaysFocus',
 	readOnly?: true,
