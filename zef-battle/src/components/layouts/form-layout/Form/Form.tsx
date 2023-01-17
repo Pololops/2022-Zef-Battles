@@ -40,7 +40,9 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 
 	const [nameInputValue, setNameInputValue] = useState('');
 	const [droppedFiles, setDroppedFiles] = useState([] as FileWithPath[]);
+	const [missingValue, setMissingValue] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
+	
 
 	const inputChangeHandler = (event: ChangeEvent<HTMLInputElement>, setState: Dispatch<SetStateAction<string>>) => {
 		const value = event.currentTarget.value;
@@ -61,11 +63,18 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 		})));
 	}, []);
 
-	const submitButtonClickHandler = async (event: { preventDefault: () => void }) => {
+	const submitHandler = async (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 
-		if (nameInputValue === '')
-			return setErrorMessage(`Tu as oublié d'écrire un nom.`);
+		if (nameInputValue === '') {
+			setErrorMessage(`Tu as oublié d'écrire un nom.`)
+			return setMissingValue('name')
+		}
+
+		if (!isFamilyForm &&droppedFiles.length === 0) {
+			setErrorMessage(`Tu as oublié de déposer une image.`)
+			return setMissingValue('file')
+		}
 
 		if (isFamilyForm) {
 			const { statusCode, data } = await postNewFamily({
@@ -88,7 +97,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 			if (statusCode === 200) {
 				dispatch({
 					type: 'CREATE_CHARACTER_CARD',
-					payload: { data, family_id: familyId },
+					payload: data,
 				});
 
 				formCloser();
@@ -118,6 +127,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 		<form
 			className={`form ${isFamilyForm ? 'form--family' : 'form--character'}`}
 			method="post"
+			onSubmit={submitHandler}
 		>
 			<Input
 				type="text"
@@ -126,9 +136,9 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 				placeholder={isFamilyForm ? 'Nom de Famille' : 'Nom du personnage'}
 				autoComplete={false}
 				onChange={(event) => inputChangeHandler(event, setNameInputValue)}
-				isFocus='alwaysFocus'
+				isFocus={isActive}
 			/>
-			{errorMessage !== '' && <Message message={errorMessage} />}
+			{missingValue === 'name' && errorMessage !== '' && <Message message={errorMessage} />}
 
 			{!isFamilyForm && (
 				<>
@@ -137,10 +147,10 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 						name="family_id"
 						value={familyId.toString()}
 						autoComplete={false}
-						isFocus={false}
 						readOnly
 					/>
 					<DropZone droppedFiles={droppedFiles} onDrop={dropzoneHandler} />
+					{missingValue === 'file' && errorMessage !== '' && <Message message={errorMessage} />}
 				</>
 			)}
 
@@ -149,7 +159,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 				<Button
 					type="submit"
 					label="Valider"
-					onClick={submitButtonClickHandler}
+					onClick={submitHandler}
 				/>
 			</div>
 		</form>

@@ -51,7 +51,7 @@ export default function Card({
 	};
 
 	const clickToDeleteFamily = async () => {
-		const { statusCode } = await deleteFamily({ familyId });
+		const { statusCode } = await deleteFamily(familyId);
 
 		if (statusCode === 204) {
 			dispatch({
@@ -77,7 +77,7 @@ export default function Card({
 	};
 
 	const clickKillCharacterButtonHandler = async (event) => {
-		const { statusCode } = await deleteCharacter({ characterId: id });
+		const { statusCode } = await deleteCharacter(id);
 
 		if (statusCode === 204) {
 			setIskillingProgress(true);

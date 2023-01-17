@@ -1,5 +1,5 @@
 import './Input.scss';
-import { useEffect, useState } from 'react';
+import { ReactEventHandler, useEffect, useState } from 'react';
 
 import useAutoFocus from '../../../../hooks/useAutoFocusRef';
 
@@ -13,8 +13,10 @@ interface Props {
 	placeholder?: string,
 	autoComplete?: boolean,
 	onChange?: React.ChangeEventHandler<HTMLInputElement>,
-	onKeyPress?: React.KeyboardEventHandler,
-	isFocus?: boolean | 'alwaysFocus',
+	onKeyPress?: React.KeyboardEventHandler<HTMLInputElement>,
+	onMouseDown?: ReactEventHandler<HTMLInputElement>,
+	onMouseUp?: ReactEventHandler<HTMLInputElement>,
+	isFocus?: boolean,
 	readOnly?: true,
 }
 
@@ -43,11 +45,13 @@ export default function Input({
 	autoComplete = true,
 	onChange,
 	onKeyPress,
-	isFocus,
+	onMouseDown,
+	onMouseUp,
+	isFocus = false,
 	readOnly,
 }: Props) {
 	const [className, setClassName] = useState('input');
-	let focus = useAutoFocus(isFocus ?? false);
+	let focus = useAutoFocus(isFocus);
 
 	useEffect(() => {
 		setClassName(levelClassName('input', Number(value)));
@@ -66,6 +70,8 @@ export default function Input({
 			autoComplete={autoComplete ? 'on' : 'off'}
 			onChange={onChange}
 			onKeyDown={onKeyPress}
+			onMouseDown={onMouseDown}
+			onMouseUp={onMouseUp}
 			readOnly={readOnly}
 		/>
 	);

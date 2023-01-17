@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useAppearEffect = (index) => {
+const useAppearEffect = (index: number): boolean => {
 	const [isAppeared, setIsAppeared] = useState(false);
 
 	useEffect(() => {

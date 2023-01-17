@@ -10,6 +10,7 @@ import {
 import Capacity from '../Capacity/Capacity';
 import Button from '../../form-layout/Button/Button';
 import Input from '../../form-layout/Input/Input';
+import Message from '../../form-layout/Message/Message'
 
 export default function CardFrontFace({
 	id,
@@ -24,14 +25,18 @@ export default function CardFrontFace({
 	const { dispatch } = useContext(CardsContext);
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('');
 	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState('0');
+	const [isInputCapacityFocus, setIsInputCapacityFocus] = useState(true);
+	const [errorMessage, setErrorMessage] = useState('')
 
 	const changeCapacityInputValueHandler = (event) => {
+		setErrorMessage('')
 		setCapacityNameInputValue(event.target.value);
 	};
 
 	const changeCapacityLevelInputValueHandler = (event) => {
+		setErrorMessage('')
 		setCapacityLevelInputValue(event.target.value);
-	};
+	}
 
 	const clickCancelEditorButtonHandler = (event) => {
 		onClickCancelEditorButton(event);
@@ -47,12 +52,13 @@ export default function CardFrontFace({
 
 	const inputKeyPressCapacityHandler = async (event) => {
 		if (event.key === 'Enter') {
-			const { statusCode, data } = await addCharacterCapacity({
-				characterId: id,
-				body: {
-					name: capacityNameInputValue,
-					level: capacityLevelInputValue,
-				},
+			if (capacityNameInputValue === '') {
+				return setErrorMessage(`Tu as oublié d'indiquer une capacité.`)
+			}
+
+			const { statusCode, data } = await addCharacterCapacity(id, {
+				name: capacityNameInputValue,
+				level: capacityLevelInputValue,
 			});
 
 			if (statusCode === 200) {
@@ -69,10 +75,7 @@ export default function CardFrontFace({
 	const clickRemoveCapacityHandler = async (event, capacityId) => {
 		event.stopPropagation();
 
-		const { statusCode } = await removeCharacterCapacity({
-			characterId: id,
-			capacityId,
-		});
+		const { statusCode } = await removeCharacterCapacity(id, capacityId);
 
 		if (statusCode === 200) {
 			dispatch({
@@ -138,7 +141,7 @@ export default function CardFrontFace({
 								autoComplete={false}
 								onChange={changeCapacityInputValueHandler}
 								onKeyPress={inputKeyPressCapacityHandler}
-								isFocus="alwaysFocus"
+								isFocus={isInputCapacityFocus}
 							/>
 							{capacityLevelInputValue}
 						</div>
@@ -147,10 +150,13 @@ export default function CardFrontFace({
 							name="level"
 							value={capacityLevelInputValue}
 							onChange={changeCapacityLevelInputValueHandler}
+							onMouseDown={() => setIsInputCapacityFocus(false)}
+							onMouseUp={() => setIsInputCapacityFocus(true)}
 							min="0"
 							max="100"
 							step="5"
 						></Input>
+						{errorMessage !== '' && (<Message message={errorMessage} />)}
 					</div>
 				)}
 			</div>
