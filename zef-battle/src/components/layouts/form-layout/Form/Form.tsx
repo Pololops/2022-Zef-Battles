@@ -77,13 +77,12 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 			return setMissingValue('file')
 		}
 
-		try {
-			if (isFamilyForm) {
-			const { statusCode, data } = await postNewFamily({
+		if (isFamilyForm) {
+			const { status, data } = await postNewFamily({
 				name: nameInputValue,
 			});
 
-			if (statusCode === 200) {
+			if (status === 'OK') {
 				dispatch({ type: 'CREATE_FAMILY_CARD', payload: data });
 			}
 		} else {
@@ -92,11 +91,9 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 			formData.append('family_id', familyId.toString());
 			formData.append('file', droppedFiles[0]);
 
-			const { statusCode, data } = await postNewCharacter(familyId, {
-				data: formData
-			});
+			const { status, data } = await postNewCharacter(familyId, formData);
 
-			if (statusCode === 200) {
+			if (status === 'OK') {
 				dispatch({
 					type: 'CREATE_CHARACTER_CARD',
 					payload: data,
@@ -104,9 +101,6 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 
 				formCloser();
 			}
-		}
-		} catch (error) {
-			console.log(error)
 		}
 	};
 

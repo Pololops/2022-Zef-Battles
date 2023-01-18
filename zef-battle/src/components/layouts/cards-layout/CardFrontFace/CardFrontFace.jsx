@@ -98,7 +98,7 @@ export default function CardFrontFace({
 					<div className="form__buttons">
 						<Button
 							type="submit"
-							label="Garder"
+							label="Sauver"
 							onClick={clickCancelEditorButtonHandler}
 						/>
 						<Button

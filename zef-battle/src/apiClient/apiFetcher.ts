@@ -1,75 +1,93 @@
-type APIFetcherArgumentsType = {
+import ApiError from './apiError'
+
+type RequestAPIConstructor = {
 	url: string
 	method?: 'GET' | 'POST' | 'UPDATE' | 'DELETE'
-	body?: BodyInit
-	dataType?: 'formData'
+	body?: unknown
+	hasFormdata?: boolean
 }
 
-type FetchOptions = {
-	method: string,
-	headers: {[key: string]: string},
-	body?: BodyInit,
-	signal?: AbortSignal
-}
+class RequestAPI {
+	private TIME_BEFORE_ABORT: number = 7000
 
-const fetchAPI = async ({
-	url, 
-	method, 
-	body, 
-	dataType
-}: APIFetcherArgumentsType) => {
-	const timeBeforeAbort = 4000;
-	const controller = new AbortController();
-	const { signal } = controller;
-	const timeout = setTimeout(() => controller.abort(), timeBeforeAbort);
+	private url: string
+	private hasFormdata: boolean
+	private method: 'GET' | 'POST' | 'UPDATE' | 'DELETE'
+	private headers: { [key: string]: string }
+	private body?: unknown
+	private abortController: AbortController
+	private abortTimeOut: ReturnType<typeof setTimeout>
 
-	const options: FetchOptions = {
-		method: method ?? 'GET',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json',
-		},
-	};
+	constructor({url, method = 'GET', body, hasFormdata = false}: RequestAPIConstructor) {
+		this.url = url
+		this.method = method
+		this.hasFormdata = hasFormdata ?? false
+		this.headers = this.setHeaders()
+		this.body = this.setBody(body)
+		this.abortController = this.getAbortController()
+		this.abortTimeOut = this.setTimeOutBeforeAbort(this.abortController)
+	}
 
-	if (method !== 'GET' && method !== 'DELETE' && body) {
-		if (dataType && dataType === 'formData') {
-			options.headers.Accept = 'application/json, text/plain, text/html, */*';
-			delete options.headers['Content-Type']; // = 'Content-Type': 'multipart/form-data'
-			options.body = body;
-		} else {
-			options.body = JSON.stringify(body);
+	async fetch() {
+		try {
+			const response = await fetch(this.url, {
+				method: this.method,
+				headers: this.headers,
+				body: this.body as BodyInit,
+				signal: this.abortController.signal
+			});
+
+			if (!response.ok) throw new ApiError(await response.json())
+
+			return {
+				status: 'OK',
+				statusCode: response.status,
+				data: response.status !== 204 && await response.json(),
+			};
+		} catch (error) {
+			if (error instanceof ApiError) return error.format
+
+			return new ApiError({
+				statusCode: 500,
+				message: 'Une erreur inconnue est survenue !'
+			}).format
+		} finally {
+			clearTimeout(this.abortTimeOut)
 		}
 	}
 
-	try {
-		const response = await fetch(url, {
-			...options,
-			signal,
-		});
+	setBody<T>(body: T): string | T | undefined {
+		if (!body) return undefined
+		return this.isFormdataBody() ? body : JSON.stringify(body)
+	}
 
-		if (response.status === 404) throw new Error('Données introuvable');
+	isFormdataBody(): boolean {
+		const hasFormdata = this.hasFormdata
+		return (this.isPostOrPatchRequest() && hasFormdata)
+	}
 
-		return {
-			statusCode: response.status,
-			data: response.status !== 204 ? await response.json() : null,
-		};
-	} catch (error) {
-		if (error instanceof Error) {
-			if (error.name === 'AbortError') {
-				return {
-					statusCode: 408,
-					data: 'Operation timeout !'
-				};
-			}
-		} 
+	isPostOrPatchRequest(): boolean {
+		const method = this.method
+		return (method !== 'GET' && method !== 'DELETE')
+	}
 
-		return {
-				statusCode: 500,
-				data: 'Une erreur est survenue !',
-			};
-	} finally {
-		clearTimeout(timeout);
+	setHeaders(): { [key: string]: string }{
+		const newHeaders: { [key: string]: string } = {
+			Accept: this.isFormdataBody() ? 'application/json, text/plain, text/html, */*' : 'application/json'
+		}
+		if (!this.isFormdataBody()) newHeaders['Content-Type'] = 'application/json'
+
+		return { ...this.headers, ...newHeaders }
+	}
+
+	getAbortController(): AbortController {
+		const controller = new AbortController();
+		return controller
+	}
+
+	setTimeOutBeforeAbort(controller: AbortController) {
+		return setTimeout(() => controller.abort(), this.TIME_BEFORE_ABORT)
 	}
 }
 
-export default fetchAPI;
+export default RequestAPI
