@@ -53,14 +53,14 @@ export default function ModalLog() {
 		}
 	}
 
-	const escapeKeyDownHandler: KeyboardEventHandler<HTMLElement> = (event) => {
+	const keyDownHandler: KeyboardEventHandler<HTMLElement> = (event) => {
 		if (event.key === 'Escape') setIsVisible(false)
 		if (event.key === 'Enter') submitHandler(event)
 	}
 	
 	return (
 		<div className="modal">
-			<form className="modal__content" method="post" onKeyDown={escapeKeyDownHandler} onSubmit={submitHandler}>
+			<form className="modal__content" method="post" onKeyDown={keyDownHandler} onSubmit={submitHandler}>
 				<Input
 					type="text"
 					name="name"
