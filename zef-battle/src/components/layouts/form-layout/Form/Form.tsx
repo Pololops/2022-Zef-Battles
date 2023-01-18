@@ -11,8 +11,8 @@ import {
 } from 'react';
 import { CardsContext } from '../../../../contexts/cardsContext';
 import {
-	postNewFamily,
-	postNewCharacter,
+	postFamily,
+	postCharacter,
 } from '../../../../apiClient/apiRequests';
 
 import Input from '../Input/Input';
@@ -78,7 +78,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 		}
 
 		if (isFamilyForm) {
-			const { status, data } = await postNewFamily({
+			const { status, data } = await postFamily({
 				name: nameInputValue,
 			});
 
@@ -91,7 +91,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 			formData.append('family_id', familyId.toString());
 			formData.append('file', droppedFiles[0]);
 
-			const { status, data } = await postNewCharacter(familyId, formData);
+			const { status, data } = await postCharacter(familyId, formData);
 
 			if (status === 'OK') {
 				dispatch({

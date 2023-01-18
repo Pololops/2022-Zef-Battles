@@ -34,7 +34,7 @@ export const getFamilies = async (withCharacters: boolean): Promise<ReturnType> 
 	}).fetch()
 }
 
-export const postNewFamily = async (body: FamilyCreateBodyType): Promise<ReturnType> => {
+export const postFamily = async (body: FamilyCreateBodyType): Promise<ReturnType> => {
 	return await new RequestAPI({
 		url: familyUrl(), 
 		method: 'POST', 
@@ -49,7 +49,7 @@ export const deleteFamily = async (familyId: number): Promise<ReturnType> => {
 	}).fetch();
 }
 
-export const postNewCharacter = async (familyId: number, body: FormData): Promise<ReturnType> => {
+export const postCharacter = async (familyId: number, body: FormData): Promise<ReturnType> => {
 	return await new RequestAPI({
 		url: characterInFamilyUrl(familyId),
 		method: 'POST',
