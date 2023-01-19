@@ -2,7 +2,7 @@ import './Navbar.scss'
 
 import { useContext } from 'react'
 
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { ModalContext } from '../../../contexts/modalContext'
 
 export default function Navbar() {
@@ -14,9 +14,9 @@ export default function Navbar() {
 				<li>
 					<NavLink
 						to="/"
-						className={({ isActive }) => {
+						className={`navbar__link ${(isActive: boolean) => {
 							return isActive ? 'active' : undefined
-						}}
+						}}`}
 						end // prevent isActive = true when children routes are active
 					>
 						Accueil
@@ -25,20 +25,19 @@ export default function Navbar() {
 				<li>
 					<NavLink
 						to="/families"
-						className={({ isActive }) => {
+						className={`navbar__link ${(isActive: boolean) => {
 							return isActive ? 'active' : undefined
-						}}
+						}}`}
 					>
 						Cartes
 					</NavLink>
 				</li>
 				<li>
-					<Link
-						className=""
-						onClick={() => setIsVisible(true)}
-					>
+					<span
+						className="navbar__link"
+						onClick={() => setIsVisible(true)}					>
 						Connexion
-					</Link>
+					</span>
 				</li>
 			</ul>
 		</nav>
