@@ -7,13 +7,19 @@ type RequestAPIConstructor = {
 	hasFormdata?: boolean
 }
 
+type Headers = {
+	Accept: string,
+	'Content-Type'?: string
+	Authorization?: string
+}
+
 class RequestAPI {
 	private TIME_BEFORE_ABORT: number = 7000
 
 	private url: string
 	private hasFormdata: boolean
 	private method: 'GET' | 'POST' | 'UPDATE' | 'DELETE'
-	private headers: { [key: string]: string }
+	private headers: Headers
 	private body?: unknown
 	private abortController: AbortController
 	private abortTimeOut: ReturnType<typeof setTimeout>
@@ -56,9 +62,37 @@ class RequestAPI {
 		}
 	}
 
+	getAbortController(): AbortController {
+		const controller = new AbortController();
+		return controller
+	}
+
+
 	setBody<T>(body: T): string | T | undefined {
 		if (!body) return undefined
 		return this.isFormdataBody() ? body : JSON.stringify(body)
+	}
+
+	setHeaders(): Headers {
+		const isFormdataBody = this.isFormdataBody()
+		const token = this.getToken()
+
+		const newHeaders: { [key: string]: string } = {
+			Accept: isFormdataBody ? 'application/json, text/plain, text/html, */*' : 'application/json'
+		}
+		if (!isFormdataBody) newHeaders['Content-Type'] = 'application/json'
+		if (token) newHeaders.Authorization = `Bearer ${token}`
+
+		return { ...this.headers, ...newHeaders }
+	}
+
+	setTimeOutBeforeAbort(controller: AbortController) {
+		return setTimeout(() => controller.abort(), this.TIME_BEFORE_ABORT)
+	}
+
+	getToken(): string | undefined {
+		const token = window.localStorage.token
+		return token || undefined
 	}
 
 	isFormdataBody(): boolean {
@@ -69,24 +103,6 @@ class RequestAPI {
 	isPostOrPatchRequest(): boolean {
 		const method = this.method
 		return (method !== 'GET' && method !== 'DELETE')
-	}
-
-	setHeaders(): { [key: string]: string }{
-		const newHeaders: { [key: string]: string } = {
-			Accept: this.isFormdataBody() ? 'application/json, text/plain, text/html, */*' : 'application/json'
-		}
-		if (!this.isFormdataBody()) newHeaders['Content-Type'] = 'application/json'
-
-		return { ...this.headers, ...newHeaders }
-	}
-
-	getAbortController(): AbortController {
-		const controller = new AbortController();
-		return controller
-	}
-
-	setTimeOutBeforeAbort(controller: AbortController) {
-		return setTimeout(() => controller.abort(), this.TIME_BEFORE_ABORT)
 	}
 }
 
