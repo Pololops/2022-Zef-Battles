@@ -5,6 +5,14 @@ import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { ModalContext } from '../../../contexts/modalContext'
 
+const isConnected = (): boolean => {
+	return window.localStorage.userName === undefined
+}
+
+const logout = (): void => {
+	window.localStorage.clear()
+}
+
 export default function Navbar() {
 	const { setIsVisible } = useContext(ModalContext)
 
@@ -33,11 +41,21 @@ export default function Navbar() {
 					</NavLink>
 				</li>
 				<li>
-					<span
-						className="navbar__link"
-						onClick={() => setIsVisible(true)}					>
-						Connexion
-					</span>
+					{
+						isConnected()
+						? <span
+								className="navbar__link"
+								onClick={() => setIsVisible(true)}
+							>
+								Connexion
+							</span>
+						:	<span
+								className="navbar__link"
+								onClick={logout}
+							>
+								Déconnexion
+							</span>
+					}
 				</li>
 			</ul>
 		</nav>
