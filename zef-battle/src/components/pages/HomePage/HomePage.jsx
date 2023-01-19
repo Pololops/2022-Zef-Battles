@@ -1,10 +1,10 @@
-import { useContext } from 'react';
-import { CardsContext } from '../../../contexts/cardsContext';
+import { useContext } from 'react'
+import { CardsContext } from '../../../contexts/cardsContext'
 
-import App from '../../App/App';
+import App from '../../App/App'
 
 export default function HomePage() {
-	const { isLoading, errorMessage, families } = useContext(CardsContext);
+	const { isLoading, errorMessage, families } = useContext(CardsContext)
 	return (
 		<>
 			<h2>Page d'accueil</h2>
@@ -14,5 +14,5 @@ export default function HomePage() {
 			</p>
 			<App />
 		</>
-	);
+	)
 }

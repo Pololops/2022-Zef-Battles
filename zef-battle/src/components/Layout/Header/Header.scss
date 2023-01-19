@@ -1,0 +1,21 @@
+@use '../../../styles/vars';
+
+.header {
+	background-color: rgba(0, 0, 0, 0.8);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	width: auto;
+	padding: 2rem 2rem 1rem 2rem;
+	box-shadow: 0 1px 50px black;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+	position: sticky;
+	top: 0;
+	z-index: 5;
+
+	&__title {
+		color: vars.$primaryColor;
+		font-size: 2rem;
+		flex-shrink: 1;
+	}
+}

@@ -1,9 +1,9 @@
-import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import React from 'react'
+import { createBrowserRouter } from 'react-router-dom'
 
-import CardsPage from '../components/pages/CardsPage/CardsPage';
-import ErrorPage from '../components/pages/ErrorPage/ErrorPage';
-import App from '../components/App/App';
+import CardsPage from '../components/pages/CardsPage/CardsPage'
+import ErrorPage from '../components/pages/ErrorPage/ErrorPage'
+import App from '../components/App/App'
 
 export const router = createBrowserRouter([
 	{
@@ -23,4 +23,4 @@ export const router = createBrowserRouter([
 			},
 		],
 	},
-]);
+])

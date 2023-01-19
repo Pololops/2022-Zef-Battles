@@ -1,36 +1,36 @@
-import { useContext, useState, useEffect, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
-import { CardsContext } from '../../../contexts/cardsContext';
+import { useContext, useState, useEffect, useMemo } from 'react'
+import { useParams } from 'react-router-dom'
+import { CardsContext } from '../../../contexts/cardsContext'
 
-import Cards from '../../layouts/cards-layout/Cards/Cards';
+import Cards from '../../Cards/Cards'
 
 export default function FamiliesPage() {
-	const { isLoading, errorMessage, families } = useContext(CardsContext);
-	const { id } = useParams();
+	const { isLoading, errorMessage, families } = useContext(CardsContext)
+	const { id } = useParams()
 
-	const [characters, setCharacters] = useState([]);
-	const [familyName, setFamilyName] = useState('');
-	const [familyId, setFamilyId] = useState(0);
+	const [characters, setCharacters] = useState([])
+	const [familyName, setFamilyName] = useState('')
+	const [familyId, setFamilyId] = useState(0)
 
 	const getFamilyCharacters = useMemo(
 		() => () => {
-			const familyId = parseInt(id);
-			const findFamily = families.find((family) => family.id === familyId);
+			const familyId = parseInt(id)
+			const findFamily = families.find((family) => family.id === familyId)
 
 			if (findFamily) {
-				setFamilyName(findFamily.name);
-				setFamilyId(findFamily.id);
-				setCharacters(findFamily.characters);
+				setFamilyName(findFamily.name)
+				setFamilyId(findFamily.id)
+				setCharacters(findFamily.characters)
 			}
 		},
 		[families, id],
-	);
+	)
 
 	useEffect(() => {
 		if (families.length > 0 && id) {
-			getFamilyCharacters();
+			getFamilyCharacters()
 		}
-	}, [getFamilyCharacters, families, id]);
+	}, [getFamilyCharacters, families, id])
 
 	return (
 		<>
@@ -45,8 +45,13 @@ export default function FamiliesPage() {
 					familyId={familyId}
 				/>
 			) : (
-				families && <Cards data={families} isFamilyCard={true} />
+				families && (
+					<Cards
+						data={families}
+						isFamilyCard={true}
+					/>
+				)
 			)}
 		</>
-	);
+	)
 }

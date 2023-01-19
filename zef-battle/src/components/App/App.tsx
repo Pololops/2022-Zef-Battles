@@ -7,9 +7,9 @@ import { CardsContext } from '../../contexts/cardsContext';
 import { getFamilies } from '../../apiClient/apiRequests';
 
 import { Outlet } from 'react-router-dom';
-import Modal from '../layouts/main-layout/Modal/Modal'
-import Header from '../layouts/main-layout/Header/Header';
-import Main from '../layouts/main-layout/Main/Main';
+import Modal from '../Layout/Modal/Modal'
+import Header from '../Layout/Header/Header';
+import Main from '../Layout/Main/Main';
 
 export default function App() {
 	const { families, setIsLoading, dispatch } = useContext(CardsContext);
