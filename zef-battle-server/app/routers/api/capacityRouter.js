@@ -1,13 +1,14 @@
 import { Router } from 'express';
 const router = Router();
 
-import sanitize from '../../middlewares/sanitizerHandler.js';
-import validate from '../../validation/validator.js';
-import { createSchema, updateSchema } from '../../validation/schemas/capacitySchema.js';
+import { tokenVerifier } from '../../middlewares/tokenManager.js'
+import sanitize from '../../middlewares/sanitizerHandler.js'
+import validate from '../../validation/validator.js'
+import { createSchema, updateSchema } from '../../validation/schemas/capacitySchema.js'
 
-import controllerHandler from '../../middlewares/controllerHandler.js';
+import controllerHandler from '../../middlewares/controllerHandler.js'
 
-import controller from '../../controllers/capacityController.js';
+import controller from '../../controllers/capacityController.js'
 
 router
 	.route('/')
@@ -40,10 +41,11 @@ router
 	 * }
 	 */
 	.post(
+		controllerHandler(tokenVerifier),
 		sanitize('body'),
 		validate('body', createSchema),
 		controllerHandler(controller.create),
-	);
+	)
 
 router
 	.route('/:id(\\d+)')
@@ -69,6 +71,7 @@ router
 	 * }
 	 */
 	.patch(
+		controllerHandler(tokenVerifier),
 		sanitize('body'),
 		validate('body', updateSchema),
 		controllerHandler(controller.update),
@@ -83,6 +86,9 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - capacity not found - application/json
 	 */
-	.delete(controllerHandler(controller.delete));
+	.delete(
+		controllerHandler(tokenVerifier),
+		controllerHandler(controller.delete),
+	)
 
 export default router;

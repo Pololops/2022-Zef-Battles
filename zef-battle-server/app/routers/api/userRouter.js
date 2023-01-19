@@ -99,9 +99,9 @@ router
 	 * }
 	 */
 	.patch(
+		controllerHandler(tokenVerifier),
 		sanitize('body'),
 		validate('body', updateSchema),
-		controllerHandler(tokenVerifier),
 		controllerHandler(isLegitOrAdmin),
 		controllerHandler(controller.update),
 	)

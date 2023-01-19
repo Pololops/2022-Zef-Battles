@@ -1,6 +1,7 @@
 import { Router } from 'express'
 const router = Router()
 
+import { tokenVerifier } from '../../middlewares/tokenManager.js'
 import sanitize from '../../middlewares/sanitizerHandler.js'
 import validate from '../../validation/validator.js'
 import { updateSchema } from '../../validation/schemas/characterSchema.js'
@@ -44,6 +45,7 @@ router
 	 * }
 	 */
 	.patch(
+		controllerHandler(tokenVerifier),
 		sanitize('body'),
 		validate('body', updateSchema),
 		controllerHandler(controller.update),
@@ -58,7 +60,10 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character not found - application/json
 	 */
-	.delete(controllerHandler(controller.delete))
+	.delete(
+		controllerHandler(tokenVerifier),
+		controllerHandler(controller.delete),
+	)
 
 router
 	.route('/:id(\\d+)/capacity')
@@ -88,6 +93,7 @@ router
 	 * }
 	 */
 	.post(
+		controllerHandler(tokenVerifier),
 		validate('body', characterCapacityAssociateSchema),
 		controllerHandler(controller.addCapacityToCharacter),
 	)
@@ -105,6 +111,9 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character or capacity not found - application/json
 	 */
-	.delete(controllerHandler(controller.removeCapacityToCharacter))
+	.delete(
+		controllerHandler(tokenVerifier),
+		controllerHandler(controller.removeCapacityToCharacter),
+	)
 
 export default router

@@ -1,6 +1,7 @@
 import { Router } from 'express'
 const router = Router()
 
+import { tokenVerifier } from '../../middlewares/tokenManager.js'
 import sanitize from '../../middlewares/sanitizerHandler.js'
 import validate from '../../validation/validator.js'
 import { createSchema } from '../../validation/schemas/battleSchema.js'
@@ -18,7 +19,7 @@ router
 	 * @param {boolean} playing.query - query string to filter battles in function of if the connected user is playing them
 	 * @return {array<Battle>} 200 - success response - application/json
 	 */
-	.get(controllerHandler(controller.getAll))
+	.get(controllerHandler(tokenVerifier), controllerHandler(controller.getAll))
 
 	// TODO : adapt POST route to battle
 	/**
@@ -39,6 +40,7 @@ router
 	 * }
 	 */
 	.post(
+		controllerHandler(tokenVerifier),
 		sanitize('body'),
 		validate('body', createSchema),
 		controllerHandler(controller.create),
@@ -67,6 +69,7 @@ router
 	 * }
 	 */
 	.patch(
+		controllerHandler(tokenVerifier),
 		sanitize('body'),
 		validate('body', createSchema),
 		controllerHandler(controller.update),
@@ -81,6 +84,9 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Battle not found - application/json
 	 */
-	.delete(controllerHandler(controller.delete))
+	.delete(
+		controllerHandler(tokenVerifier),
+		controllerHandler(controller.delete),
+	)
 
 export default router

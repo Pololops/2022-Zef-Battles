@@ -1,17 +1,18 @@
 import { Router } from 'express';
 const router = Router();
 
-import sanitize from '../../middlewares/sanitizerHandler.js';
-import validate from '../../validation/validator.js';
+import { tokenVerifier } from '../../middlewares/tokenManager.js'
+import sanitize from '../../middlewares/sanitizerHandler.js'
+import validate from '../../validation/validator.js'
 import { createSchema as familyCreateSchema } from '../../validation/schemas/familySchema.js'
-import { createSchema as characterCreateSchema } from '../../validation/schemas/characterSchema.js';
+import { createSchema as characterCreateSchema } from '../../validation/schemas/characterSchema.js'
 
-import controllerHandler from '../../middlewares/controllerHandler.js';
+import controllerHandler from '../../middlewares/controllerHandler.js'
 
-import familyController from '../../controllers/familyController.js';
-import characterController from '../../controllers/characterController.js';
+import familyController from '../../controllers/familyController.js'
+import characterController from '../../controllers/characterController.js'
 
-import uploadFile from '../../middlewares/uploadFile.js';
+import uploadFile from '../../middlewares/uploadFile.js'
 
 router
 	.route('/')
@@ -43,6 +44,7 @@ router
 	 * }
 	 */
 	.post(
+		controllerHandler(tokenVerifier),
 		sanitize('body'),
 		validate('body', familyCreateSchema),
 		controllerHandler(familyController.create),
@@ -80,6 +82,7 @@ router
 	 * }
 	 */
 	.patch(
+		controllerHandler(tokenVerifier),
 		sanitize('body'),
 		validate('body', familyCreateSchema),
 		controllerHandler(familyController.update),
@@ -94,7 +97,10 @@ router
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Family not found - application/json
 	 */
-	.delete(controllerHandler(familyController.delete))
+	.delete(
+		controllerHandler(tokenVerifier),
+		controllerHandler(familyController.delete),
+	)
 
 router
 	.route('/:id(\\d+)/character')
@@ -131,6 +137,7 @@ router
 	 * }
 	 */
 	.post(
+		controllerHandler(tokenVerifier),
 		controllerHandler(uploadFile),
 		sanitize('body'),
 		validate('body', characterCreateSchema),
