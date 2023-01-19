@@ -78,29 +78,25 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 		}
 
 		if (isFamilyForm) {
-			const { status, data } = await postFamily({
-				name: nameInputValue,
+			const { data } = await postFamily({ 
+				name: nameInputValue 
+			});
+			dispatch({
+				type: 'CREATE_FAMILY_CARD', 
+				payload: data 
+			});
+		} else {
+			const { data } = await postCharacter(familyId, { 
+				name: nameInputValue, 
+				family_id: familyId, 
+				file: droppedFiles[0]
+			});
+			dispatch({
+				type: 'CREATE_CHARACTER_CARD',
+				payload: data,
 			});
 
-			if (status === 'OK') {
-				dispatch({ type: 'CREATE_FAMILY_CARD', payload: data });
-			}
-		} else {
-			const formData = new FormData();
-			formData.append('name', nameInputValue);
-			formData.append('family_id', familyId.toString());
-			formData.append('file', droppedFiles[0]);
-
-			const { status, data } = await postCharacter(familyId, formData);
-
-			if (status === 'OK') {
-				dispatch({
-					type: 'CREATE_CHARACTER_CARD',
-					payload: data,
-				});
-
-				formCloser();
-			}
+			formCloser();
 		}
 	};
 

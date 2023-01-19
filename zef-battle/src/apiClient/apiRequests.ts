@@ -1,5 +1,4 @@
 import RequestAPI from './apiFetcher';
-
 import {
 	loginUrl,
 	familyUrl,
@@ -7,6 +6,8 @@ import {
 	characterUrl,
 	characterCapacityUrl,
 } from './apiAdresses';
+
+import type { FileWithPath } from 'react-dropzone'
 
 export type ReturnType = {
 	status: string
@@ -16,6 +17,12 @@ export type ReturnType = {
 
 type FamilyCreateBodyType = {
 	name: string
+}
+
+type CharacterCreateBodyType = {
+	name: string,
+	family_id: number,
+	file: FileWithPath
 }
 
 type CapacityCreateBodyType = {
@@ -49,11 +56,16 @@ export const deleteFamily = async (familyId: number): Promise<ReturnType> => {
 	}).fetch();
 }
 
-export const postCharacter = async (familyId: number, body: FormData): Promise<ReturnType> => {
+export const postCharacter = async (familyId: number, body: CharacterCreateBodyType): Promise<ReturnType> => {
+	const formData = new FormData();
+	formData.append('name', body.name);
+	formData.append('family_id', body.family_id.toString());
+	formData.append('file', body.file);
+	
 	return await new RequestAPI({
 		url: characterInFamilyUrl(familyId),
 		method: 'POST',
-		body,
+		body: formData,
 		hasFormdata: true,
 	}).fetch();
 }
