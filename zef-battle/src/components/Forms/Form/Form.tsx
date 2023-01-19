@@ -78,26 +78,28 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 		}
 
 		if (isFamilyForm) {
-			const { data } = await postFamily({ 
+			const { status, data } = await postFamily({ 
 				name: nameInputValue 
 			});
+			if (status !== 'OK') return
 			dispatch({
 				type: 'CREATE_FAMILY_CARD', 
 				payload: data 
 			});
 		} else {
-			const { data } = await postCharacter(familyId, { 
+			const { status, data } = await postCharacter(familyId, { 
 				name: nameInputValue, 
 				family_id: familyId, 
 				file: droppedFiles[0]
 			});
+			if (status !== 'OK') return
 			dispatch({
 				type: 'CREATE_CHARACTER_CARD',
 				payload: data,
 			});
-
-			formCloser();
 		}
+
+		formCloser();
 	};
 
 	const unloadAfterDelay = () => {

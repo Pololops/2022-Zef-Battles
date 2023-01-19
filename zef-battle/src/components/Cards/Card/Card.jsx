@@ -89,7 +89,7 @@ export default function Card({
 						type: 'DELETE_CHARACTER_CARD',
 						payload: { character_id: id, family_id: familyId },
 					}),
-				2000,
+				1200,
 			)
 		}
 	}
