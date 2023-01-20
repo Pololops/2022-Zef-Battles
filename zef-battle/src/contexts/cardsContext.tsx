@@ -10,7 +10,7 @@ type CardsContextType = {
 	setIsLoading: (newValue: boolean) => void,
 	errorMessage: string,
 	setErrorMessage: (newValue: string) => void,
-	families: [],
+	families: any[],
 	dispatch: React.Dispatch<{type: string, payload: unknown}>
 }
 
