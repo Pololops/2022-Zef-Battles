@@ -35,6 +35,16 @@ export default {
 		return result.rows
 	},
 
+	findRandom: async (quantity = 1) => {
+		const result = await client.query(
+			`SELECT * FROM "character" ORDER BY random() LIMIT $1;`,
+			[quantity],
+		)
+
+		debug('findRandom : ', result.rows)
+		return result.rows
+	},
+
 	findByPk: async (id) => {
 		const result = await client.query(
 			`SELECT * FROM "character_with_capacity" WHERE "id" = $1;`,

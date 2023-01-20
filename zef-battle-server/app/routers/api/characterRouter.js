@@ -11,6 +11,18 @@ import controllerHandler from '../../middlewares/controllerHandler.js'
 import controller from '../../controllers/characterController.js'
 
 router
+	.route('/')
+
+	/**
+	 * GET /api/character
+	 * @summary Get random characters
+	 * @tags Character
+	 * @param {number} quantity.query - quantity of characters
+	 * @return {Character} 200 - success response - application/json
+	 */
+	.get(controllerHandler(controller.getRandom));
+
+router
 	.route('/:id(\\d+)')
 
 	/**

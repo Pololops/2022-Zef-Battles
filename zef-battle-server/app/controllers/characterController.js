@@ -26,6 +26,15 @@ export default {
 		return response.status(200).json(characters)
 	},
 
+	getRandom: async (request, response) => {
+		const characters = await characterDatamapper.findRandom(
+			request.query.quantity,
+		)
+		 
+		debug('getRandom : ', characters)
+		return response.status(200).json(characters)
+	},
+
 	async getOneByPk(request, response) {
 		const characterId = parseInt(request.params.id)
 
@@ -42,7 +51,8 @@ export default {
 		const { name, family_id } = request.body
 		const file = request.file
 
-		if (familyId !== parseInt(family_id)) throw new ApiError('This family does not exist', { statusCode: 400 })
+		if (familyId !== parseInt(family_id))
+			throw new ApiError('This family does not exist', { statusCode: 400 })
 
 		const family = await familyDatamapper.findByPk(familyId)
 		if (!family)
