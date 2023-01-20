@@ -19,6 +19,10 @@ export const familyUrl = (arg?: boolean | number): string => {
 }
 
 // Characters URL
+export const randomCharacterURL = (quantity: number): string => {
+	return `${baseApiUrl}/character?quantity=${quantity}`;
+}
+
 export const characterInFamilyUrl = (familyId: number): string => {
 	return `${baseApiUrl}/family/${familyId}/character`;
 }

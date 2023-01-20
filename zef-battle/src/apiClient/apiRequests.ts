@@ -8,11 +8,16 @@ import {
 } from './apiAdresses';
 
 import type { FileWithPath } from 'react-dropzone'
+import { randomCharacterURL } from './apiAdresses';
+
+type returnAPIDataType = {
+	[key: string]: unknown
+}
 
 export type ReturnType = {
 	status: string
 	statusCode: number,
-	data: {} | [] | string
+	data: returnAPIDataType | returnAPIDataType[] | string
 }
 
 type FamilyCreateBodyType = {
@@ -54,6 +59,12 @@ export const deleteFamily = async (familyId: number): Promise<ReturnType> => {
 		url: familyUrl(familyId), 
 		method: 'DELETE'
 	}).fetch();
+}
+
+export const getRandomCharacters = async (quantity?: number): Promise<ReturnType> => {
+	return await new RequestAPI({
+		url: randomCharacterURL(quantity || 1)
+	}).fetch()
 }
 
 export const postCharacter = async (familyId: number, body: CharacterCreateBodyType): Promise<ReturnType> => {

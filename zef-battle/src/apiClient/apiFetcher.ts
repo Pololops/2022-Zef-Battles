@@ -91,8 +91,8 @@ class RequestAPI {
 	}
 
 	getToken(): string | undefined {
-		const token = window.localStorage.token
-		return token || undefined
+		const token = localStorage.getItem('token')
+		return token ?? undefined
 	}
 
 	isFormdataBody(): boolean {
