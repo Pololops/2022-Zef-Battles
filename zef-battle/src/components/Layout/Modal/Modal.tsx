@@ -49,7 +49,7 @@ export default function ModalLog() {
 			if (statusCode === 400) return setErrorMessage('Ce pseudo et ce mot de passe ne sont pas corrects.')
 		}
 		} catch (error) {
-			console.log(error)
+			// console.log(error)
 		}
 	}
 
