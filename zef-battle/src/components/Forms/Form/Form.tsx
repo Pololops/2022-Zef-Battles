@@ -3,13 +3,15 @@ import './Form.scss';
 import { 
 	useState, 
 	useEffect, 
-	useContext, 
 	useCallback, 
-	SetStateAction, 
+} from 'react';
+import type { 
+	FormEventHandler, 
 	ChangeEvent, 
 	Dispatch, 
+	SetStateAction 
 } from 'react';
-import { CardsContext } from '../../../contexts/cardsContext';
+
 import {
 	postFamily,
 	postCharacter,
@@ -20,7 +22,7 @@ import Button from '../Button/Button';
 import DropZone from '../DropZone/DropZone';
 import Message from '../Message/Message';
 import { FileWithPath } from 'react-dropzone';
-import { FormEventHandler } from 'react';
+import { useCards } from '../../App/App'
 
 interface FileWithPreview extends File {
   readonly preview?: string;
@@ -37,12 +39,12 @@ const regexpToMatch =
 	/^([0-9@-Za-zÀ-ÖØ-öø-ÿ-&'_^])([0-9@-Za-zÀ-ÖØ-öø-ÿ-&' _^]*)$/;
 
 export default function Form({ isFamilyForm, familyId, formCloser, isActive }: Props) {
-	const { dispatch } = useContext(CardsContext);
-
 	const [nameInputValue, setNameInputValue] = useState('');
 	const [droppedFiles, setDroppedFiles] = useState([] as FileWithPath[]);
 	const [missingValue, setMissingValue] = useState('');
 	const [errorMessage, setErrorMessage] = useState('');
+
+	const { dispatch } = useCards()
 	
 
 	const inputChangeHandler = (event: ChangeEvent<HTMLInputElement>, setState: Dispatch<SetStateAction<string>>) => {

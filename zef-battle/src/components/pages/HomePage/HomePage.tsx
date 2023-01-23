@@ -1,16 +1,23 @@
-import { Await, useLoaderData } from "react-router-dom";
-import { Suspense, useContext } from 'react'
+import { useLoaderData } from "react-router-dom";
 
-import type { ReturnType } from '../../../apiClient/apiRequests';
 import Cards from '../../Cards/Cards'
+import type { Character } from '../../App/App';
 
 export default function HomePage() {
-	const { data } = useLoaderData() as { data: ReturnType }
+	const { randomCards: { data } } = useLoaderData() as { randomCards: { data: Character[] | string } }
 
 	return (
 		<>
 			<h2>Zef's Battles</h2>
-			{ Array.isArray(data) ? <Cards data={data} /> : data }
+			{ 
+				typeof data !== 'string'
+				? (
+						<div className="cards">
+							<Cards data={data} />
+						</div>
+					)
+				: data 
+			}
 		</>
 	)
 }

@@ -11,7 +11,12 @@ export const router = createBrowserRouter([
 		path: '/',
 		element: <App />,
 		errorElement: <ErrorPage />,
-		loader: async () => await getRandomCharacters(5),
+		loader: async () => {
+			return {
+				randomCards: await getRandomCharacters(5),
+				allCards: await getFamilies(true)
+			}
+		},
 		children: [
 			{
 				path: 'families',

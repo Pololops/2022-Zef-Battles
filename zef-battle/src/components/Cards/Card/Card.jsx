@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 
 import './Card.scss'
 
@@ -10,11 +10,11 @@ import CardBackFace from './CardFaces/CardBack'
 import AddCardFrontFace from './AddCardFaces/AddCardFront'
 import AddCardBackFace from './AddCardFaces/AddCardBack'
 import useAppearEffect from '../../../hooks/useAppearEffect'
-import { CardsContext } from '../../../contexts/cardsContext'
 import {
 	deleteCharacter,
 	deleteFamily,
 } from '../../../apiClient/apiRequests'
+import { useCards } from '../../App/App'
 
 export default function Card({
 	id,
@@ -29,7 +29,7 @@ export default function Card({
 	isManageCard,
 	isRemoveFamilyCard,
 }) {
-	const { dispatch } = useContext(CardsContext)
+	const { dispatch } = useCards()
 	const navigate = useNavigate()
 
 	const [isFlipped, setIsFlipped] = useState(false)

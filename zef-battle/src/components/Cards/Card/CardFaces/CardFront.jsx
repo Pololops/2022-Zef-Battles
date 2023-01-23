@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 
-import { useState, useContext } from 'react'
-import { CardsContext } from '../../../../contexts/cardsContext'
+import { useState } from 'react'
 import {
 	addCharacterCapacity,
 	removeCharacterCapacity,
@@ -11,6 +10,7 @@ import Capacity from '../../Capacity/Capacity'
 import Button from '../../../Forms/Button/Button'
 import Input from '../../../Forms/Input/Input'
 import Message from '../../../Forms/Message/Message'
+import { useCards } from '../../../App/App'
 
 export default function CardFrontFace({
 	id,
@@ -22,7 +22,7 @@ export default function CardFrontFace({
 	onClickCancelEditorButton,
 	onClickKillCharacterButton,
 }) {
-	const { dispatch } = useContext(CardsContext)
+	const { dispatch } = useCards()
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('')
 	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState('0')
 	const [isInputCapacityFocus, setIsInputCapacityFocus] = useState(true)
