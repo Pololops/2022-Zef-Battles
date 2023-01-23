@@ -1,74 +1,202 @@
-.card__inner {
-	width: 100%;
-	height: 100%;
-	background-color: rgba(255, 255, 255, 0.3);
-	box-shadow: 0 1px 5px black;
-	border-radius: 12px;
-	transform-style: preserve-3d;
-	transform-origin: center left;
-	transition: all 500ms;
+.card {
+	position: relative;
+	width: 200px;
+	height: 300px;
+	transform-origin: bottom left;
+	perspective: 1000px;
+	transition: all 200ms;
 
-	&:hover {
-		background-color: rgba(255, 255, 255, 0.6);
-		box-shadow: 0 1px 40px black;
-	}
+	.card__inner {
+		width: 100%;
+		height: 100%;
+		background-color: rgba(255, 255, 255, 0.3);
+		box-shadow: 0 1px 5px black;
+		border-radius: 12px;
+		transform-style: preserve-3d;
+		transform-origin: center left;
+		transition: all 500ms;
 
-	&.is-flipped {
-		transform: translateX(100%) rotateY(-180deg);
-	}
-
-	&__face {
-		position: absolute;
-		top: 10px;
-		bottom: 10px;
-		left: 10px;
-		right: 10px;
-		display: flex;
-		flex-direction: column-reverse;
-		justify-content: space-between;
-		border-radius: 5px;
-		overflow: hidden;
-		backface-visibility: hidden;
-		background-size: calc(100% - 10px);
-		background-repeat: no-repeat;
-		background-position: center 20%;
-		transform: rotateX(0deg);
-
-		&--back {
-			background-color: white;
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.6);
+			box-shadow: 0 1px 40px black;
 		}
 
-		&--front {
-			background-color: #121212;
-			transform: rotateY(180deg);
+		&.is-flipped {
+			transform: translateX(100%) rotateY(-180deg);
 		}
 
-		&__infos {
+		&__face {
+			position: absolute;
+			top: 10px;
+			bottom: 10px;
+			left: 10px;
+			right: 10px;
 			display: flex;
 			flex-direction: column-reverse;
-			justify-content: flex-start;
+			justify-content: space-between;
+			border-radius: 5px;
+			overflow: hidden;
+			backface-visibility: hidden;
+			background-size: calc(100% - 10px);
+			background-repeat: no-repeat;
+			background-position: center 20%;
+			transform: rotateX(0deg);
+
+			&--back {
+				background-color: white;
+			}
+
+			&--front {
+				background-color: #121212;
+				transform: rotateY(180deg);
+			}
+
+			&__infos {
+				display: flex;
+				flex-direction: column-reverse;
+				justify-content: flex-start;
+			}
+
+			&__title {
+				display: block;
+				color: inherit;
+				font-weight: bold;
+				font-size: 1.2em;
+				line-height: 1.2em;
+				padding: 0.7em;
+				background-color: rgba(0, 0, 0, 0.5);
+			}
+
+			a {
+				flex-grow: 1;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				text-decoration: none;
+
+				& .card__inner__face__title {
+					text-shadow: 0 1px 5px black;
+					background-color: transparent;
+				}
+			}
+		}
+	}
+
+	&.before-fade-in {
+		opacity: 0;
+		transform: scale(1.2) translateX(200px);
+	}
+
+	&:not(.card--edited, .card--killing-progress, .card--killed):hover {
+		filter: brightness(1.2);
+		transform: rotateZ(-2deg);
+		cursor: pointer;
+	}
+
+	&--edited {
+		font-size: 1.25em;
+		width: 250px;
+		height: 375px;
+		margin: -75px -25px 0 -25px;
+		cursor: default;
+		z-index: 2;
+	}
+
+	&--killed {
+		width: 0;
+		margin-inline: -1em;
+	}
+
+	&.card--manage {
+		z-index: 1;
+
+		&.before-fade-in {
+			opacity: 0;
+			transform: translateX(0);
 		}
 
-		&__title {
-			display: block;
-			color: inherit;
-			font-weight: bold;
-			font-size: 1.2em;
-			line-height: 1.2em;
-			padding: 0.7em;
-			background-color: rgba(0, 0, 0, 0.5);
+		&.fade-in {
+			opacity: 1;
 		}
 
-		a {
-			flex-grow: 1;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			text-decoration: none;
+		&:hover {
+			filter: none;
+			transform: rotateZ(0);
+			cursor: initial;
 
-			& .card__inner__face__title {
-				text-shadow: 0 1px 5px black;
-				background-color: transparent;
+			.card__inner:not(.is-flipped) {
+				border-color: rgba(255, 255, 255, 0.7);
+			}
+
+			.card__inner__face--back {
+				color: rgba(255, 255, 255, 0.9);
+			}
+		}
+
+		.card__inner {
+			border: 2px solid rgba(255, 255, 255, 0.3);
+			background-color: transparent;
+			box-shadow: none;
+
+			&__face {
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				padding: 10px;
+				display: flex;
+				overflow: visible;
+				border-radius: inherit;
+				flex-direction: column;
+				justify-content: center;
+				gap: 1em;
+				color: rgba(255, 255, 255, 0.5);
+
+				&--front,
+				&--back {
+					transition: all 300ms;
+				}
+
+				&--back {
+					background-color: transparent;
+
+					span:first-child {
+						font-size: 8em;
+					}
+
+					span:last-child {
+						font-weight: bold;
+					}
+
+					&:hover {
+						cursor: pointer;
+					}
+				}
+
+				&__close {
+					font-size: 2em;
+					height: 1em;
+					width: 1em;
+					position: absolute;
+					top: 5px;
+					right: 5px;
+					transform: rotate(45deg);
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					cursor: pointer;
+					z-index: 1;
+					transition: all 200ms;
+
+					&:hover {
+						color: white;
+					}
+
+					&::after {
+						content: '+';
+						position: absolute;
+					}
+				}
 			}
 		}
 	}
