@@ -1,5 +1,3 @@
-import type { Family } from '../components/App/App'
-
 enum ActionType {
 	GET_CARDS = 'GET_CARDS',
   CREATE_FAMILY_CARD = 'CREATE_FAMILY_CARD',
@@ -89,7 +87,7 @@ const reducer = (state: Family[], { type, payload }: Action) => {
 
 				if (characterTarget) {
 					const newCapacity = capacity.find(
-						(capacity : {name: string}) => capacity.name === newCapacityName,
+						(capacity: Capacity) => capacity.name === newCapacityName,
 					)
 
 					const foundCapacity = characterTarget.capacity.find(
@@ -133,11 +131,11 @@ const reducer = (state: Family[], { type, payload }: Action) => {
 	}
 }
 
-const findFamily = <T extends Family>(state: T[], familyId: number) => {
+const findFamily = (state: Family[], familyId: number): Family | undefined => {
 	return state.find((family) => family.id === familyId)
 }
 
-const findCharacter = <T extends Family>(family: T, characterId: number) => {
+const findCharacter = (family: Family, characterId: number): Character | undefined => {
 	return family.characters.find((character) => character.id === characterId)
 }
 

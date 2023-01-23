@@ -1,11 +1,16 @@
-import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+
+interface Props {
+	familyName: string
+	isFamilyCard: boolean
+	isRemoveFamilyCard: boolean
+}
 
 export default function AddCardBackFace({
 	isFamilyCard,
 	familyName,
 	isRemoveFamilyCard,
-}) {
+}: Props) {
 	const [singularFamilyName, setSingularFamilyName] = useState('');
 
 	const getLegend = () => {
@@ -48,15 +53,3 @@ export default function AddCardBackFace({
 		</div>
 	);
 }
-
-AddCardBackFace.propTypes = {
-	familyName: PropTypes.string,
-	isFamilyCard: PropTypes.bool,
-	isRemoveFamilyCard: PropTypes.bool,
-};
-
-AddCardBackFace.defaultProps = {
-	familyName: '',
-	isFamilyCard: false,
-	isRemoveFamilyCard: false,
-};

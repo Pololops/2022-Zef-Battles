@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
 
-import './Card.scss'
-
 import { useNavigate } from 'react-router-dom'
+
+import './Card.scss'
 
 import CardFrontFace from './CardFaces/CardFront'
 import CardBackFace from './CardFaces/CardBack'
@@ -16,21 +15,36 @@ import {
 } from '../../../apiClient/apiRequests'
 import { useCards } from '../../App/App'
 
+interface Props {
+	id?: number
+	index: number
+	title?: string
+	imageUrl?: string
+	capacities?: Capacity[]
+	familyId?: number
+	familyName?: string
+	totalLevel?: number
+	isFamilyCard?: boolean
+	isManageCard?: boolean
+	isRemoveFamilyCard?: boolean
+}
+
 export default function Card({
-	id,
+	id = 0,
 	index,
-	title,
+	title = '',
 	imageUrl,
-	capacities,
-	familyId,
-	familyName,
-	totalLevel,
-	isFamilyCard,
-	isManageCard,
-	isRemoveFamilyCard,
-}) {
-	const { dispatch } = useCards()
+	capacities = [],
+	familyId = 0,
+	familyName = '',
+	totalLevel = 0,
+	isFamilyCard = false,
+	isManageCard = false,
+	isRemoveFamilyCard = false,
+}: Props) {
 	const navigate = useNavigate()
+
+	const { dispatch } = useCards()
 
 	const [isFlipped, setIsFlipped] = useState(false)
 	const [isInEditionMode, setIsInEditionMode] = useState(false)
@@ -39,10 +53,9 @@ export default function Card({
 
 	const isAppeared = useAppearEffect(index)
 
-	const clickCardHandler = (event) => {
+	const clickCardHandler: React.MouseEventHandler = (event) => {
 		event.preventDefault()
 		if (isRemoveFamilyCard) return clickToDeleteFamily()
-
 		if (isFamilyCard && !isManageCard) return
 		if (isManageCard && isFlipped) return
 		if (isInEditionMode) return
@@ -64,35 +77,37 @@ export default function Card({
 		}
 	}
 
-	const clickEditorButtonHandler = (event) => {
+	const clickEditorButtonHandler: React.MouseEventHandler = (event) => {
 		event.stopPropagation()
 		setIsInEditionMode((previousSate) => !previousSate)
 	}
 
-	const clickCancelEditorButtonHandler = (event) => {
+	const clickCancelEditorButtonHandler: React.MouseEventHandler = (event) => {
 		clickEditorButtonHandler(event)
 		setTimeout(() => {
 			setIsFlipped((previousSate) => !previousSate)
 		}, 50)
 	}
 
-	const clickKillCharacterButtonHandler = async (event) => {
+	const clickKillCharacterButtonHandler: React.MouseEventHandler = async (event) => {
 		const { statusCode } = await deleteCharacter(id)
 
 		if (statusCode === 204) {
-			setIskillingProgress(true)
-			clickCancelEditorButtonHandler(event)
-			setTimeout(() => setIskilled(true), 600)
-			setTimeout(
-				() =>
-					dispatch({
-						type: 'DELETE_CHARACTER_CARD',
-						payload: { character_id: id, family_id: familyId },
-					}),
-				1200,
-			)
+				setIskillingProgress(true)
+				clickCancelEditorButtonHandler(event)
+				setTimeout(() => setIskilled(true), 600)
+				setTimeout(
+					() =>
+						dispatch({
+							type: 'DELETE_CHARACTER_CARD',
+							payload: { character_id: id, family_id: familyId },
+						}),
+					1200,
+				)
 		}
 	}
+
+	const formCloserHandler = () => setIsFlipped(false)
 
 	useEffect(() => {
 		if (!isFlipped && !iskilled) {
@@ -122,7 +137,7 @@ export default function Card({
 							isFamilyCard={isFamilyCard}
 							familyId={isFamilyCard ? id : familyId}
 							isActive={isFlipped}
-							formCloser={() => setIsFlipped(false)}
+							formCloser={formCloserHandler}
 						/>
 
 						<AddCardBackFace
@@ -139,7 +154,6 @@ export default function Card({
 								title={title}
 								familyId={familyId}
 								capacities={capacities}
-								isActive={isFlipped}
 								isInEditionMode={isInEditionMode}
 								onClickEditorButton={clickEditorButtonHandler}
 								onClickCancelEditorButton={clickCancelEditorButtonHandler}
@@ -157,39 +171,4 @@ export default function Card({
 			</div>
 		</div>
 	)
-}
-
-Card.propTypes = {
-	id: PropTypes.number,
-	index: PropTypes.number.isRequired,
-	title: PropTypes.string,
-	imageUrl: PropTypes.string,
-	capacity: PropTypes.arrayOf(
-		PropTypes.shape({
-			id: PropTypes.number,
-			name: PropTypes.string,
-			level: PropTypes.number,
-			description: PropTypes.string,
-		}),
-	),
-	familyId: PropTypes.number,
-	family: PropTypes.string,
-	familyName: PropTypes.string,
-	totalLevel: PropTypes.number,
-	isFamilyCard: PropTypes.bool,
-	isManageCard: PropTypes.bool,
-	isRemoveFamilyCard: PropTypes.bool,
-}
-
-Card.defaultProps = {
-	id: 0,
-	title: '',
-	capacities: [],
-	familyId: 0,
-	family: '',
-	familyName: '',
-	totalLevel: 0,
-	isFamilyCard: false,
-	isManageCard: false,
-	isRemoveFamilyCard: false,
 }

@@ -10,14 +10,10 @@ import {
 import type { FileWithPath } from 'react-dropzone'
 import { randomCharacterURL } from './apiAdresses';
 
-type returnAPIDataType = {
-	[key: string]: unknown
-}
-
-export type ReturnType = {
+export type ReturnType<T> = {
 	status: string
 	statusCode: number,
-	data: returnAPIDataType | returnAPIDataType[] | string
+	data: T
 }
 
 type FamilyCreateBodyType = {
@@ -40,13 +36,13 @@ type LoginBodyType = {
 	password: string
 }
 
-export const getFamilies = async (withCharacters: boolean): Promise<ReturnType> => {
+export const getFamilies = async (withCharacters: boolean): Promise<ReturnType<Family[]>> => {
 	return await new RequestAPI({
 		url: familyUrl(withCharacters)
 	}).fetch()
 }
 
-export const postFamily = async (body: FamilyCreateBodyType): Promise<ReturnType> => {
+export const postFamily = async (body: FamilyCreateBodyType): Promise<ReturnType<Family>> => {
 	return await new RequestAPI({
 		url: familyUrl(), 
 		method: 'POST', 
@@ -54,20 +50,20 @@ export const postFamily = async (body: FamilyCreateBodyType): Promise<ReturnType
 	}).fetch();
 }
 
-export const deleteFamily = async (familyId: number): Promise<ReturnType> => {
+export const deleteFamily = async (familyId: number): Promise<ReturnType<undefined>> => {
 	return await new RequestAPI({
 		url: familyUrl(familyId), 
 		method: 'DELETE'
 	}).fetch();
 }
 
-export const getRandomCharacters = async (quantity?: number): Promise<ReturnType> => {
+export const getRandomCharacters = async (quantity?: number): Promise<ReturnType<Character[]>> => {
 	return await new RequestAPI({
 		url: randomCharacterURL(quantity || 1)
 	}).fetch()
 }
 
-export const postCharacter = async (familyId: number, body: CharacterCreateBodyType): Promise<ReturnType> => {
+export const postCharacter = async (familyId: number, body: CharacterCreateBodyType): Promise<ReturnType<Character>> => {
 	const formData = new FormData();
 	formData.append('name', body.name);
 	formData.append('family_id', body.family_id.toString());
@@ -81,14 +77,14 @@ export const postCharacter = async (familyId: number, body: CharacterCreateBodyT
 	}).fetch();
 }
 
-export const deleteCharacter = async (characterId: number): Promise<ReturnType> => {
+export const deleteCharacter = async (characterId: number): Promise<ReturnType<undefined>> => {
 	return await new RequestAPI({ 
 		url: characterUrl(characterId), 
 		method: 'DELETE'
 	}).fetch();
 }
 
-export const addCharacterCapacity = async (characterId: number, body: CapacityCreateBodyType): Promise<ReturnType> => {
+export const addCharacterCapacity = async (characterId: number, body: CapacityCreateBodyType): Promise<ReturnType<Character>> => {
 	return await new RequestAPI({ 
 		url: characterCapacityUrl(characterId), 
 		method: 'POST', 
@@ -96,14 +92,14 @@ export const addCharacterCapacity = async (characterId: number, body: CapacityCr
 	}).fetch();
 }
 
-export const removeCharacterCapacity = async (characterId: number, capacityId: number): Promise<ReturnType> => {
+export const removeCharacterCapacity = async (characterId: number, capacityId: number): Promise<ReturnType<Character>> => {
 	return await new RequestAPI({
 		url: characterCapacityUrl(characterId, capacityId),
 		method: 'DELETE',
 	}).fetch();
 }
 
-export const login = async (body: LoginBodyType) => {
+export const login = async (body: LoginBodyType): Promise<ReturnType<Login>> => {
 	return await new RequestAPI({
 		url: loginUrl(),
 		method: 'POST',

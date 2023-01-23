@@ -12,7 +12,7 @@ class ApiError {
 		this._message = message
 	}
 
-	get format(): ReturnType {
+	get format(): ReturnType<string> {
 		return {
 			status: 'Error',
 			statusCode: this._statusCode,

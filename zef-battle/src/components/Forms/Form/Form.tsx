@@ -1,21 +1,8 @@
 import './Form.scss';
 
-import { 
-	useState, 
-	useEffect, 
-	useCallback, 
-} from 'react';
-import type { 
-	FormEventHandler, 
-	ChangeEvent, 
-	Dispatch, 
-	SetStateAction 
-} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
-import {
-	postFamily,
-	postCharacter,
-} from '../../../apiClient/apiRequests';
+import { postFamily, postCharacter } from '../../../apiClient/apiRequests';
 
 import Input from '../Input/Input';
 import Button from '../Button/Button';
@@ -24,14 +11,10 @@ import Message from '../Message/Message';
 import { FileWithPath } from 'react-dropzone';
 import { useCards } from '../../App/App'
 
-interface FileWithPreview extends File {
-  readonly preview?: string;
-}
-
 interface Props {
-	familyId: number,
-	isFamilyForm?: boolean,
-	formCloser: () => SetStateAction<boolean>,
+	familyId: number
+	isFamilyForm?: boolean
+	formCloser: () => void
 	isActive?: boolean
 }
 
@@ -47,7 +30,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 	const { dispatch } = useCards()
 	
 
-	const inputChangeHandler = (event: ChangeEvent<HTMLInputElement>, setState: Dispatch<SetStateAction<string>>) => {
+	const inputChangeHandler = (event: React.ChangeEvent<HTMLInputElement>, setState: React.Dispatch<React.SetStateAction<string>>) => {
 		const value = event.currentTarget.value;
 
 		if (value === '') return setState('');
@@ -66,7 +49,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 		})));
 	}, []);
 
-	const submitHandler: FormEventHandler = async (event) => {
+	const submitHandler: React.FormEventHandler = async (event) => {
 		event.preventDefault();
 
 		if (nameInputValue === '') {

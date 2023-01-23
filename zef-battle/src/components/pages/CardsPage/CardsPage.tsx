@@ -1,18 +1,17 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import { useCards } from '../../App/App'
-import type { Character } from '../../App/App'
 
 import Cards from '../../Cards/Cards'
 import Card from '../../Cards/Card/Card'
 
 export default function FamiliesPage() {
-	const { cards, dispatch } = useCards()
+	const { cards } = useCards()
 	const { id } = useParams()
 
 	const [characterCards, setCharacterCards] = useState([] as Character[])
 	const [familyName, setFamilyName] = useState('')
-	const [familyId, setFamilyId] = useState(null as number | null)
+	const [familyId, setFamilyId] = useState(undefined as number | undefined)
 	const [isFamily, setIsFamily] = useState(false)
 
 	const getFamilyCharacters = useMemo(
@@ -36,7 +35,7 @@ export default function FamiliesPage() {
 		} else {
 			setIsFamily(false)
 		}
-	}, [cards, id])
+	}, [cards, getFamilyCharacters, id])
 
 	return (
 		<>
@@ -57,8 +56,8 @@ export default function FamiliesPage() {
 				{isFamily ? (
 					characterCards.length > 0 
 					?	<Cards
-							data={characterCards}
-							isFamilyCard={false}
+							data={ characterCards }
+							isFamilyCard={ false } 
 						/>
 					: <Card
 							key="removeFamily"

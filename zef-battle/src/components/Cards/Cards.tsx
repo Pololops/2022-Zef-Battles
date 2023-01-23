@@ -1,16 +1,13 @@
 import './Cards.scss';
 
-import type { Character, Family } from '../App/App'
 import Card from './Card/Card';
 
 interface Props {
 	data: Family[] | Character[]
-	isFamilyCard: boolean
-	familyName?: string
-	familyId?: number
+	isFamilyCard?: boolean
 }
 
-export default function Cards({ data, isFamilyCard }: Props) {
+export default function Cards({ data, isFamilyCard = false}: Props) {
 	return (
 		<>
 			{data.map(
@@ -31,11 +28,5 @@ export default function Cards({ data, isFamilyCard }: Props) {
 					),
 			)}
 		</>
-	);
+	)
 }
-
-Cards.defaultProps = {
-	isFamilyCard: false,
-	familyName: '',
-	familyId: 0,
-};

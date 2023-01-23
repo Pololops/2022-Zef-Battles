@@ -1,13 +1,18 @@
-import PropTypes from 'prop-types'
-
 import Form from '../../../Forms/Form/Form'
 
+interface Props {
+	isFamilyCard?: boolean
+	familyId: number
+	isActive?: boolean
+	formCloser: () => void
+}
+
 export default function AddCardFrontFace({
-	isFamilyCard,
+	isFamilyCard = false,
 	familyId,
-	isActive,
+	isActive = false,
 	formCloser,
-}) {
+}: Props) {
 	return (
 		<div className="card__inner__face card__inner__face--front">
 			<div
@@ -22,16 +27,4 @@ export default function AddCardFrontFace({
 			/>
 		</div>
 	)
-}
-
-AddCardFrontFace.propTypes = {
-	isFamilyCard: PropTypes.bool,
-	familyId: PropTypes.number.isRequired,
-	isActive: PropTypes.bool,
-	formCloser: PropTypes.func,
-}
-
-AddCardFrontFace.defaultProps = {
-	isFamilyCard: false,
-	isActive: false,
 }

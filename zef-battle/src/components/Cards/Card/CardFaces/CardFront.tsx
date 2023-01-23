@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types'
-
-import { useState } from 'react'
+import { useState } from 'react';
 import {
 	addCharacterCapacity,
 	removeCharacterCapacity,
@@ -12,45 +10,56 @@ import Input from '../../../Forms/Input/Input'
 import Message from '../../../Forms/Message/Message'
 import { useCards } from '../../../App/App'
 
+interface Props {
+	id: number
+	title: string
+	familyId: number
+	capacities: Capacity[]
+	isInEditionMode?: boolean
+	onClickEditorButton: React.MouseEventHandler
+	onClickCancelEditorButton: React.MouseEventHandler
+	onClickKillCharacterButton: React.MouseEventHandler
+}
+
 export default function CardFrontFace({
 	id,
 	title,
 	familyId,
 	capacities,
-	isInEditionMode,
+	isInEditionMode = false,
 	onClickEditorButton,
 	onClickCancelEditorButton,
 	onClickKillCharacterButton,
-}) {
+}: Props) {
 	const { dispatch } = useCards()
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('')
 	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState('0')
 	const [isInputCapacityFocus, setIsInputCapacityFocus] = useState(true)
 	const [errorMessage, setErrorMessage] = useState('')
 
-	const changeCapacityInputValueHandler = (event) => {
+	const changeCapacityInputValueHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
 		setErrorMessage('')
 		setCapacityNameInputValue(event.target.value)
 	}
 
-	const changeCapacityLevelInputValueHandler = (event) => {
+	const changeCapacityLevelInputValueHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
 		setErrorMessage('')
 		setCapacityLevelInputValue(event.target.value)
 	}
 
-	const clickCancelEditorButtonHandler = (event) => {
+	const clickCancelEditorButtonHandler: React.MouseEventHandler = (event) => {
 		onClickCancelEditorButton(event)
 		setCapacityNameInputValue('')
 		setCapacityLevelInputValue('0')
 	}
 
-	const clickKillCharacterButtonHandler = (event) => {
+	const clickKillCharacterButtonHandler: React.MouseEventHandler = (event) => {
 		onClickKillCharacterButton(event)
 		setCapacityNameInputValue('')
 		setCapacityLevelInputValue('0')
 	}
 
-	const inputKeyPressCapacityHandler = async (event) => {
+	const inputKeyPressCapacityHandler: React.KeyboardEventHandler = async (event) => {
 		if (event.key === 'Enter') {
 			if (capacityNameInputValue === '') {
 				return setErrorMessage(`Tu as oublié d'indiquer une capacité.`)
@@ -58,10 +67,10 @@ export default function CardFrontFace({
 
 			const { statusCode, data } = await addCharacterCapacity(id, {
 				name: capacityNameInputValue,
-				level: capacityLevelInputValue,
+				level: Number(capacityLevelInputValue),
 			})
 
-			if (statusCode === 200) {
+			if (statusCode === 200 && typeof data !== 'string') {
 				dispatch({
 					type: 'CREATE_CHARACTER_CAPACITY',
 					payload: { ...data, newCapacityName: capacityNameInputValue },
@@ -72,7 +81,7 @@ export default function CardFrontFace({
 		}
 	}
 
-	const clickRemoveCapacityHandler = async (event, capacityId) => {
+	const clickRemoveCapacityHandler = async (event: React.MouseEvent<Element, MouseEvent>, capacityId: number) => {
 		event.stopPropagation()
 
 		const { statusCode } = await removeCharacterCapacity(id, capacityId)
@@ -109,7 +118,6 @@ export default function CardFrontFace({
 					</div>
 				) : (
 					<Button
-						type=""
 						label="Modifier"
 						onClick={onClickEditorButton}
 					/>
@@ -152,9 +160,9 @@ export default function CardFrontFace({
 							onChange={changeCapacityLevelInputValueHandler}
 							onMouseDown={() => setIsInputCapacityFocus(false)}
 							onMouseUp={() => setIsInputCapacityFocus(true)}
-							min="0"
-							max="100"
-							step="5"
+							min={0}
+							max={100}
+							step={5}
 						></Input>
 						{errorMessage !== '' && <Message message={errorMessage} />}
 					</div>
@@ -162,27 +170,4 @@ export default function CardFrontFace({
 			</div>
 		</div>
 	)
-}
-
-CardFrontFace.propTypes = {
-	id: PropTypes.number.isRequired,
-	title: PropTypes.string.isRequired,
-	familyId: PropTypes.number.isRequired,
-	capacities: PropTypes.arrayOf(
-		PropTypes.shape({
-			id: PropTypes.number,
-			name: PropTypes.string,
-			level: PropTypes.number,
-			description: PropTypes.string,
-		}),
-	).isRequired,
-	isInEditionMode: PropTypes.bool,
-	onClickEditorButton: PropTypes.func.isRequired,
-	onClickCancelEditorButton: PropTypes.func.isRequired,
-	onClickKillCharacterButton: PropTypes.func.isRequired,
-}
-
-CardFrontFace.defaultProps = {
-	capacities: [],
-	isInEditionMode: false,
 }

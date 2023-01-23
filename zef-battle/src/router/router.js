@@ -13,7 +13,7 @@ export const router = createBrowserRouter([
 		errorElement: <ErrorPage />,
 		loader: async () => {
 			return {
-				randomCards: await getRandomCharacters(5),
+				randomCards: await getRandomCharacters(10),
 				allCards: await getFamilies(true)
 			}
 		},

@@ -50,7 +50,7 @@
 	}
 
 	&.form--capacity {
-		padding: .5em;
+		padding: 0.5em;
 
 		& > div:first-child {
 			display: flex;
@@ -65,11 +65,11 @@
 }
 
 .form__buttons {
-		display: flex;
-		justify-content: center;
-		z-index: 1;
+	display: flex;
+	justify-content: center;
+	z-index: 1;
 
-		& .button {
-			width: 100%;
-		}
+	& .button {
+		width: 100%;
 	}
+}

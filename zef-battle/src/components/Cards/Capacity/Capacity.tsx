@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
-
 import './Capacity.scss';
 import Button from '../../Forms/Button/Button';
 
-const levelClassName = (level) => {
+const levelClassName = (level: number) => {
 	let className = 'capacity__contain__meter__level';
 
 	if (level > 66) {
@@ -17,12 +15,19 @@ const levelClassName = (level) => {
 	return className;
 };
 
+interface Props {
+	name: string
+	level: number
+	description: string
+	onClickRemoveButton: React.MouseEventHandler
+}
+
 export default function Capacity({
 	name,
 	level,
 	description,
 	onClickRemoveButton,
-}) {
+}: Props) {
 	return (
 		<div className="capacity">
 			<div className="capacity__contain">
@@ -46,10 +51,3 @@ export default function Capacity({
 		</div>
 	);
 }
-
-Capacity.propTypes = {
-	name: PropTypes.string.isRequired,
-	level: PropTypes.number.isRequired,
-	description: PropTypes.string,
-	onClickRemoveButton: PropTypes.func.isRequired,
-};

@@ -1,9 +1,15 @@
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import defaultImage from '../../../../assets/images/card-default-image.png';
+import defaultImage from './../../../../assets/images/card-default-image.png';
 
-export default function CardBackFace({ id, title, imageUrl, isFamilyCard }) {
+interface Props {
+	id: number
+	title: string
+	imageUrl?: string
+	isFamilyCard?: boolean,
+}
+
+export default function CardBackFace({ id, title, imageUrl, isFamilyCard = false }: Props) {
 	return (
 		<div
 			className="card__inner__face card__inner__face--back"
@@ -25,15 +31,3 @@ export default function CardBackFace({ id, title, imageUrl, isFamilyCard }) {
 		</div>
 	);
 }
-
-CardBackFace.propTypes = {
-	id: PropTypes.number.isRequired,
-	title: PropTypes.string.isRequired,
-	imageUrl: PropTypes.string,
-	isFamilyCard: PropTypes.bool,
-};
-
-CardBackFace.defaultProps = {
-	imageUrl: defaultImage,
-	isFamilyCard: false,
-};
