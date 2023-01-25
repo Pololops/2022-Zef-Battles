@@ -1,15 +1,13 @@
 import './Form.scss';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useContext } from 'react';
 
 import { postFamily, postCharacter } from '../../../apiClient/apiRequests';
+import { DropZone, Button, Input, Message } from '../../'
 
-import Input from '../Input/Input';
-import Button from '../Button/Button';
-import DropZone from '../DropZone/DropZone';
-import Message from '../Message/Message';
 import { FileWithPath } from 'react-dropzone';
 import { useCards } from '../../App/App'
+import { ModalContext } from '../../../contexts/modalContext'
 
 interface Props {
 	familyId: number
@@ -22,6 +20,7 @@ const regexpToMatch =
 	/^([0-9@-Za-zÀ-ÖØ-öø-ÿ-&'_^])([0-9@-Za-zÀ-ÖØ-öø-ÿ-&' _^]*)$/;
 
 export default function Form({ isFamilyForm, familyId, formCloser, isActive }: Props) {
+	const { setIsVisible } = useContext(ModalContext)
 	const [nameInputValue, setNameInputValue] = useState('');
 	const [droppedFiles, setDroppedFiles] = useState([] as FileWithPath[]);
 	const [missingValue, setMissingValue] = useState('');
@@ -63,21 +62,26 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 		}
 
 		if (isFamilyForm) {
-			const { status, data } = await postFamily({ 
+			const { status, statusCode, data } = await postFamily({ 
 				name: nameInputValue 
 			});
-			if (status !== 'OK') return
+
+			if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
+			
 			dispatch({
 				type: 'CREATE_FAMILY_CARD', 
 				payload: data 
 			});
 		} else {
-			const { status, data } = await postCharacter(familyId, { 
+			const { status, statusCode, data } = await postCharacter(familyId, { 
 				name: nameInputValue, 
 				family_id: familyId, 
 				file: droppedFiles[0]
 			});
-			if (status !== 'OK') return
+
+			if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
+			if (status !== 'OK' && statusCode === 403) return setErrorMessage(`Tu n'as pas le droit de modifier une famille créée par un autre utilisateur`)
+			
 			dispatch({
 				type: 'CREATE_CHARACTER_CARD',
 				payload: data,

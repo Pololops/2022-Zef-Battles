@@ -1,6 +1,6 @@
 import './Cards.scss';
 
-import Card from './Card/Card';
+import { Card } from '../'
 
 interface Props {
 	data: Family[] | Character[]

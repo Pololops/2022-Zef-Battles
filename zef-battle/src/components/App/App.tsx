@@ -4,11 +4,8 @@ import { useContext, useReducer } from 'react';
 import { ModalContext } from '../../contexts/modalContext';
 
 import { useOutlet, useLoaderData, Outlet, useOutletContext } from 'react-router-dom';
-import HomePage from '../pages/HomePage/HomePage'
-import Modal from '../Layout/Modal/Modal'
-import Header from '../Layout/Header/Header';
-import Main from '../Layout/Main/Main';
 import reducer from '../../contexts/reducer'
+import { Modal, Header, Main, HomePage } from '../'
 
 export default function App() {
 	const { allCards: { data } } = useLoaderData() as { allCards: { data: Family[] } }

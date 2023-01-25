@@ -1,4 +1,4 @@
-import './Capacity.scss';
+import './CardCapacity.scss';
 import Button from '../../Forms/Button/Button';
 
 const levelClassName = (level: number) => {

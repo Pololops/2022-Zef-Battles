@@ -1,7 +1,7 @@
-import { useState } from 'react'
 import './Card.scss'
 
-import CardBackFace from './CardFaces/CardBack'
+import { CardBackFace } from '../../'
+
 
 interface Props  {
 	id: number

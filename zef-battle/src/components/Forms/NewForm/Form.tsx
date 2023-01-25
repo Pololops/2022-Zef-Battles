@@ -10,7 +10,7 @@ interface Props {
 	autoComplete?: boolean
 }
 
-export default function Form({ className, name, method = 'post', onSubmit, children, autoComplete = true, }: Props) {
+export default function Form({ className, name, method = 'post', onSubmit, children, autoComplete = true, }: Props) {	
 	return (
 		<form
 			className={className}

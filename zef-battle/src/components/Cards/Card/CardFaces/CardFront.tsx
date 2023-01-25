@@ -1,14 +1,9 @@
-import { useState } from 'react';
-import {
-	addCharacterCapacity,
-	removeCharacterCapacity,
-} from '../../../../apiClient/apiRequests'
+import { useState, useContext } from 'react';
+import { addCharacterCapacity, removeCharacterCapacity } from '../../../../apiClient/apiRequests'
 
-import Capacity from '../../Capacity/Capacity'
-import Button from '../../../Forms/Button/Button'
-import Input from '../../../Forms/Input/Input'
-import Message from '../../../Forms/Message/Message'
+import { CardCapacity, Button, Input, Message, Modal } from '../../../'
 import { useCards } from '../../../App/App'
+import { ModalContext } from '../../../../contexts/modalContext';
 
 interface Props {
 	id: number
@@ -32,6 +27,7 @@ export default function CardFrontFace({
 	onClickKillCharacterButton,
 }: Props) {
 	const { dispatch } = useCards()
+	const { setIsVisible } = useContext(ModalContext)
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('')
 	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState('0')
 	const [isInputCapacityFocus, setIsInputCapacityFocus] = useState(true)
@@ -65,12 +61,15 @@ export default function CardFrontFace({
 				return setErrorMessage(`Tu as oublié d'indiquer une capacité.`)
 			}
 
-			const { statusCode, data } = await addCharacterCapacity(id, {
+			const { status, statusCode, data } = await addCharacterCapacity(id, {
 				name: capacityNameInputValue,
 				level: Number(capacityLevelInputValue),
 			})
 
-			if (statusCode === 200 && typeof data !== 'string') {
+			if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
+			if (status !== 'OK' && statusCode === 403) return setErrorMessage(`Tu n'as pas le droit de modifier une carte créée par un autre utilisateur`)
+
+			if (status === 'OK' && typeof data !== 'string') {
 				dispatch({
 					type: 'CREATE_CHARACTER_CAPACITY',
 					payload: { ...data, newCapacityName: capacityNameInputValue },
@@ -84,9 +83,12 @@ export default function CardFrontFace({
 	const clickRemoveCapacityHandler = async (event: React.MouseEvent<Element, MouseEvent>, capacityId: number) => {
 		event.stopPropagation()
 
-		const { statusCode } = await removeCharacterCapacity(id, capacityId)
+		const { status, statusCode } = await removeCharacterCapacity(id, capacityId)
 
-		if (statusCode === 200) {
+		if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
+		if (status !== 'OK' && statusCode === 403) return setErrorMessage(`Tu n'as pas le droit de modifier une carte créée par un autre utilisateur`)
+
+		if (status === 'OK') {
 			dispatch({
 				type: 'DELETE_CHARACTER_CAPACITY',
 				payload: {
@@ -127,7 +129,7 @@ export default function CardFrontFace({
 			<div className="capacities">
 				{capacities.length > 0 &&
 					capacities.map(({ id, name, level, description }) => (
-						<Capacity
+						<CardCapacity
 							key={id + name}
 							name={name}
 							level={level}

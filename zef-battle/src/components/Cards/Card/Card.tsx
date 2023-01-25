@@ -1,19 +1,13 @@
-import { useState, useEffect } from 'react'
-
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom'
 
 import './Card.scss'
 
-import CardFrontFace from './CardFaces/CardFront'
-import CardBackFace from './CardFaces/CardBack'
-import AddCardFrontFace from './AddCardFaces/AddCardFront'
-import AddCardBackFace from './AddCardFaces/AddCardBack'
+import { CardFrontFace, CardBackFace, AddCardFrontFace, AddCardBackFace } from '../../'
+import { deleteCharacter, deleteFamily } from '../../../apiClient/apiRequests'
 import useAppearEffect from '../../../hooks/useAppearEffect'
-import {
-	deleteCharacter,
-	deleteFamily,
-} from '../../../apiClient/apiRequests'
 import { useCards } from '../../App/App'
+import { ModalContext } from '../../../contexts/modalContext';
 
 interface Props {
 	id?: number
@@ -45,6 +39,7 @@ export default function Card({
 	const navigate = useNavigate()
 
 	const { dispatch } = useCards()
+	const { setIsVisible } = useContext(ModalContext)
 
 	const [isFlipped, setIsFlipped] = useState(false)
 	const [isInEditionMode, setIsInEditionMode] = useState(false)
@@ -64,9 +59,12 @@ export default function Card({
 	}
 
 	const clickToDeleteFamily = async () => {
-		const { statusCode } = await deleteFamily(familyId)
+		const { status, statusCode } = await deleteFamily(familyId)
 
-		if (statusCode === 204) {
+		if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
+		// if (status !== 'OK' && statusCode === 403) return setErrorMessage(`Tu n'as pas le droit de supprimer une famille créée par un autre utilisateur`)
+			
+		if (status === 'OK') {
 			dispatch({
 				type: 'DELETE_FAMILY_CARD',
 				payload: {
@@ -90,9 +88,12 @@ export default function Card({
 	}
 
 	const clickKillCharacterButtonHandler: React.MouseEventHandler = async (event) => {
-		const { statusCode } = await deleteCharacter(id)
+		const { status, statusCode } = await deleteCharacter(id)
 
-		if (statusCode === 204) {
+		if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
+		// if (status !== 'OK' && statusCode === 403) return setErrorMessage(`Tu n'as pas le droit de supprimer une carte créée par un autre utilisateur`)
+
+		if (status === 'OK') {
 				setIskillingProgress(true)
 				clickCancelEditorButtonHandler(event)
 				setTimeout(() => setIskilled(true), 600)
