@@ -17,12 +17,14 @@ export const tokenVerifier = (request, _response, next) => {
 
 	jwt.verify(token, getSecretKey(), (error, decoded) => {
 		if (error) {
-			debug('ERROR EXPIRED AT : ', error.expiredAt)
-			// const expirationDate = new Date(decoded.exp * 1000).getTime()
-			if (new Date(error.expiredAt).getTime() < Date.now())
-				throw new ApiError('Unauthorized: token expired', { statusCode: 401 })
+			let message = ''
+			if (new Date(error.expiredAt).getTime() < Date.now()) {
+				message = 'Unauthorized: token expired'
+			} else {
+				message = 'Unauthorized: invalide token'
+			}
 
-			throw new ApiError('Unauthorized: invalide token', { statusCode: 401 })
+			throw new ApiError(message, { statusCode: 401 })
 		}
 
 		request.connectedUser = decoded
