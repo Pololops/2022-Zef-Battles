@@ -47,14 +47,14 @@ router
 	)
 
 router
-	.route('/:id(\\d+)')
+	.route('/:battleId(\\d+)')
 
 	// TODO : adapt PATCH route to battle
 	/**
-	 * PATCH /api/battle/{id}
+	 * PATCH /api/battle/{battleId}
 	 * @summary Update one battle
 	 * @tags Battle
-	 * @param {number} id.path.required - battle identifier
+	 * @param {number} battleId.path.required - battle identifier
 	 * @param {InputBattle} request.body.required - battle info
 	 * @return {Battle} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
@@ -76,10 +76,10 @@ router
 	)
 
 	/**
-	 * DELETE /api/battle/{id}
+	 * DELETE /api/battle/{battleId}
 	 * @summary Delete one battle
 	 * @tags Battle
-	 * @param {number} id.path.required - battle identifier
+	 * @param {number} battleId.path.required - battle identifier
 	 * @return 204 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Battle not found - application/json

@@ -21,19 +21,20 @@ export default {
 	},
 
 	getByPk: async (request, response) => {
-		const user = await userDatamapper.findByPk(parseInt(request.params.id))
-		if (!user)
-			throw new ApiError('This user does not exist', {
-				statusCode: 404,
-			})
-
-		if (user.id !== parseInt(request.params.id))
+		const id = parseInt(request.params.userId)
+		const user = await userDatamapper.findByPk(id)
+		if (!user || user.id !== id)
 			throw new ApiError('This user does not exist', {
 				statusCode: 404,
 			})
 
 		debug('getAll : ', user)
-		return response.status(200).json(user)
+		return response.status(200).json({
+			id: user.id,
+			name: user.name,
+			victory_number: user.victory_number,
+			role: user.role
+		})
 	},
 
 	create: async (request, response) => {
@@ -58,7 +59,7 @@ export default {
 	},
 
 	update: async (request, response) => {
-		const id = parseInt(request.params.id)
+		const id = parseInt(request.params.userId)
 
 		const user = await userDatamapper.findByPk(id)
 		if (!user)
@@ -95,7 +96,8 @@ export default {
 	},
 
 	delete: async (request, response) => {
-		const deletedUser = await userDatamapper.delete(parseInt(request.params.id))
+		const id = parseInt(request.params.userId)
+		const deletedUser = await userDatamapper.delete(id)
 
 		if (!deletedUser)
 			throw new ApiError('This user does not exists', { statusCode: 404 })

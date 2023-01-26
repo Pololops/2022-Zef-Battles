@@ -7,9 +7,17 @@ import ApiError from '../errors/apiError.js'
 const getSecretKey = () => process.env.SECRET_TOKEN_KEY
 
 export const tokenGenerator = (user) => {
-	return jwt.sign({ id: user.id, role: user.role }, getSecretKey(), {
-		expiresIn: '1d',
-	})
+	return jwt.sign(
+		{ 
+			id: user.id,
+			name: user.name,
+			victory_number: user.victory_number,
+			role: user.role,
+		}, 
+		getSecretKey(), {
+			expiresIn: '1d',
+		}
+	)
 }
 
 export const tokenVerifier = (request, _response, next) => {

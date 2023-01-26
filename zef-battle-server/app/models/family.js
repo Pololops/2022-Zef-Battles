@@ -22,68 +22,78 @@ export default {
 		const result = await client.query(
 			`SELECT * FROM "family";
 `,
-		);
+		)
 
-		debug('findAll : ', result.rows);
-		return result.rows;
+		debug('findAll : ', result.rows)
+		return result.rows
 	},
 
 	async findAllWithCharacters() {
 		const result = await client.query(
 			`SELECT * FROM "family_with_character";
 `,
-		);
+		)
 
-		debug('findAll : ', result.rows);
-		return result.rows;
+		debug('findAll : ', result.rows)
+		return result.rows
 	},
 
 	async findByPk(id) {
 		const result = await client.query(
+			`SELECT * FROM "family" WHERE "id" = $1;`,
+			[id],
+		)
+
+		debug('findByPk : ', result.rows)
+		return result.rows[0]
+	},
+
+	async findByPkWithCharacters(id) {
+		const result = await client.query(
 			`SELECT * FROM "family_with_character" WHERE "family_with_character"."id" = $1;`,
 			[id],
-		);
+		)
 
-		debug('findByPk : ', result.rows);
-		return result.rows[0];
+		debug('findByPk : ', result.rows)
+		return result.rows[0]
 	},
 
 	async isUnique(inputData) {
 		const result = await client.query(
 			`SELECT * FROM "family" WHERE "name" = $1;`,
 			[inputData.name],
-		);
+		)
 
-		debug('isUnique : ', result.rows[0]);
-		return result.rows[0];
+		debug('isUnique : ', result.rows[0])
+		return result.rows[0]
 	},
 
 	async insert(family) {
 		const result = await client.query(
-			`INSERT INTO "family" ("name") VALUES ($1) RETURNING *;`,
-			[family.name],
-		);
+			`INSERT INTO "family" ("name", "user_id") VALUES ($1, $2) RETURNING *;`,
+			[family.name, family.userId],
+		)
 
-		debug('insert : ', result.rows[0]);
-		return result.rows[0];
+		debug('insert : ', result.rows[0])
+		return result.rows[0]
 	},
 
 	async update(id, family) {
 		const result = await client.query(
 			`UPDATE "family" SET "name" = $1 WHERE "id" = $2 RETURNING *`,
 			[family.name, id],
-		);
+		)
 
-		debug('update : ', result.rows[0]);
-		return result.rows[0];
+		debug('update : ', result.rows[0])
+		return result.rows[0]
 	},
 
 	async delete(id) {
 		const result = await client.query(`DELETE FROM "family" WHERE id = $1`, [
 			id,
-		]);
+		])
 
-		debug('delete : ', !!result.rowCount);
-		return !!result.rowCount;
+		debug('delete : ', !!result.rowCount)
+		return !!result.rowCount
 	},
-};
+}

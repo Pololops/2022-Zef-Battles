@@ -2,6 +2,7 @@ import { Router } from 'express';
 const router = Router();
 
 import { tokenVerifier } from '../../middlewares/tokenManager.js'
+import { adminAccessMiddleware } from '../../middlewares/userAccessVerifier.js'
 import sanitize from '../../middlewares/sanitizerHandler.js'
 import validate from '../../validation/validator.js'
 import { createSchema, updateSchema } from '../../validation/schemas/capacitySchema.js'
@@ -42,19 +43,20 @@ router
 	 */
 	.post(
 		controllerHandler(tokenVerifier),
+		controllerHandler(adminAccessMiddleware),
 		sanitize('body'),
 		validate('body', createSchema),
 		controllerHandler(controller.create),
 	)
 
 router
-	.route('/:id(\\d+)')
+	.route('/:capacityId(\\d+)')
 
 	/**
-	 * PATCH /api/capacity/{id}
+	 * PATCH /api/capacity/{capacityId}
 	 * @summary Update one capacity
 	 * @tags Capacity
-	 * @param {number} id.path.required - capacity identifier
+	 * @param {number} capacityId.path.required - capacity identifier
 	 * @param {InputCapacity} request.body.required - capacity info
 	 * @return {Capacity} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
@@ -72,22 +74,24 @@ router
 	 */
 	.patch(
 		controllerHandler(tokenVerifier),
+		controllerHandler(adminAccessMiddleware),
 		sanitize('body'),
 		validate('body', updateSchema),
 		controllerHandler(controller.update),
 	)
 
 	/**
-	 * DELETE /api/capacity/{id}
+	 * DELETE /api/capacity/{capacityId}
 	 * @summary Delete one capacity
 	 * @tags Capacity
-	 * @param {number} id.path.required - capacity identifier
+	 * @param {number} capacityId.path.required - capacity identifier
 	 * @return 204 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - capacity not found - application/json
 	 */
 	.delete(
 		controllerHandler(tokenVerifier),
+		controllerHandler(adminAccessMiddleware),
 		controllerHandler(controller.delete),
 	)
 

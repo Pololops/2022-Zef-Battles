@@ -2,9 +2,9 @@ import { Router } from 'express'
 const router = Router()
 
 import { tokenVerifier } from '../../middlewares/tokenManager.js'
+import { authorizeAccessMiddleware } from '../../middlewares/userAccessVerifier.js'
 import sanitize from '../../middlewares/sanitizerHandler.js'
 import validate from '../../validation/validator.js'
-import { updateSchema } from '../../validation/schemas/characterSchema.js'
 import { createSchema as characterCapacityAssociateSchema } from '../../validation/schemas/characterCapacityAssociateSchema.js'
 
 import controllerHandler from '../../middlewares/controllerHandler.js'
@@ -23,68 +23,40 @@ router
 	.get(controllerHandler(controller.getRandom));
 
 router
-	.route('/:id(\\d+)')
+	.route('/:characterId(\\d+)')
 
 	/**
-	 * GET /api/character/{id}
+	 * GET /api/character/{characterId}
 	 * @summary Get one character by its id
 	 * @tags Character
-	 * @param {number} id.path.required - character identifier
+	 * @param {number} characterId.path.required - character identifier
 	 * @return {Character} 200 - success response - application/json
 	 */
 	.get(controllerHandler(controller.getOneByPk))
 
 	/**
-	 * PATCH /api/character/{id}
-	 * @summary Update one character
-	 * @tags Character
-	 * @param {number} id.path.required - character identifier
-	 * @param {InputCharacter} request.body.required - character info
-	 * @return {Character} 200 - success response - application/json
-	 * @return {ApiError} 400 - Bad request response - application/json
-	 * @return {ApiError} 404 - character not found - application/json
-	 * @example request - example payload
-	 * {
-	 *		"name": "Schtroumpf Grognon",
-	 * 		"picture": "/",
-	 * 		"family_id": 2
-	 * }
-	 * @example request - other payload example
-	 * {
-	 *		"name": "Pikachu",
-	 * 		"picture": "/",
-	 * 		"family_id": 1
-	 * }
-	 */
-	.patch(
-		controllerHandler(tokenVerifier),
-		sanitize('body'),
-		validate('body', updateSchema),
-		controllerHandler(controller.update),
-	)
-
-	/**
-	 * DELETE /api/character/{id}
+	 * DELETE /api/character/{characterId}
 	 * @summary Delete one character
 	 * @tags Character
-	 * @param {number} id.path.required - character identifier
+	 * @param {number} characterId.path.required - character identifier
 	 * @return 204 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - character not found - application/json
 	 */
 	.delete(
 		controllerHandler(tokenVerifier),
+		controllerHandler(authorizeAccessMiddleware),
 		controllerHandler(controller.delete),
 	)
 
 router
-	.route('/:id(\\d+)/capacity')
+	.route('/:characterId(\\d+)/capacity')
 
 	/**
-	 * POST /api/character/{id}/capacity
+	 * POST /api/character/{characterId}/capacity
 	 * @summary Add one capacity to a character
 	 * @tags Capacity
-	 * @param {number} id.path.required - character identifier
+	 * @param {number} characterId.path.required - character identifier
 	 * @param {AssociateCapacityToCharacter} request.body.required - capacity info
 	 * @return {Character} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
@@ -106,18 +78,20 @@ router
 	 */
 	.post(
 		controllerHandler(tokenVerifier),
+		controllerHandler(authorizeAccessMiddleware),
+		sanitize('body'),
 		validate('body', characterCapacityAssociateSchema),
 		controllerHandler(controller.addCapacityToCharacter),
 	)
 
 router
-	.route('/:id(\\d+)/capacity/:capacityId(\\d+)')
+	.route('/:characterId(\\d+)/capacity/:capacityId(\\d+)')
 
 	/**
 	 * DELETE /api/character/{characterId}/capacity/{capacityId}
 	 * @summary Remove a capacity to a character
 	 * @tags Capacity
-	 * @param {number} id.path.required - character identifier
+	 * @param {number} characterId.path.required - character identifier
 	 * @param {number} capacityId.path.required - capacity identifier
 	 * @return 204 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
@@ -125,6 +99,7 @@ router
 	 */
 	.delete(
 		controllerHandler(tokenVerifier),
+		controllerHandler(authorizeAccessMiddleware),
 		controllerHandler(controller.removeCapacityToCharacter),
 	)
 

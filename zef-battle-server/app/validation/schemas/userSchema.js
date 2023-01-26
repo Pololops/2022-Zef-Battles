@@ -6,11 +6,11 @@ export const createSchema = Joi.object({
 }).required()
 
 export const updateSchema = Joi.object({
-	name: Joi.string().min(3).required().label('user name'),
-	password: Joi.string().min(8).required().label('user password'),
+	name: Joi.string().min(3).label('user name'),
+	password: Joi.string().min(8).label('user password'),
 	victory_number: Joi.number().min(0).label('user victories'),
 	role: Joi.string().label('user role'),
-}).required()
+})
 
 export const loginSchema = Joi.object({
 	login: Joi.string().required().label('user login'),

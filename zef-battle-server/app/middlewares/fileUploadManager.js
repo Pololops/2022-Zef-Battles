@@ -1,7 +1,8 @@
 import Debug from 'debug';
 const debug = Debug('Middleware:saveFile:log');
 
-import { writeFile, access, unlink } from 'fs';
+import { writeFile, access, unlink, rename } from 'fs';
+import ApiError from '../errors/apiError.js'
 import { maxSize } from '../middlewares/uploadFile.js'
 
 export const checkFile = (file) => {
@@ -22,26 +23,38 @@ export const checkFile = (file) => {
 }
 
 export const saveFile = (filename, fileInBuffer) => {
-	const savedFilePath = `${process.env.UPLOADS_PATH}/${filename}`;
+	const savedFilePath = `${process.env.UPLOADS_PATH}/${filename}`
 
 	writeFile(savedFilePath, fileInBuffer, (error) => {
-		if (!error) {
-			debug(`file ${filename} saved`);
-		} else {
-			debug(`file ${filename} not saved: `, error);
+		if (error) {
+			throw new ApiError('Internal Server Error : File not saved', {
+				statusCode: 500,
+			})
 		}
-	});
+
+		debug(`file ${filename} saved`)
+	})
 };
 
 export const deleteFile = (filename) => {
-	const deletedFilePath = `${process.env.UPLOADS_PATH}/${filename}`;
+	const deletedFilePath = `${process.env.UPLOADS_PATH}/${filename}`
 
 	access(deletedFilePath, (error) => {
-		if (!error) {
-			unlink(deletedFilePath, () => debug(`file ${filename} deleted`));
-		} else {
-			debug(`file ${filename} not found`);
+		if (error) {
+			throw new ApiError('Internal Server Error : File not found', {
+				statusCode: 500,
+			})
 		}
+
+		unlink(deletedFilePath, (error) => {
+			if (error) {
+				throw new ApiError('Internal Server Error : File not deleted', {
+					statusCode: 500,
+				})
+			}
+
+			debug(`file ${filename} deleted`)
+		})
 	});
 };
 

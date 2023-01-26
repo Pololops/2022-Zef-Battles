@@ -47,6 +47,16 @@ export default {
 
 	findByPk: async (id) => {
 		const result = await client.query(
+			`SELECT * FROM "character" WHERE "id" = $1;`,
+			[id],
+		)
+
+		debug('findByPk : ', result.rows)
+		return result.rows[0]
+	},
+
+	findByPkWithCapacity: async (id) => {
+		const result = await client.query(
 			`SELECT * FROM "character_with_capacity" WHERE "id" = $1;`,
 			[id],
 		)
@@ -76,7 +86,7 @@ export default {
 		return result.rows[0]
 	},
 
-	insertInFamily: async (character) => {
+	insert: async (character) => {
 		const fields = Object.keys(character).map((key) => `"${key}"`)
 		const numberFields = Object.keys(character).map(
 			(_, index) => `$${index + 1}`,
@@ -88,7 +98,7 @@ export default {
 			values,
 		)
 
-		debug('insertInFamily : ', result.rows[0])
+		debug('insert: ', result.rows[0])
 		return result.rows[0]
 	},
 

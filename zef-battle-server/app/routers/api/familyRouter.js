@@ -2,6 +2,7 @@ import { Router } from 'express';
 const router = Router();
 
 import { tokenVerifier } from '../../middlewares/tokenManager.js'
+import { authorizeAccessMiddleware } from '../../middlewares/userAccessVerifier.js'
 import sanitize from '../../middlewares/sanitizerHandler.js'
 import validate from '../../validation/validator.js'
 import { createSchema as familyCreateSchema } from '../../validation/schemas/familySchema.js'
@@ -51,23 +52,23 @@ router
 	)
 
 router
-	.route('/:id(\\d+)')
+	.route('/:familyId(\\d+)')
 
 	/**
-	 * GET /api/family/{id}
+	 * GET /api/family/{familyId}
 	 * @summary Get a family
 	 * @tags Family
-	 * @param {number} id.path.required - family identifier
+	 * @param {number} familyId.path.required - family identifier
 	 * @return {Family} 200 - success response - application/json
 	 * @return {ApiError} 404 - Family not found - application/json
 	 */
 	.get(controllerHandler(familyController.getOneByPk))
 
 	/**
-	 * PATCH /api/family/{id}
+	 * PATCH /api/family/{familyId}
 	 * @summary Update one family
 	 * @tags Family
-	 * @param {number} id.path.required - family identifier
+	 * @param {number} familyId.path.required - family identifier
 	 * @param {InputFamily} request.body.required - family info
 	 * @return {Family} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
@@ -83,27 +84,29 @@ router
 	 */
 	.patch(
 		controllerHandler(tokenVerifier),
+		controllerHandler(authorizeAccessMiddleware),
 		sanitize('body'),
 		validate('body', familyCreateSchema),
 		controllerHandler(familyController.update),
 	)
 
 	/**
-	 * DELETE /api/family/{id}
+	 * DELETE /api/family/{familyId}
 	 * @summary Delete one family
 	 * @tags Family
-	 * @param {number} id.path.required - family identifier
+	 * @param {number} familyId.path.required - family identifier
 	 * @return 204 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 404 - Family not found - application/json
 	 */
 	.delete(
 		controllerHandler(tokenVerifier),
+		controllerHandler(authorizeAccessMiddleware),
 		controllerHandler(familyController.delete),
 	)
 
 router
-	.route('/:id(\\d+)/character')
+	.route('/:familyId(\\d+)/character')
 
 	/**
 	 * GET /api/family/{familyId}/character
@@ -138,6 +141,7 @@ router
 	 */
 	.post(
 		controllerHandler(tokenVerifier),
+		controllerHandler(authorizeAccessMiddleware),
 		controllerHandler(uploadFile),
 		sanitize('body'),
 		validate('body', characterCreateSchema),

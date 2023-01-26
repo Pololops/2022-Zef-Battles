@@ -11,8 +11,8 @@ import {
 
 import { tokenVerifier } from '../../middlewares/tokenManager.js'
 import {
-	isAdmin,
-	isLegitOrAdmin,
+	adminAccessMiddleware,
+	adminOrUserAccessMiddleware,
 } from '../../middlewares/userAccessVerifier.js'
 import controllerHandler from '../../middlewares/controllerHandler.js'
 import controller from '../../controllers/userController.js'
@@ -28,8 +28,8 @@ router
 	 */
 	.get(
 		controllerHandler(tokenVerifier),
-		controllerHandler(isAdmin),
-		controllerHandler(controller.getAll)
+		controllerHandler(adminAccessMiddleware),
+		controllerHandler(controller.getAll),
 	)
 
 	/**
@@ -64,28 +64,28 @@ router
 	.post(validate('body', loginSchema), controllerHandler(controller.login))
 
 router
-	.route('/:id(\\d+)')
+	.route('/:userId(\\d+)')
 	/**
-	 * GET /v1/user/{id}
+	 * GET /v1/user/{userId}
 	 * @summary Get one user by its id
 	 * @tags User
 	 * @security BearerAuth
-	 * @param {number} id.path.required - user identifier
+	 * @param {number} userId.path.required - user identifier
 	 * @return {User} 200 - success response - application/json
 	 * @return {ApiError} 401 - Unauthorized response - application/json
 	 */
 	.get(
 		controllerHandler(tokenVerifier),
-		controllerHandler(isLegitOrAdmin),
+		controllerHandler(adminOrUserAccessMiddleware),
 		controllerHandler(controller.getByPk),
 	)
 
 	/**
-	 * PATCH /v1/user/{id}
+	 * PATCH /v1/user/{userId}
 	 * @summary Update one user
 	 * @tags User
 	 * @security BearerAuth
-	 * @param {number} id.path.required - user identifier
+	 * @param {number} userId.path.required - user identifier
 	 * @param {InputUser} request.body.required - user info
 	 * @return {User} 200 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
@@ -102,15 +102,15 @@ router
 		controllerHandler(tokenVerifier),
 		sanitize('body'),
 		validate('body', updateSchema),
-		controllerHandler(isLegitOrAdmin),
+		controllerHandler(adminOrUserAccessMiddleware),
 		controllerHandler(controller.update),
 	)
 
 	/**
-	 * DELETE /api/user/{id}
+	 * DELETE /api/user/{userId}
 	 * @summary Delete one user
 	 * @tags User
-	 * @param {number} id.path.required - capacity identifier
+	 * @param {number} userId.path.required - capacity identifier
 	 * @return 204 - success response - application/json
 	 * @return {ApiError} 400 - Bad request response - application/json
 	 * @return {ApiError} 401 - Unauthorized response - application/json
@@ -118,7 +118,7 @@ router
 	 */
 	.delete(
 		controllerHandler(tokenVerifier),
-		controllerHandler(isLegitOrAdmin),
+		controllerHandler(adminOrUserAccessMiddleware),
 		controllerHandler(controller.delete),
 	)
 

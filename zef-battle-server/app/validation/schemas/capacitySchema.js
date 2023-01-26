@@ -6,6 +6,6 @@ export const createSchema = Joi.object({
 }).required()
 
 export const updateSchema = Joi.object({
-	name: Joi.string().min(1).required().label('capacity name'),
+	name: Joi.string().min(1).label('capacity name'),
 	description: Joi.string().label('capacity description'),
-}).required()
+})

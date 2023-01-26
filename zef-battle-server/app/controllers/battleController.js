@@ -61,9 +61,8 @@ const battleController = {
 	*/
 
 	async delete(request, response) {
-		const deletedBattle = await battleDatamapper.delete(
-			Number(request.params.id),
-		);
+		const id = parseInt(request.params.id)
+		const deletedBattle = await battleDatamapper.delete(id);
 		if (!deletedBattle) {
 			throw new ApiError('This battle does not exists', { statusCode: 404 });
 		}

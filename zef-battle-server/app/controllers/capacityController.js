@@ -6,7 +6,7 @@ import ApiError from '../errors/apiError.js'
 import capacityDatamapper from '../models/capacity.js'
 
 export default {
-	getAll: async (request, response) => {
+	getAll: async (_request, response) => {
 		const capacities = await capacityDatamapper.findAll()
 
 		debug('getAll : ', capacities)
@@ -28,7 +28,7 @@ export default {
 	},
 
 	update: async (request, response) => {
-		const id = parseInt(request.params.id)
+		const id = parseInt(request.params.capacityId)
 
 		const capacity = await capacityDatamapper.findByPk(id)
 		if (!capacity)
@@ -50,9 +50,8 @@ export default {
 	},
 
 	delete: async (request, response) => {
-		const deletedCapacity = await capacityDatamapper.delete(
-			parseInt(request.params.id),
-		)
+		const id = parseInt(request.params.capacityId)
+		const deletedCapacity = await capacityDatamapper.delete(id)
 
 		if (!deletedCapacity)
 			throw new ApiError('This capacity does not exists', { statusCode: 404 })

@@ -21,9 +21,11 @@ export default {
 	},
 
 	getOneByPk: async (request, response) => {
-		const family = await familyDatamapper.findByPk(parseInt(request.params.id))
+		const id = parseInt(request.params.familyId)
+		const family = await familyDatamapper.findByPkWithCharacters(id)
 
-		if (!family) throw new ApiError('This family does not exist', { statusCode: 404 })
+		if (!family)
+			throw new ApiError('This family does not exist', { statusCode: 404 })
 
 		debug('getOneByPk : ', family)
 		return response.status(200).json(family)
@@ -31,20 +33,23 @@ export default {
 
 	create: async (request, response) => {
 		const family = await familyDatamapper.isUnique(request.body)
-		if (family) throw new ApiError('This family name already exists', { statusCode: 400 })
+		const connectedUserId = request.connectedUser.id
 
-		const savedFamily = await familyDatamapper.insert(request.body)
+		if (family)
+			throw new ApiError('This family name already exists', { statusCode: 400 })
+
+		const savedFamily = await familyDatamapper.insert({
+			name: request.body.name,
+			userId: connectedUserId,
+		})
 
 		debug('create : ', savedFamily)
 		return response.status(200).json(savedFamily)
 	},
 
 	update: async (request, response) => {
-		const id = parseInt(request.params.id)
-
-		const family = await familyDatamapper.findByPk(id)
-		if (!family) throw new ApiError('This family does not exists', { statusCode: 404 })
-
+		const id = parseInt(request.params.familyId)
+		
 		if (request.body.name) {
 			const existingFamily = await familyDatamapper.isUnique(request.body)
 			if (existingFamily && existingFamily.id !== id) {
@@ -61,8 +66,14 @@ export default {
 	},
 
 	delete: async (request, response) => {
-		const deletedFamily = await familyDatamapper.delete(parseInt(request.params.id))
-		if (!deletedFamily) throw new ApiError('This family does not exists', { statusCode: 404 })
+		const id = parseInt(request.params.familyId)
+
+		const family = await familyDatamapper.findByPk(id)
+		if (!family) {
+			throw new ApiError('This family does not exists', { statusCode: 404 })
+		}
+
+		const deletedFamily = await familyDatamapper.delete(id)
 
 		debug('delete : ', deletedFamily)
 		return response.status(204).json()
