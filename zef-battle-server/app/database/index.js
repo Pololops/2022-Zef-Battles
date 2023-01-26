@@ -4,6 +4,7 @@ dotenv.config();
 import Debug from 'debug';
 const debug = Debug('SQL:log');
 
+import ApiError from '../errors/apiError.js'
 import pg from 'pg';
 const { Pool } = pg;
 
@@ -24,8 +25,7 @@ const client = {
 
 	async query(...params) {
 		debug('SQL request : ', ...params);
-
-		return this.originalClient.query(...params);
+		return this.originalClient.query(...params)
 	},
 };
 

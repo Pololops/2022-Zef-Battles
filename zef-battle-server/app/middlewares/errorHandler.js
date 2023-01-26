@@ -12,11 +12,10 @@ const errorHandler = (err, res) => {
 
 	if (!statusCode || Number.isNaN(Number(statusCode))) {
 		statusCode = 500;
+		message = 'Internal Server Error'
 	}
 
-	if (!statusCode || statusCode !== 404) {
-		// logger.error(err);
-	} else {
+	if (!statusCode || statusCode === 404) {
 		debug(err);
 	}
 
