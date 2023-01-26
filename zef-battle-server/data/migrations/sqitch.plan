@@ -7,3 +7,4 @@
 4-view-battle_with_user 2022-07-27T12:11:25Z System Administrator <root@Copain-MaxiBook> # SQL view to get battles with the players
 5-view-family_with_character 2022-07-28T10:25:16Z System Administrator <root@Copain-MaxiBook.local> # SQL View to get all characters of each family with their capacities
 6-views_reorder_by_name 2022-11-17T09:20:14Z System Administrator <root@Copain-MiniMac.local> # Reorder by name the families, characters and capacities, in view-family and view-character
+7-family_has_user 2023-01-26T08:44:48Z System Administrator <root@Copain-MiniMac> # Add a user_id fereign key column into the family table
