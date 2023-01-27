@@ -7,7 +7,8 @@ import { CardFrontFace, CardBackFace, AddCardFrontFace, AddCardBackFace } from '
 import { deleteCharacter, deleteFamily } from '../../../apiClient/apiRequests'
 import useAppearEffect from '../../../hooks/useAppearEffect'
 import { useCards } from '../../App/App'
-import { ModalContext } from '../../../contexts/modalContext';
+import { ModalContext } from '../../../contexts/ModalContext';
+import { MessageContext } from '../../../contexts/MessageContext';
 
 interface Props {
 	id?: number
@@ -39,7 +40,8 @@ export default function Card({
 	const navigate = useNavigate()
 
 	const { dispatch } = useCards()
-	const { setIsVisible } = useContext(ModalContext)
+	const { setMessage } = useContext(MessageContext)
+	const { setIsModalVisible } = useContext(ModalContext)
 
 	const [isFlipped, setIsFlipped] = useState(false)
 	const [isInEditionMode, setIsInEditionMode] = useState(false)
@@ -61,15 +63,19 @@ export default function Card({
 	const clickToDeleteFamily = async () => {
 		const { status, statusCode } = await deleteFamily(familyId)
 
-		if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
-		// if (status !== 'OK' && statusCode === 403) return setErrorMessage(`Tu n'as pas le droit de supprimer une famille créée par un autre utilisateur`)
+		if (status !== 'OK' && statusCode === 401) {
+			setIsModalVisible(true)
+			return setMessage('Connecte-toi pour ajouter, modifier ou supprimer des familles')
+		}
+
+		if (status !== 'OK' && statusCode === 403) {
+			return setMessage(`Tu n'as pas le droit de supprimer une famille créée par un autre utilisateur`)
+		}
 			
 		if (status === 'OK') {
 			dispatch({
 				type: 'DELETE_FAMILY_CARD',
-				payload: {
-					family_id: familyId,
-				},
+				payload: { family_id: familyId },
 			})
 			navigate('/families')
 		}
@@ -77,6 +83,7 @@ export default function Card({
 
 	const clickEditorButtonHandler: React.MouseEventHandler = (event) => {
 		event.stopPropagation()
+		setMessage('')
 		setIsInEditionMode((previousSate) => !previousSate)
 	}
 
@@ -90,8 +97,14 @@ export default function Card({
 	const clickKillCharacterButtonHandler: React.MouseEventHandler = async (event) => {
 		const { status, statusCode } = await deleteCharacter(id)
 
-		if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
-		// if (status !== 'OK' && statusCode === 403) return setErrorMessage(`Tu n'as pas le droit de supprimer une carte créée par un autre utilisateur`)
+		if (status !== 'OK' && statusCode === 401) {
+			setIsModalVisible(true)
+			return setMessage('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+		}
+
+		if (status !== 'OK' && statusCode === 403) {
+			return setMessage(`Tu n'as pas le droit de supprimer une carte créée par un autre utilisateur`)
+		}
 
 		if (status === 'OK') {
 				setIskillingProgress(true)

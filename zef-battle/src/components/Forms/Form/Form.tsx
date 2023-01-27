@@ -7,7 +7,8 @@ import { DropZone, Button, Input, Message } from '../../'
 
 import { FileWithPath } from 'react-dropzone';
 import { useCards } from '../../App/App'
-import { ModalContext } from '../../../contexts/modalContext'
+import { ModalContext } from '../../../contexts/ModalContext'
+import { MessageContext } from '../../../contexts/MessageContext';
 
 interface Props {
 	familyId: number
@@ -20,11 +21,11 @@ const regexpToMatch =
 	/^([0-9@-Za-zÀ-ÖØ-öø-ÿ-&'_^])([0-9@-Za-zÀ-ÖØ-öø-ÿ-&' _^]*)$/;
 
 export default function Form({ isFamilyForm, familyId, formCloser, isActive }: Props) {
-	const { setIsVisible } = useContext(ModalContext)
+	const { message, setMessage } = useContext(MessageContext)
+	const { isModalVisible, setIsModalVisible } = useContext(ModalContext)
 	const [nameInputValue, setNameInputValue] = useState('');
 	const [droppedFiles, setDroppedFiles] = useState([] as FileWithPath[]);
 	const [missingValue, setMissingValue] = useState('');
-	const [errorMessage, setErrorMessage] = useState('');
 
 	const { dispatch } = useCards()
 	
@@ -35,10 +36,10 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 		if (value === '') return setState('');
 
 		if (!value.match(regexpToMatch)) {
-			setErrorMessage('Il est bizarre ce character ici !?!');
+			setMessage('Il est bizarre ce character ici !?!');
 		} else {
 			setState(value);
-			setErrorMessage('');
+			setMessage('');
 		}
 	};
 
@@ -52,12 +53,12 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 		event.preventDefault();
 
 		if (nameInputValue === '') {
-			setErrorMessage(`Tu as oublié d'écrire un nom.`)
+			setMessage(`Tu as oublié d'écrire un nom.`)
 			return setMissingValue('name')
 		}
 
 		if (!isFamilyForm && droppedFiles.length === 0) {
-			setErrorMessage(`Tu as oublié de déposer une image.`)
+			setMessage(`Tu as oublié de déposer une image.`)
 			return setMissingValue('file')
 		}
 
@@ -66,7 +67,10 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 				name: nameInputValue 
 			});
 
-			if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
+			if (status !== 'OK' && statusCode === 401) {
+				setIsModalVisible(true)
+				return setMessage('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+			}
 			
 			dispatch({
 				type: 'CREATE_FAMILY_CARD', 
@@ -79,8 +83,14 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 				file: droppedFiles[0]
 			});
 
-			if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
-			if (status !== 'OK' && statusCode === 403) return setErrorMessage(`Tu n'as pas le droit de modifier une famille créée par un autre utilisateur`)
+			if (status !== 'OK' && statusCode === 401) {
+				setIsModalVisible(true)
+				return setMessage('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+			}
+
+			if (status !== 'OK' && statusCode === 403) {
+				return setMessage(`Tu n'as pas le droit de modifier une famille créée par un autre utilisateur`)
+			}
 			
 			dispatch({
 				type: 'CREATE_CHARACTER_CARD',
@@ -100,7 +110,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 	useEffect(() => {
 		if (isActive) {
 			setNameInputValue('');
-			setErrorMessage('');
+			setMessage('');
 		}
 
 		return () => unloadAfterDelay()
@@ -121,7 +131,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 				onChange={(event) => inputChangeHandler(event, setNameInputValue)}
 				isFocus={isActive}
 			/>
-			{missingValue === 'name' && errorMessage !== '' && <Message message={errorMessage} />}
+			{message !== '' && !isModalVisible && missingValue === 'name' && <Message />}
 
 			{!isFamilyForm && (
 				<>
@@ -133,7 +143,7 @@ export default function Form({ isFamilyForm, familyId, formCloser, isActive }: P
 						readOnly
 					/>
 					<DropZone droppedFiles={droppedFiles} onDrop={dropzoneHandler} />
-					{missingValue === 'file' && errorMessage !== '' && <Message message={errorMessage} />}
+					{message !== '' && !isModalVisible && missingValue === 'file' && <Message />}
 				</>
 			)}
 

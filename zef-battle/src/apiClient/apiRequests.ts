@@ -7,8 +7,8 @@ import {
 	characterCapacityUrl,
 } from './apiAdresses';
 
-import type { FileWithPath } from 'react-dropzone'
 import { randomCharacterURL } from './apiAdresses';
+import type { FileWithPath } from 'react-dropzone'
 
 export type ReturnType<T> = {
 	status: string

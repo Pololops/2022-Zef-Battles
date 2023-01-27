@@ -5,22 +5,22 @@ type Props = {
 }
 
 type ModalContextType = {
-  isVisible: boolean,
-	setIsVisible: (newValue: boolean) => void
+  isModalVisible: boolean,
+	setIsModalVisible: (newValue: boolean) => void
 }
 
 const iModalContextState: ModalContextType = {
-  isVisible: false,
-  setIsVisible: () => {}
+  isModalVisible: false,
+  setIsModalVisible: () => {}
 };
 
 export const ModalContext = createContext(iModalContextState)
 
 const ModalContextProvider = ({ children }: Props) => {
-	const [isVisible, setIsVisible] = useState(iModalContextState.isVisible)
+	const [isModalVisible, setIsModalVisible] = useState(iModalContextState.isModalVisible)
 
 	return (
-		<ModalContext.Provider value={{ isVisible, setIsVisible }}>
+		<ModalContext.Provider value={{ isModalVisible, setIsModalVisible }}>
 			{children}
 		</ModalContext.Provider>
 	);

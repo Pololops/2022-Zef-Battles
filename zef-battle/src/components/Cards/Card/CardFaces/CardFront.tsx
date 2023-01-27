@@ -1,9 +1,10 @@
 import { useState, useContext } from 'react';
 import { addCharacterCapacity, removeCharacterCapacity } from '../../../../apiClient/apiRequests'
 
-import { CardCapacity, Button, Input, Message, Modal } from '../../../'
+import { CardCapacity, Button, Input, Message } from '../../../'
 import { useCards } from '../../../App/App'
-import { ModalContext } from '../../../../contexts/modalContext';
+import { MessageContext } from '../../../../contexts/MessageContext';
+import { ModalContext } from '../../../../contexts/ModalContext';
 
 interface Props {
 	id: number
@@ -27,19 +28,19 @@ export default function CardFrontFace({
 	onClickKillCharacterButton,
 }: Props) {
 	const { dispatch } = useCards()
-	const { setIsVisible } = useContext(ModalContext)
+	const { message, setMessage } = useContext(MessageContext)
+	const { isModalVisible, setIsModalVisible } = useContext(ModalContext)
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('')
 	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState('0')
 	const [isInputCapacityFocus, setIsInputCapacityFocus] = useState(true)
-	const [errorMessage, setErrorMessage] = useState('')
 
 	const changeCapacityInputValueHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-		setErrorMessage('')
+		setMessage('')
 		setCapacityNameInputValue(event.target.value)
 	}
 
 	const changeCapacityLevelInputValueHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-		setErrorMessage('')
+		setMessage('')
 		setCapacityLevelInputValue(event.target.value)
 	}
 
@@ -58,7 +59,7 @@ export default function CardFrontFace({
 	const inputKeyPressCapacityHandler: React.KeyboardEventHandler = async (event) => {
 		if (event.key === 'Enter') {
 			if (capacityNameInputValue === '') {
-				return setErrorMessage(`Tu as oublié d'indiquer une capacité.`)
+				return setMessage(`Quelle capacité veux-tu affecter à cette carte ?`)
 			}
 
 			const { status, statusCode, data } = await addCharacterCapacity(id, {
@@ -66,8 +67,14 @@ export default function CardFrontFace({
 				level: Number(capacityLevelInputValue),
 			})
 
-			if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
-			if (status !== 'OK' && statusCode === 403) return setErrorMessage(`Tu n'as pas le droit de modifier une carte créée par un autre utilisateur`)
+			if (status !== 'OK' && statusCode === 401) {
+				setIsModalVisible(true)
+				return setMessage('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+			}
+
+			if (status !== 'OK' && statusCode === 403) {
+				return setMessage(`Tu n'as pas le droit de modifier une carte créée par un autre utilisateur`)
+			}
 
 			if (status === 'OK' && typeof data !== 'string') {
 				dispatch({
@@ -85,8 +92,14 @@ export default function CardFrontFace({
 
 		const { status, statusCode } = await removeCharacterCapacity(id, capacityId)
 
-		if (status !== 'OK' && statusCode === 401) return setIsVisible(true)
-		if (status !== 'OK' && statusCode === 403) return setErrorMessage(`Tu n'as pas le droit de modifier une carte créée par un autre utilisateur`)
+		if (status !== 'OK' && statusCode === 401) {
+			setIsModalVisible(true)
+			return setMessage('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+		}
+
+		if (status !== 'OK' && statusCode === 403) {
+			return setMessage(`Tu n'as pas le droit de modifier une carte créée par un autre utilisateur`)
+		}
 
 		if (status === 'OK') {
 			dispatch({
@@ -166,7 +179,7 @@ export default function CardFrontFace({
 							max={100}
 							step={5}
 						></Input>
-						{errorMessage !== '' && <Message message={errorMessage} />}
+						{message !== '' && !isModalVisible && <Message />}
 					</div>
 				)}
 			</div>

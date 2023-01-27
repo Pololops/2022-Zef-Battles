@@ -1,24 +1,21 @@
+import { useContext } from 'react'
+import { NavLink } from 'react-router-dom'
+import { LoginContext } from '../../../contexts/LoginContext'
+import { MessageContext } from '../../../contexts/MessageContext'
+import { ModalContext } from '../../../contexts/ModalContext'
+
 import './Navbar.scss'
 
-import { useContext, useState } from 'react';
-
-import { NavLink } from 'react-router-dom'
-import { ModalContext } from '../../../contexts/modalContext'
-
-const isConnected = (): boolean => {
-	const token = localStorage.getItem('token')
-	return !!token
-}
-
 export default function Navbar() {
-	const { setIsVisible } = useContext(ModalContext)
-	const [isLogin, setIsLogin] = useState(isConnected())
+	const { setMessage } = useContext(MessageContext)
+	const { setIsModalVisible } = useContext(ModalContext)
+	const { isLogin, logout } = useContext(LoginContext)
 
-	const logout = (): void => {
-		localStorage.clear()
-		setIsLogin(false)
+	const initAndShowModal: React.MouseEventHandler<HTMLElement> = () => {
+		setMessage('')
+		setIsModalVisible(true)
 	}
-
+	
 	return (
 		<nav>
 			<ul className="navbar">
@@ -48,7 +45,7 @@ export default function Navbar() {
 						!isLogin
 						? <span
 								className="navbar__link"
-								onClick={() => setIsVisible(true)}
+								onClick={initAndShowModal}
 							>
 								Connexion
 							</span>

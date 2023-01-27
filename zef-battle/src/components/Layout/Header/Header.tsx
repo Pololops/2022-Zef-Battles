@@ -1,12 +1,13 @@
 import './Header.scss';
 
-import Navbar from '../Navbar/Navbar';
+interface Props {
+  children: React.ReactElement
+}
 
-export default function Header() {
+export default function Header({ children }: Props) {
   return (
     <header className="header">
-      <h1 className="header__title">Zef's Battles</h1>
-      <Navbar />
+      { children }
     </header>
   );
 }       
