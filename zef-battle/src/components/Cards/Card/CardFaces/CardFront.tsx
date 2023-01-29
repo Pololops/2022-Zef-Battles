@@ -1,9 +1,9 @@
 import { useState, useContext } from 'react';
 import { addCharacterCapacity, removeCharacterCapacity } from '../../../../apiClient/apiRequests'
 
-import { CardCapacity, Button, Input, Message } from '../../../'
+import { CardCapacity, Button, Input, Message, Form } from '../../../'
 import { useCards } from '../../../App/App'
-import { MessageContext } from '../../../../contexts/MessageContext';
+import { MessageContext, MESSAGE } from '../../../../contexts/MessageContext';
 import { ModalContext } from '../../../../contexts/ModalContext';
 
 interface Props {
@@ -28,19 +28,21 @@ export default function CardFrontFace({
 	onClickKillCharacterButton,
 }: Props) {
 	const { dispatch } = useCards()
-	const { message, setMessage } = useContext(MessageContext)
-	const { isModalVisible, setIsModalVisible } = useContext(ModalContext)
+	const { messageContent, setMessageContent, messageToDisplay, setMessageToDisplay } = useContext(MessageContext)
+	const { setIsModalVisible } = useContext(ModalContext)
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('')
 	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState('0')
 	const [isInputCapacityFocus, setIsInputCapacityFocus] = useState(true)
 
 	const changeCapacityInputValueHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-		setMessage('')
+		setMessageToDisplay(MESSAGE.NONE)
+		setMessageContent('')
 		setCapacityNameInputValue(event.target.value)
 	}
 
 	const changeCapacityLevelInputValueHandler: React.ChangeEventHandler<HTMLInputElement> = (event) => {
-		setMessage('')
+		setMessageToDisplay(MESSAGE.NONE)
+		setMessageContent('')
 		setCapacityLevelInputValue(event.target.value)
 	}
 
@@ -56,34 +58,41 @@ export default function CardFrontFace({
 		setCapacityLevelInputValue('0')
 	}
 
-	const inputKeyPressCapacityHandler: React.KeyboardEventHandler = async (event) => {
-		if (event.key === 'Enter') {
-			if (capacityNameInputValue === '') {
-				return setMessage(`Quelle capacité veux-tu affecter à cette carte ?`)
-			}
+	const keyPressHandler: React.KeyboardEventHandler = (event) => {
+		if (event.key !== 'Enter') return
+		return submitCapacityHandler(event)
+	}
 
-			const { status, statusCode, data } = await addCharacterCapacity(id, {
-				name: capacityNameInputValue,
-				level: Number(capacityLevelInputValue),
+	const submitCapacityHandler: React.FormEventHandler = async (event) => {
+		event.preventDefault()
+		if (capacityNameInputValue === '') {
+			setMessageToDisplay(MESSAGE.CARD)
+			return setMessageContent(`Quelle capacité veux-tu affecter à cette carte ?`)
+		}
+
+		const { status, statusCode, data } = await addCharacterCapacity(id, {
+			name: capacityNameInputValue,
+			level: Number(capacityLevelInputValue),
+		})
+
+		if (status !== 'OK' && statusCode === 401) {
+			setIsModalVisible(true)
+			setMessageToDisplay(MESSAGE.MODAL)
+			return setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+		}
+
+		if (status !== 'OK' && statusCode === 403) {
+			setMessageToDisplay(MESSAGE.CARD)
+			return setMessageContent(`Tu n'as pas le droit de modifier une carte créée par un autre utilisateur`)
+		}
+
+		if (status === 'OK' && typeof data !== 'string') {
+			dispatch({
+				type: 'CREATE_CHARACTER_CAPACITY',
+				payload: { ...data, newCapacityName: capacityNameInputValue },
 			})
-
-			if (status !== 'OK' && statusCode === 401) {
-				setIsModalVisible(true)
-				return setMessage('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
-			}
-
-			if (status !== 'OK' && statusCode === 403) {
-				return setMessage(`Tu n'as pas le droit de modifier une carte créée par un autre utilisateur`)
-			}
-
-			if (status === 'OK' && typeof data !== 'string') {
-				dispatch({
-					type: 'CREATE_CHARACTER_CAPACITY',
-					payload: { ...data, newCapacityName: capacityNameInputValue },
-				})
-				setCapacityNameInputValue('')
-				setCapacityLevelInputValue('0')
-			}
+			setCapacityNameInputValue('')
+			setCapacityLevelInputValue('0')
 		}
 	}
 
@@ -94,11 +103,13 @@ export default function CardFrontFace({
 
 		if (status !== 'OK' && statusCode === 401) {
 			setIsModalVisible(true)
-			return setMessage('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+			setMessageToDisplay(MESSAGE.MODAL)
+			return setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
 		}
 
 		if (status !== 'OK' && statusCode === 403) {
-			return setMessage(`Tu n'as pas le droit de modifier une carte créée par un autre utilisateur`)
+			setMessageToDisplay(MESSAGE.CARD)
+			return setMessageContent(`Tu n'as pas le droit de modifier une carte créée par un autre utilisateur`)
 		}
 
 		if (status === 'OK') {
@@ -154,7 +165,7 @@ export default function CardFrontFace({
 					))}
 
 				{isInEditionMode && capacities.length < 4 && (
-					<div className="form form--capacity">
+					<Form className="form form--capacity" name="capacity" onSubmit={submitCapacityHandler}>
 						<div>
 							<Input
 								type="text"
@@ -163,7 +174,7 @@ export default function CardFrontFace({
 								placeholder="Ajouter une capacité"
 								autoComplete={false}
 								onChange={changeCapacityInputValueHandler}
-								onKeyPress={inputKeyPressCapacityHandler}
+								onKeyPress={keyPressHandler}
 								isFocus={isInputCapacityFocus}
 							/>
 							{capacityLevelInputValue}
@@ -179,8 +190,8 @@ export default function CardFrontFace({
 							max={100}
 							step={5}
 						></Input>
-						{message !== '' && !isModalVisible && <Message />}
-					</div>
+						{messageToDisplay === MESSAGE.CARD && messageContent !== '' && <Message />}
+					</Form>						
 				)}
 			</div>
 		</div>

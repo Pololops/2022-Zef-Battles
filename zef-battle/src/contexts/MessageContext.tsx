@@ -4,23 +4,35 @@ type Props = {
 	children: React.ReactNode
 }
 
+export const enum MESSAGE {
+	NONE,
+	CARD,
+	MODAL,
+	DELETE_FAMILY,
+}
+
 type MessageContextType = {
-	message: string,
-	setMessage: (newValue: string) => void
+	messageContent: string,
+	setMessageContent: (newValue: string) => void
+	messageToDisplay: MESSAGE
+	setMessageToDisplay: (newValue: MESSAGE) => void
 }
 
 const MessageContextState: MessageContextType = {
-	message: '',
-	setMessage: () => {}
+	messageContent: '',
+	setMessageContent: () => {},
+	messageToDisplay: MESSAGE.NONE,
+	setMessageToDisplay: () => {}
 };
 
 export const MessageContext = createContext(MessageContextState)
 
 const MessageContextProvider = ({ children }: Props) => {
-	const [message, setMessage] = useState(MessageContextState.message)
+	const [messageContent, setMessageContent] = useState(MessageContextState.messageContent)
+	const [messageToDisplay, setMessageToDisplay] = useState(MessageContextState.messageToDisplay)
 
 	return (
-		<MessageContext.Provider value={{ message, setMessage }}>
+		<MessageContext.Provider value={{ messageContent, setMessageContent, messageToDisplay, setMessageToDisplay }}>
 			{children}
 		</MessageContext.Provider>
 	);

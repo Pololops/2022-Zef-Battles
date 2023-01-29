@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { MessageContext } from '../../../../contexts/MessageContext'
+import { MessageContext, MESSAGE } from '../../../../contexts/MessageContext'
 import { Message } from '../../..'
 
 interface Props {
@@ -13,7 +13,7 @@ export default function AddCardBackFace({
 	familyName,
 	isRemoveFamilyCard,
 }: Props) {
-	const { message } = useContext(MessageContext)
+	const { messageContent, messageToDisplay } = useContext(MessageContext)
 	const [singularFamilyName, setSingularFamilyName] = useState('');
 
 	const getLegend = () => {
@@ -53,7 +53,7 @@ export default function AddCardBackFace({
 		<div className="card__inner__face card__inner__face--back">
 			<span>{isRemoveFamilyCard ? '×' : '+'}</span>
 			<span>{getLegend()}</span>
-			{isRemoveFamilyCard && message !== '' && <Message />}
+			{isRemoveFamilyCard && messageToDisplay === MESSAGE.DELETE_FAMILY && messageContent !== '' && <Message />}
 		</div>
 	);
 }

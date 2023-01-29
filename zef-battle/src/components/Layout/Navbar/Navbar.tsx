@@ -1,18 +1,19 @@
 import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import { LoginContext } from '../../../contexts/LoginContext'
-import { MessageContext } from '../../../contexts/MessageContext'
+import { MessageContext, MESSAGE } from '../../../contexts/MessageContext'
 import { ModalContext } from '../../../contexts/ModalContext'
 
 import './Navbar.scss'
 
 export default function Navbar() {
-	const { setMessage } = useContext(MessageContext)
+	const { setMessageContent, setMessageToDisplay } = useContext(MessageContext)
 	const { setIsModalVisible } = useContext(ModalContext)
 	const { isLogin, logout } = useContext(LoginContext)
 
 	const initAndShowModal: React.MouseEventHandler<HTMLElement> = () => {
-		setMessage('')
+		setMessageToDisplay(MESSAGE.NONE)
+		setMessageContent('')
 		setIsModalVisible(true)
 	}
 	

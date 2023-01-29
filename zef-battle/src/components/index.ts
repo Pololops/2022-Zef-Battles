@@ -20,7 +20,7 @@ export { default as AddCardFrontFace } from './Cards/Card/AddCardFaces/AddCardFr
 export { default as AddCardBackFace } from './Cards/Card/AddCardFaces/AddCardBack'
 
 // Form Components
-export { default as From } from './Forms/Form/Form'
+export { default as Form } from './Forms/Form/Form'
 export { default as Button } from './Forms/Button/Button'
 export { default as Input } from './Forms/Input/Input'
 export { default as DropZone } from './Forms/DropZone/DropZone'

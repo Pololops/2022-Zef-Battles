@@ -2,14 +2,14 @@ import './Modal.scss'
 
 import { useContext, useState, KeyboardEventHandler, FormEventHandler } from 'react';
 import { ModalContext } from '../../../contexts/ModalContext'
-import { MessageContext } from '../../../contexts/MessageContext';
+import { MessageContext, MESSAGE } from '../../../contexts/MessageContext';
 import { LoginContext } from '../../../contexts/LoginContext'
 
 import { login as loginRequest } from "../../../apiClient/apiRequests";
 import { Button, Input, Message } from '../../'
 
 export default function ModalLog() {
-	const { message, setMessage } = useContext(MessageContext)
+	const { messageContent, setMessageContent, messageToDisplay, setMessageToDisplay } = useContext(MessageContext)
 	const { setIsModalVisible } = useContext(ModalContext)
 	const { setIsLogin } = useContext(LoginContext)
 
@@ -17,45 +17,52 @@ export default function ModalLog() {
 	const [passwordInputValue, setPasswordInputValue] = useState('')
 
 	const loginInputHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		setMessage('')
+		setMessageToDisplay(MESSAGE.NONE)
+		setMessageContent('')
 		setLoginInputValue(event.target.value)
 	}
 
 	const passwordInputHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		setMessage('')
+		setMessageToDisplay(MESSAGE.NONE)
+		setMessageContent('')
 		setPasswordInputValue(event.target.value)
 	}
 
 	const submitHandler: FormEventHandler = async (event) => {
 		event.preventDefault();
 
-		if (loginInputValue.length === 0 ) return setMessage('Tu as oublié de saisir ton pseudo.')
-		if (passwordInputValue.length === 0) return setMessage('Tu as oublié de saisir ton mot de passe.')
+		if (loginInputValue.length === 0 ) {
+			setMessageToDisplay(MESSAGE.MODAL)
+			return setMessageContent('Tu as oublié de saisir ton pseudo.')
+		}
 
-		try {
-			const { statusCode, data } = await loginRequest({
+		if (passwordInputValue.length === 0) {
+			setMessageToDisplay(MESSAGE.MODAL)
+			return setMessageContent('Tu as oublié de saisir ton mot de passe.')
+		}
+
+		const { status, data } = await loginRequest({
 			login: loginInputValue,
 			password: passwordInputValue
 		});
 
-		if (statusCode === 200 && typeof data !== 'string') {
-			localStorage.setItem('token', data.token)
-			localStorage.setItem('userName', data.user.name)
-			localStorage.setItem('userVictory', data.user.victory_number.toString())
-			localStorage.setItem('userRole', data.user.role)
+		if (status !== 'OK') {
+			setMessageToDisplay(MESSAGE.MODAL)
+			return setMessageContent('Ce pseudo et ce mot de passe ne sont pas corrects.')
+		}
 
-			setIsLogin(true)
-			setIsModalVisible(false);
-		} else {
-			if (statusCode === 400) return setMessage('Ce pseudo et ce mot de passe ne sont pas corrects.')
-		}
-		} catch (error) {
-			// console.log(error)
-		}
+		localStorage.setItem('token', data.token)
+		localStorage.setItem('userName', data.user.name)
+		localStorage.setItem('userVictory', data.user.victory_number.toString())
+		localStorage.setItem('userRole', data.user.role)
+
+		setIsLogin(true)
+		setIsModalVisible(false);
 	}
 
 	const closeAndResetModal = () => {
-		setMessage('')
+		setMessageToDisplay(MESSAGE.NONE)
+		setMessageContent('')
 		setIsModalVisible(false)
 	}
 
@@ -66,7 +73,7 @@ export default function ModalLog() {
 	
 	return (
 		<div className="modal">
-			{message !== '' && <Message />}
+			{messageToDisplay === MESSAGE.MODAL && messageContent !== '' && <Message />}
 
 			<form className="modal__content" method="post" onKeyDown={keyDownHandler} onSubmit={submitHandler}>
 				<Input

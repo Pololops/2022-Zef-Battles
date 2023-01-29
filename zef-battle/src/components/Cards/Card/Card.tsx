@@ -8,7 +8,7 @@ import { deleteCharacter, deleteFamily } from '../../../apiClient/apiRequests'
 import useAppearEffect from '../../../hooks/useAppearEffect'
 import { useCards } from '../../App/App'
 import { ModalContext } from '../../../contexts/ModalContext';
-import { MessageContext } from '../../../contexts/MessageContext';
+import { MessageContext, MESSAGE } from '../../../contexts/MessageContext';
 
 interface Props {
 	id?: number
@@ -40,7 +40,7 @@ export default function Card({
 	const navigate = useNavigate()
 
 	const { dispatch } = useCards()
-	const { setMessage } = useContext(MessageContext)
+	const { setMessageContent, setMessageToDisplay } = useContext(MessageContext)
 	const { setIsModalVisible } = useContext(ModalContext)
 
 	const [isFlipped, setIsFlipped] = useState(false)
@@ -65,11 +65,13 @@ export default function Card({
 
 		if (status !== 'OK' && statusCode === 401) {
 			setIsModalVisible(true)
-			return setMessage('Connecte-toi pour ajouter, modifier ou supprimer des familles')
+			setMessageToDisplay(MESSAGE.MODAL)
+			return setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des familles')
 		}
 
 		if (status !== 'OK' && statusCode === 403) {
-			return setMessage(`Tu n'as pas le droit de supprimer une famille créée par un autre utilisateur`)
+			setMessageToDisplay(MESSAGE.DELETE_FAMILY)
+			return setMessageContent(`Tu n'as pas le droit de supprimer une famille créée par un autre utilisateur`)
 		}
 			
 		if (status === 'OK') {
@@ -83,7 +85,8 @@ export default function Card({
 
 	const clickEditorButtonHandler: React.MouseEventHandler = (event) => {
 		event.stopPropagation()
-		setMessage('')
+		setMessageToDisplay(MESSAGE.NONE)
+		setMessageContent('')
 		setIsInEditionMode((previousSate) => !previousSate)
 	}
 
@@ -99,11 +102,13 @@ export default function Card({
 
 		if (status !== 'OK' && statusCode === 401) {
 			setIsModalVisible(true)
-			return setMessage('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+			setMessageToDisplay(MESSAGE.MODAL)
+			return setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
 		}
 
 		if (status !== 'OK' && statusCode === 403) {
-			return setMessage(`Tu n'as pas le droit de supprimer une carte créée par un autre utilisateur`)
+			setMessageToDisplay(MESSAGE.CARD)
+			return setMessageContent(`Tu n'as pas le droit de supprimer une carte créée par un autre utilisateur`)
 		}
 
 		if (status === 'OK') {
