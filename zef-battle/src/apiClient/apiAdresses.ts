@@ -1,6 +1,13 @@
 const baseApiUrl = process.env.REACT_APP_API_BASE_URL + '/api';
 
-// Login URL
+// User URL
+export const userUrl = (userId?: number): string => {
+	if (userId) {
+		return `${baseApiUrl}/user/${userId}`;
+	}
+	return`${baseApiUrl}/user`;
+}
+
 export const loginUrl = () => {
 	return `${baseApiUrl}/user/login`;
 }
@@ -14,7 +21,6 @@ export const familyUrl = (arg?: boolean | number): string => {
 			return `${baseApiUrl}/family?withcharacters=${arg}`;
 		}
 	}
-
 	return `${baseApiUrl}/family`;
 }
 
@@ -31,7 +37,6 @@ export const characterUrl = (characterId: number): string => {
 	if (characterId) {
 		return `${baseApiUrl}/character/${characterId}`;
 	}
-	
 	return`${baseApiUrl}/character`;
 }
 
@@ -40,7 +45,6 @@ export const capacityUrl = (capacityId: number): string => {
 	if (capacityId) {
 		return `${baseApiUrl}/capacity/${capacityId}`;
 	}
-
 	return `${baseApiUrl}/capacity`;
 }
 
@@ -48,6 +52,5 @@ export const characterCapacityUrl = (characterId: number, capacityId?: number): 
 	if (capacityId) {
 		return `${baseApiUrl}/character/${characterId}/capacity/${capacityId}`;
 	}
-
 	return `${baseApiUrl}/character/${characterId}/capacity`;
 }

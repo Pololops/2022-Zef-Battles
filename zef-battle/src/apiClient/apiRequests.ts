@@ -1,5 +1,6 @@
 import RequestAPI from './apiFetcher';
 import {
+	userUrl,
 	loginUrl,
 	familyUrl,
 	characterInFamilyUrl,
@@ -34,6 +35,12 @@ type CapacityCreateBodyType = {
 type LoginBodyType = {
 	login: string, 
 	password: string
+}
+
+type UserCreateBodyType = {
+	name: string,
+	password: string,
+	repeat_password: string
 }
 
 export const getFamilies = async (withCharacters: boolean): Promise<ReturnType<Family[]>> => {
@@ -103,6 +110,14 @@ export const login = async (body: LoginBodyType): Promise<ReturnType<Login>> => 
 	return await new RequestAPI({
 		url: loginUrl(),
 		method: 'POST',
+		body,
+	}).fetch();
+}
+
+export const postUser = async (body: UserCreateBodyType): Promise<ReturnType<Login>> => {
+	return await new RequestAPI({
+		url: userUrl(), 
+		method: 'POST', 
 		body,
 	}).fetch();
 }
