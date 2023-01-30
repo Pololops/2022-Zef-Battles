@@ -38,10 +38,16 @@ export default {
 	},
 
 	create: async (request, response) => {
+		if (request.body.password !== request.body.repeat_password) {
+			throw new ApiError('Both passwords must be the same', {
+				statusCode: 400,
+			})
+		}
+
 		const user = await userDatamapper.isUnique(request.body)
 		if (user) {
 			throw new ApiError('This user name already exists', {
-				statusCode: 400,
+				statusCode: 409,
 			})
 		}
 
@@ -55,7 +61,19 @@ export default {
 		const savedUser = await userDatamapper.insert(request.body)
 
 		debug('create : ', savedUser)
-		return response.status(200).json(savedUser)
+
+		// AutoLogin User
+		const generatedToken = tokenGenerator(savedUser)
+
+		return response.status(200).json({
+			token: generatedToken,
+			user: {
+				id: savedUser.id,
+				name: savedUser.name,
+				victory_number: savedUser.victory_number,
+				role: savedUser.role,
+			},
+		})
 	},
 
 	update: async (request, response) => {

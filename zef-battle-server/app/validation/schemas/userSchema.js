@@ -3,6 +3,7 @@ import Joi from 'joi'
 export const createSchema = Joi.object({
 	name: Joi.string().min(3).required().label('user name'),
 	password: Joi.string().min(8).required().label('user password'),
+	repeat_password: Joi.ref('password'),
 }).required()
 
 export const updateSchema = Joi.object({
