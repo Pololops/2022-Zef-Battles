@@ -17,6 +17,7 @@ interface Props {
 	onMouseDown?: ReactEventHandler<HTMLInputElement>,
 	onMouseUp?: ReactEventHandler<HTMLInputElement>,
 	isFocus?: boolean,
+	required?: boolean,
 	readOnly?: true,
 }
 
@@ -48,6 +49,7 @@ export default function Input({
 	onMouseDown,
 	onMouseUp,
 	isFocus = false,
+	required = false,
 	readOnly,
 }: Props) {
 	const [className, setClassName] = useState('input');
@@ -72,6 +74,7 @@ export default function Input({
 			onKeyDown={onKeyPress}
 			onMouseDown={onMouseDown}
 			onMouseUp={onMouseUp}
+			required={required}
 			readOnly={readOnly}
 		/>
 	);

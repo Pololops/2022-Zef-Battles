@@ -9,34 +9,21 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.95);
   z-index: 9;
-  animation-duration: 300ms;
-  animation-name: fadein;
+  opacity: 0;
+  transition: opacity 300ms;
+
+  &--hide {
+    opacity: 0;
+  }
+
+  &--show {
+    opacity: 1;
+  }
 
   &__content {
     max-width: 500px;
     padding-inline: 1em;
-
-    & input {
-      padding: .7em;
-    }
-  
-    &__buttons {
-      margin-top: .5em;
-      display: flex;
-      justify-content: center;
-      gap: 2em;
-    }
-  }
-}
-
-@keyframes fadein {
-  from {
-    opacity: 0;
-  }
-
-  to {
-     opacity: 1;
   }
 }

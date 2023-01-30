@@ -1,9 +1,10 @@
-import { useContext, useReducer } from 'react';
+import { Fragment, MouseEvent, useContext, useReducer } from 'react';
 import { useOutlet, useLoaderData, Outlet, useOutletContext } from 'react-router-dom';
 import reducer from '../../reducer/reducer'
+import useDelayUnmount from '../../hooks/useDelayUnmount'
 
 import { ModalContext } from '../../contexts/ModalContext';
-import { Modal, Header, Navbar, Main, HomePage } from '../'
+import { Modal, Header, Navbar, Main, HomePage, SigninForm, SignupForm } from '../'
 
 import './App.scss';
 
@@ -14,6 +15,8 @@ export function useCards() {
 export default function App() {
 	const { allCards: { data } } = useLoaderData() as { allCards: { data: Family[] } }
 	const { isModalVisible } = useContext(ModalContext)
+
+	const shouldRenderModal = useDelayUnmount(isModalVisible, 300);
 	
   const [cards, dispatch] = useReducer(reducer, data)
 
@@ -21,7 +24,6 @@ export default function App() {
 
 	return (
 		<div className="App">
-			{ isModalVisible && <Modal /> }
 			<Header>
 				<>
 					<h1 className="header__title">Zef's Battles</h1>
@@ -31,6 +33,17 @@ export default function App() {
 			<Main>
 				{ outlet ? <Outlet context={{ cards, dispatch }}/> : <HomePage /> }
 			</Main>
+
+			{ shouldRenderModal && 
+				<Modal>
+					{(onClose: React.MouseEventHandler) => (
+						<>
+							<SigninForm onClose={onClose} />
+							<SignupForm onClose={onClose} />
+						</>
+      		)}
+				</Modal>
+			}
 		</div>
 	);
 }

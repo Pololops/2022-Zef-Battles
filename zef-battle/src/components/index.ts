@@ -2,6 +2,8 @@
 export { default as Header } from './Layout/Header/Header'
 export { default as Main } from './Layout/Main/Main'
 export { default as Modal } from './Layout/Modal/Modal'
+export { default as SigninForm } from './Layout/SigninForm/SigninForm'
+export { default as SignupForm } from './Layout/SignupForm/SignupForm'
 export { default as Navbar } from './Layout/Navbar/Navbar'
 export { default as Spinner } from './Layout/Spinner/Spinner'
 
