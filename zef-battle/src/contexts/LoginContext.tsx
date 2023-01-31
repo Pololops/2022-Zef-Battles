@@ -1,9 +1,5 @@
 import { createContext, useState } from 'react'
 
-type Props = {
-	children: React.ReactNode
-}
-
 type LoginContextType = {
 	isLogin: boolean,
 	setIsLogin: (newValue: boolean) => void
@@ -22,7 +18,7 @@ const LoginContextState: LoginContextType = {
 
 export const LoginContext = createContext(LoginContextState)
 
-const LoginContextProvider = ({ children }: Props) => {
+const LoginContextProvider = ({ children }: React.PropsWithChildren) => {
 	const [isLogin, setIsLogin] = useState(LoginContextState.isLogin)
 
 	const logout = (): void => {

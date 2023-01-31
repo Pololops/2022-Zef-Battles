@@ -1,9 +1,5 @@
 import { createContext, useState } from 'react'
 
-type Props = {
-	children: React.ReactNode
-}
-
 type ModalContextType = {
   isModalVisible: boolean,
 	setIsModalVisible: (arg: boolean) => void,
@@ -20,7 +16,7 @@ const iModalContextState: ModalContextType = {
 
 export const ModalContext = createContext(iModalContextState)
 
-const ModalContextProvider = ({ children }: Props) => {
+const ModalContextProvider = ({ children }: React.PropsWithChildren) => {
 	const [isModalVisible, setIsModalVisible] = useState(iModalContextState.isModalVisible)
 	const [modalContent, setModalContent] = useState(iModalContextState.modalContent)
 

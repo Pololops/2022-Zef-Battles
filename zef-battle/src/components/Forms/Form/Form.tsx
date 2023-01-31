@@ -1,13 +1,12 @@
 import './Form.scss';
 
-interface Props {
+type Props = React.PropsWithChildren<{
 	className: string
 	name?: string
 	method?: 'get' | 'post'
 	onSubmit: React.FormEventHandler
-	children: React.ReactNode
 	autoComplete?: boolean
-}
+}>
 
 export default function Form({ className, name, method = 'post', onSubmit, children, autoComplete = false, }: Props) {	
 	return (

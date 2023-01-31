@@ -1,9 +1,5 @@
 import { createContext, useState } from 'react'
 
-type Props = {
-	children: React.ReactNode
-}
-
 export const enum MESSAGE {
 	NONE,
 	CARD,
@@ -27,7 +23,7 @@ const MessageContextState: MessageContextType = {
 
 export const MessageContext = createContext(MessageContextState)
 
-const MessageContextProvider = ({ children }: Props) => {
+const MessageContextProvider = ({ children }: React.PropsWithChildren) => {
 	const [messageContent, setMessageContent] = useState(MessageContextState.messageContent)
 	const [messageToDisplay, setMessageToDisplay] = useState(MessageContextState.messageToDisplay)
 
