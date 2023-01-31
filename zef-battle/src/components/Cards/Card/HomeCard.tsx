@@ -20,15 +20,21 @@ export default function HomeCard({
 	totalCards,
 	startEffect
 }: Props) {
-	const degreeRotation = (((totalCards/2) * (-1)) + index + 0.5) * 15
-	const marginLeft = (((totalCards/2) * (-1)) + (index + 0.5)) * 60
+	const cardIndex = index + 0.5
+	const degreeRotation = (((totalCards/2) * (-1)) + cardIndex) * 15
+	const marginLeft = (((totalCards/2) * (-1)) + cardIndex) * 60
+	const marginTop = ((cardIndex - (totalCards - cardIndex)) * ((cardIndex - totalCards/2))) / totalCards
+
 	const cardsOutStyle = {
 		transform: `rotate(0deg)`,
 		marginLeft: `0px`,
+		marginTop: `0px`,
 	}
+	
 	const cardsOverStyle = {
 		transform: `rotate(${degreeRotation}deg)`,
 		marginLeft: `${marginLeft}px`,
+		marginTop: `${marginTop}em`,
 	}
 
 	return (

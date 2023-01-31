@@ -19,7 +19,6 @@ export default function HomePage() {
 
 	return (
 		<>
-			<h2>Zef's Battles</h2>
 			{ typeof data !== 'string'
 				? (
 						<div 
