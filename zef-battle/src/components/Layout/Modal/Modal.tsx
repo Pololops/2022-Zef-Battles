@@ -1,6 +1,6 @@
 import './Modal.scss'
 
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, Children, isValidElement, cloneElement } from 'react';
 import { LoginContext } from '../../../contexts/LoginContext'
 import { ModalContext } from '../../../contexts/ModalContext'
 import { MessageContext, MESSAGE } from '../../../contexts/MessageContext';
@@ -29,6 +29,8 @@ export default function Modal({ children }: Props) {
 		setMessageToDisplay(MESSAGE.NONE)
 		setMessageContent('')
 	}
+	const ChildrenWithProps = children(closeHandler)
+
 
 	useEffect(() => {
 		setIsVisible(isModalVisible)
@@ -47,7 +49,7 @@ export default function Modal({ children }: Props) {
 			
 			<div className="modal__content">
 				{ !isLogin
-					? children && children(closeHandler) 
+					? ChildrenWithProps 
 
 					: <div className="buttons">
 							<Button
