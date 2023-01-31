@@ -64,9 +64,9 @@ export default function Card({
 		const { status, statusCode } = await deleteFamily(familyId)
 
 		if (status !== 'OK' && statusCode === 401) {
-			setIsModalVisible(true)
 			setMessageToDisplay(MESSAGE.MODAL)
-			return setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des familles')
+			setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des familles')
+			return setIsModalVisible(true)
 		}
 
 		if (status !== 'OK' && statusCode === 403) {

@@ -15,7 +15,7 @@ type Props = {
 
 export default function Modal({ children }: Props) {
 	const { messageContent, setMessageContent, messageToDisplay, setMessageToDisplay } = useContext(MessageContext)
-	const { isModalVisible, setIsModalVisible } = useContext(ModalContext)
+	const { isModalVisible, setIsModalVisible, setModalContent } = useContext(ModalContext)
 	const { isLogin } = useContext(LoginContext)
 
 	const [isVisible, setIsVisible] = useState(false)
@@ -25,15 +25,17 @@ export default function Modal({ children }: Props) {
 	}
 
 	const closeHandler: React.MouseEventHandler<HTMLElement> = () => {
+		setIsModalVisible(false)
 		setMessageToDisplay(MESSAGE.NONE)
 		setMessageContent('')
-		setIsModalVisible(false)
 	}
 
 	useEffect(() => {
 		setIsVisible(isModalVisible)
-
-		return () => setIsVisible(false)
+		return () => {
+			setIsVisible(false)
+			setModalContent('signin')
+		}	
 	}, [isModalVisible])
 	
 	return (

@@ -1,29 +1,53 @@
 .modal {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 2em;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.95);
-  z-index: 9;
-  opacity: 0;
-  transition: opacity 300ms;
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 2em;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.95);
+	z-index: 9;
+	opacity: 0;
+	transition: opacity 300ms;
 
-  &--hide {
-    opacity: 0;
-  }
+	&--hide {
+		opacity: 0;
+	}
 
-  &--show {
-    opacity: 1;
-  }
+	&--show {
+		opacity: 1;
+	}
 
-  &__content {
-    max-width: 500px;
-    padding-inline: 1em;
-  }
+	&__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2em;
+    gap: 3em;
+		max-width: 300px;
+		padding-inline: 1em;
+
+		input {
+			padding: 0.7em;
+		}
+
+		.buttons {
+			margin-top: 0.5em;
+			display: flex;
+			justify-content: center;
+			gap: 2em;
+		}
+
+    a {
+      text-align: center;
+
+      span {
+        white-space: nowrap;
+      }
+    }
+	}
 }

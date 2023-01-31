@@ -76,9 +76,9 @@ export default function CardFrontFace({
 		})
 
 		if (status !== 'OK' && statusCode === 401) {
-			setIsModalVisible(true)
 			setMessageToDisplay(MESSAGE.MODAL)
-			return setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+			setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+			return setIsModalVisible(true)
 		}
 
 		if (status !== 'OK' && statusCode === 403) {
@@ -102,9 +102,9 @@ export default function CardFrontFace({
 		const { status, statusCode } = await removeCharacterCapacity(id, capacityId)
 
 		if (status !== 'OK' && statusCode === 401) {
-			setIsModalVisible(true)
 			setMessageToDisplay(MESSAGE.MODAL)
-			return setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+			setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+			return setIsModalVisible(true)
 		}
 
 		if (status !== 'OK' && statusCode === 403) {

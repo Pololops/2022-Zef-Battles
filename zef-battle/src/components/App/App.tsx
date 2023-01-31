@@ -1,4 +1,4 @@
-import { Fragment, MouseEvent, useContext, useReducer } from 'react';
+import { useContext, useReducer } from 'react';
 import { useOutlet, useLoaderData, Outlet, useOutletContext } from 'react-router-dom';
 import reducer from '../../reducer/reducer'
 import useDelayUnmount from '../../hooks/useDelayUnmount'
@@ -14,9 +14,9 @@ export function useCards() {
 
 export default function App() {
 	const { allCards: { data } } = useLoaderData() as { allCards: { data: Family[] } }
-	const { isModalVisible } = useContext(ModalContext)
+	const { isModalVisible, modalContent } = useContext(ModalContext)
 
-	const shouldRenderModal = useDelayUnmount(isModalVisible, 300);
+	const shouldRenderModal = useDelayUnmount(isModalVisible, 300)
 	
   const [cards, dispatch] = useReducer(reducer, data)
 
@@ -38,8 +38,8 @@ export default function App() {
 				<Modal>
 					{(onClose: React.MouseEventHandler) => (
 						<>
-							<SigninForm onClose={onClose} />
-							<SignupForm onClose={onClose} />
+							{modalContent === 'signin' && <SigninForm onClose={onClose} />}
+							{modalContent === 'signup' && <SignupForm onClose={onClose} />}
 						</>
       		)}
 				</Modal>

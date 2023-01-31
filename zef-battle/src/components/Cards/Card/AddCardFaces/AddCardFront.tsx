@@ -73,9 +73,9 @@ export default function AddCardFrontFace({
 			});
 
 			if (status !== 'OK' && statusCode === 401) {
-				setIsModalVisible(true)
 				setMessageToDisplay(MESSAGE.MODAL)
-				return setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+				setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+				return setIsModalVisible(true)
 			}
 			
 			dispatch({
@@ -90,9 +90,9 @@ export default function AddCardFrontFace({
 			});
 
 			if (status !== 'OK' && statusCode === 401) {
-				setIsModalVisible(true)
 				setMessageToDisplay(MESSAGE.MODAL)
-				return setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+				setMessageContent('Connecte-toi pour ajouter, modifier ou supprimer des cartes')
+				return setIsModalVisible(true)
 			}
 
 			if (status !== 'OK' && statusCode === 403) {

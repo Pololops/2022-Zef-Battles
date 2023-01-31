@@ -1,10 +1,10 @@
-import './SigninForm.scss'
+import { useContext, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { login as loginRequest } from "../../../apiClient/apiRequests"
 
-import { useContext, useState } from 'react';
-import { login as loginRequest } from "../../../apiClient/apiRequests";
-
-import { MessageContext, MESSAGE } from '../../../contexts/MessageContext';
+import { MessageContext, MESSAGE } from '../../../contexts/MessageContext'
 import { LoginContext } from '../../../contexts/LoginContext'
+import { ModalContext } from '../../../contexts/ModalContext'
 
 import { Button, Input, Form } from '../..'
 
@@ -13,6 +13,7 @@ type Props = {
 }
 
 export default function SigninForm({ onClose }: Props) {
+	const { setModalContent } = useContext(ModalContext)
 	const { setMessageContent, setMessageToDisplay } = useContext(MessageContext)
 	const { setIsLogin } = useContext(LoginContext)
 
@@ -64,40 +65,49 @@ export default function SigninForm({ onClose }: Props) {
 		setMessageToDisplay(MESSAGE.MODAL)
 		setMessageContent(`Bienvenue ${data.user.name}`)
 	}
+
+	const clickSignupLinkHandler: React.MouseEventHandler = (event) => {
+		event.preventDefault()
+		setModalContent('signup')
+	}
 	
 	return (
-		<Form className="" onSubmit={submitHandler} name="signin">
-			<Input
-				type="text"
-				name="name"
-				placeholder="Mon pseudo de connexion"
-				isFocus={true}
-				value={loginInputValue}
-				onChange={loginInputHandler}
-				autoComplete={false}
-				required={true}
-			/>
-			<Input
-				type="password"
-				name="password"
-				placeholder="Mon mot de passe"
-				value={passwordInputValue}
-				onChange={passwordInputHandler}
-				autoComplete={false}
-				required={true}
-			/>
-			<div className="buttons">
-				<Button
-					type="reset"
-					label="Fermer"
-					onClick={onClose}
+		<>
+			<Form className="" onSubmit={submitHandler} name="signin">
+				<Input
+					type="text"
+					name="name"
+					placeholder="Ton pseudo de connexion"
+					isFocus={true}
+					value={loginInputValue}
+					onChange={loginInputHandler}
+					autoComplete={false}
+					required={true}
 				/>
-				<Button
-					type="submit"
-					label="Valider"
-					onClick={submitHandler}
+				<Input
+					type="password"
+					name="password"
+					placeholder="Ton mot de passe"
+					value={passwordInputValue}
+					onChange={passwordInputHandler}
+					autoComplete={false}
+					required={true}
 				/>
-			</div>
-		</Form>
+				<div className="buttons">
+					<Button
+						type="reset"
+						label="Fermer"
+						onClick={onClose}
+					/>
+					<Button
+						type="submit"
+						label="Valider"
+						onClick={submitHandler}
+					/>
+				</div>
+			</Form>
+
+			<Link to={''} onClick={clickSignupLinkHandler}><span>Tu n'as pas encore de compte ?</span> <span>Clique ici pour en créer un.</span></Link>
+		</>
 	)
 }
