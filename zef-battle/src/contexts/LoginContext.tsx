@@ -1,25 +1,19 @@
-import { createContext, useState } from 'react'
-
-type LoginContextType = {
-	isLogin: boolean,
-	setIsLogin: (newValue: boolean) => void
-	logout: () => void
-}
+import { createContext, useState, useEffect, useContext } from 'react';
 
 const isUserLogin = () => {
 	return !!localStorage.getItem('token')
 }
 
-const LoginContextState: LoginContextType = {
-	isLogin: isUserLogin(),
-	setIsLogin: () => {},
-	logout: () => {}
-};
+type ContextProps = {
+	isLogin: boolean,
+	setIsLogin: React.Dispatch<React.SetStateAction<boolean>>
+	logout: () => void
+}
 
-export const LoginContext = createContext(LoginContextState)
+const LoginContext = createContext<ContextProps | null>(null)
 
-const LoginContextProvider = ({ children }: React.PropsWithChildren) => {
-	const [isLogin, setIsLogin] = useState(LoginContextState.isLogin)
+export const LoginProvider = ({ children }: React.PropsWithChildren) => {
+	const [isLogin, setIsLogin] = useState(isUserLogin)
 
 	const logout = (): void => {
 		localStorage.clear()
@@ -33,4 +27,12 @@ const LoginContextProvider = ({ children }: React.PropsWithChildren) => {
 	);
 }
 
-export default LoginContextProvider
+export const useLoginContext = () => {
+	const value = useContext(LoginContext)
+
+	if (value === null) {
+		throw new Error('You need to wrap this component with <LoginProvider>')
+	}
+
+	return value
+}

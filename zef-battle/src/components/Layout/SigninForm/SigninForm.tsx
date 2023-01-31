@@ -1,10 +1,10 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { login as loginRequest } from "../../../apiClient/apiRequests"
 
-import { MessageContext, MESSAGE } from '../../../contexts/MessageContext'
-import { LoginContext } from '../../../contexts/LoginContext'
-import { ModalContext } from '../../../contexts/ModalContext'
+import { useMessageContext, MESSAGE } from '../../../contexts/MessageContext'
+import { useLoginContext } from '../../../contexts/LoginContext'
+import { useModalContext } from '../../../contexts/ModalContext'
 
 import { Button, Input, Form } from '../..'
 
@@ -13,9 +13,9 @@ type Props = {
 }
 
 export default function SigninForm({ onClose }: Props) {
-	const { setModalContent } = useContext(ModalContext)
-	const { setMessageContent, setMessageToDisplay } = useContext(MessageContext)
-	const { setIsLogin } = useContext(LoginContext)
+	const { setModalContent } = useModalContext()
+	const { setMessageContent, setMessageToDisplay } = useMessageContext()
+	const { setIsLogin } = useLoginContext()
 
 	const [loginInputValue, setLoginInputValue] = useState('')
 	const [passwordInputValue, setPasswordInputValue] = useState('')

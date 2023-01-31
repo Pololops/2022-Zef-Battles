@@ -1,10 +1,10 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { postUser } from "../../../apiClient/apiRequests"
 
-import { ModalContext } from '../../../contexts/ModalContext'
-import { MessageContext, MESSAGE } from '../../../contexts/MessageContext'
-import { LoginContext } from '../../../contexts/LoginContext'
+import { useModalContext } from '../../../contexts/ModalContext'
+import { useMessageContext, MESSAGE } from '../../../contexts/MessageContext'
+import { useLoginContext } from '../../../contexts/LoginContext'
 
 import { Button, Input, Form } from '../..'
 
@@ -13,9 +13,9 @@ type Props = {
 }
 
 export default function SignupForm({ onClose }: Props) {
-	const { setModalContent } = useContext(ModalContext)
-	const { setMessageContent, setMessageToDisplay } = useContext(MessageContext)
-	const { setIsLogin } = useContext(LoginContext)
+	const { setModalContent } = useModalContext()
+	const { setMessageContent, setMessageToDisplay } = useMessageContext()
+	const { setIsLogin } = useLoginContext()
 
 	const [nicknameInputValue, setNicknameInputValue] = useState('')
 	const [passwordInputValue, setPasswordInputValue] = useState('')

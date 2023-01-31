@@ -1,8 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import LoginContextProvider from './contexts/LoginContext'
-import ModalContextProvider from './contexts/ModalContext';
-import MessageContextProvider from './contexts/MessageContext';
+import { LoginProvider } from './contexts/LoginContext'
+import { ModalProvider } from './contexts/ModalContext';
+import { MessageProvider } from './contexts/MessageContext';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './router/router';
 
@@ -12,12 +12,12 @@ const container = document.getElementById('root')!;
 const root = createRoot(container);
 root.render(
 	<React.StrictMode>
-		<LoginContextProvider>
-			<ModalContextProvider>
-				<MessageContextProvider>
+		<LoginProvider>
+			<ModalProvider>
+				<MessageProvider>
 					<RouterProvider router={router} />
-				</MessageContextProvider>
-			</ModalContextProvider>
-		</LoginContextProvider>
+				</MessageProvider>
+			</ModalProvider>
+		</LoginProvider>
 	</React.StrictMode>,
 );

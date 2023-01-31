@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useContext } from 'react';
 
 export const enum MESSAGE {
 	NONE,
@@ -7,25 +7,18 @@ export const enum MESSAGE {
 	DELETE_FAMILY,
 }
 
-type MessageContextType = {
+type ContextProps = {
 	messageContent: string,
-	setMessageContent: (newValue: string) => void
+	setMessageContent: React.Dispatch<React.SetStateAction<string>>
 	messageToDisplay: MESSAGE
-	setMessageToDisplay: (newValue: MESSAGE) => void
+	setMessageToDisplay: React.Dispatch<React.SetStateAction<MESSAGE>>
 }
 
-const MessageContextState: MessageContextType = {
-	messageContent: '',
-	setMessageContent: () => {},
-	messageToDisplay: MESSAGE.NONE,
-	setMessageToDisplay: () => {}
-};
+const MessageContext = createContext<ContextProps | null>(null)
 
-export const MessageContext = createContext(MessageContextState)
-
-const MessageContextProvider = ({ children }: React.PropsWithChildren) => {
-	const [messageContent, setMessageContent] = useState(MessageContextState.messageContent)
-	const [messageToDisplay, setMessageToDisplay] = useState(MessageContextState.messageToDisplay)
+export const MessageProvider = ({ children }: React.PropsWithChildren) => {
+	const [messageContent, setMessageContent] = useState('')
+	const [messageToDisplay, setMessageToDisplay] = useState(MESSAGE.NONE)
 
 	return (
 		<MessageContext.Provider value={{ messageContent, setMessageContent, messageToDisplay, setMessageToDisplay }}>
@@ -34,4 +27,12 @@ const MessageContextProvider = ({ children }: React.PropsWithChildren) => {
 	);
 }
 
-export default MessageContextProvider
+export const useMessageContext = () => {
+	const value = useContext(MessageContext)
+
+	if (value === null) {
+		throw new Error('You need to wrap this component with <MessageProvider>')
+	}
+
+	return value
+}

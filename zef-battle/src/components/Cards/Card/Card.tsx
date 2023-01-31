@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 
 import './Card.scss'
@@ -7,8 +7,8 @@ import { CardFrontFace, CardBackFace, AddCardFrontFace, AddCardBackFace } from '
 import { deleteCharacter, deleteFamily } from '../../../apiClient/apiRequests'
 import useAppearEffect from '../../../hooks/useAppearEffect'
 import { useCards } from '../../App/App'
-import { ModalContext } from '../../../contexts/ModalContext';
-import { MessageContext, MESSAGE } from '../../../contexts/MessageContext';
+import { useModalContext } from '../../../contexts/ModalContext';
+import { useMessageContext, MESSAGE } from '../../../contexts/MessageContext';
 
 interface Props {
 	id?: number
@@ -40,8 +40,8 @@ export default function Card({
 	const navigate = useNavigate()
 
 	const { dispatch } = useCards()
-	const { setMessageContent, setMessageToDisplay } = useContext(MessageContext)
-	const { setIsModalVisible } = useContext(ModalContext)
+	const { setMessageContent, setMessageToDisplay } = useMessageContext()
+	const { setIsModalVisible } = useModalContext()
 
 	const [isFlipped, setIsFlipped] = useState(false)
 	const [isInEditionMode, setIsInEditionMode] = useState(false)

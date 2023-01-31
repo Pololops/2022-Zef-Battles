@@ -1,9 +1,9 @@
-import { useContext, useReducer } from 'react';
+import { useReducer } from 'react';
 import { useOutlet, useLoaderData, Outlet, useOutletContext } from 'react-router-dom';
 import reducer from '../../reducer/reducer'
 import useDelayUnmount from '../../hooks/useDelayUnmount'
 
-import { ModalContext } from '../../contexts/ModalContext';
+import { useModalContext } from '../../contexts/ModalContext';
 import { Modal, Header, Navbar, Main, HomePage, SigninForm, SignupForm } from '../'
 
 import './App.scss';
@@ -14,7 +14,7 @@ export function useCards() {
 
 export default function App() {
 	const { allCards: { data } } = useLoaderData() as { allCards: { data: Family[] } }
-	const { isModalVisible, modalContent } = useContext(ModalContext)
+	const { isModalVisible, modalContent } = useModalContext()
 
 	const shouldRenderModal = useDelayUnmount(isModalVisible, 300)
 	

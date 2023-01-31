@@ -1,24 +1,24 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useContext } from 'react'
 
-type ModalContextType = {
+type ContextProps = {
   isModalVisible: boolean,
 	setIsModalVisible: (arg: boolean) => void,
 	modalContent: 'signin' | 'signup',
 	setModalContent: (arg: 'signin' | 'signup') => void
 }
 
-const iModalContextState: ModalContextType = {
+const initialContext: ContextProps = {
   isModalVisible: false,
   setIsModalVisible: () => {},
 	modalContent: 'signin',
 	setModalContent: () => {}
 };
 
-export const ModalContext = createContext(iModalContextState)
+const ModalContext = createContext<ContextProps | null>(null)
 
-const ModalContextProvider = ({ children }: React.PropsWithChildren) => {
-	const [isModalVisible, setIsModalVisible] = useState(iModalContextState.isModalVisible)
-	const [modalContent, setModalContent] = useState(iModalContextState.modalContent)
+export const ModalProvider = ({ children }: React.PropsWithChildren) => {
+	const [isModalVisible, setIsModalVisible] = useState(initialContext.isModalVisible)
+	const [modalContent, setModalContent] = useState(initialContext.modalContent)
 
 	return (
 		<ModalContext.Provider value={{ isModalVisible, setIsModalVisible, modalContent, setModalContent }}>
@@ -27,4 +27,12 @@ const ModalContextProvider = ({ children }: React.PropsWithChildren) => {
 	);
 }
 
-export default ModalContextProvider
+export const useModalContext = () => {
+	const value = useContext(ModalContext)
+
+	if (value === null) {
+		throw new Error('You need to wrap this component with <ModalProvider>')
+	}
+
+	return value
+}

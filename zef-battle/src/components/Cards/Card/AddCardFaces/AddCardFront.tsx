@@ -1,6 +1,6 @@
-import { useCallback, useContext, useEffect, useState } from 'react'
-import { MessageContext, MESSAGE } from '../../../../contexts/MessageContext'
-import { ModalContext } from '../../../../contexts/ModalContext'
+import { useCallback, useEffect, useState } from 'react'
+import { useMessageContext, MESSAGE } from '../../../../contexts/MessageContext'
+import { useModalContext } from '../../../../contexts/ModalContext'
 import { useCards } from '../../../App/App'
 import { postCharacter, postFamily } from '../../../../apiClient/apiRequests'
 import { Button, DropZone, Form, Input, Message } from '../../..'
@@ -23,8 +23,8 @@ export default function AddCardFrontFace({
 	isActive = false,
 	formCloser,
 }: Props) {
-	const { messageContent, setMessageContent, messageToDisplay, setMessageToDisplay } = useContext(MessageContext)
-	const { setIsModalVisible } = useContext(ModalContext)
+	const { messageContent, setMessageContent, messageToDisplay, setMessageToDisplay } = useMessageContext()
+	const { setIsModalVisible } = useModalContext()
 	
 	const [nameInputValue, setNameInputValue] = useState('');
 	const [droppedFiles, setDroppedFiles] = useState([] as FileWithPath[]);

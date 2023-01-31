@@ -1,10 +1,10 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { addCharacterCapacity, removeCharacterCapacity } from '../../../../apiClient/apiRequests'
 
 import { CardCapacity, Button, Input, Message, Form } from '../../../'
 import { useCards } from '../../../App/App'
-import { MessageContext, MESSAGE } from '../../../../contexts/MessageContext';
-import { ModalContext } from '../../../../contexts/ModalContext';
+import { useMessageContext, MESSAGE } from '../../../../contexts/MessageContext';
+import { useModalContext } from '../../../../contexts/ModalContext';
 
 interface Props {
 	id: number
@@ -28,8 +28,8 @@ export default function CardFrontFace({
 	onClickKillCharacterButton,
 }: Props) {
 	const { dispatch } = useCards()
-	const { messageContent, setMessageContent, messageToDisplay, setMessageToDisplay } = useContext(MessageContext)
-	const { setIsModalVisible } = useContext(ModalContext)
+	const { messageContent, setMessageContent, messageToDisplay, setMessageToDisplay } = useMessageContext()
+	const { setIsModalVisible } = useModalContext()
 	const [capacityNameInputValue, setCapacityNameInputValue] = useState('')
 	const [capacityLevelInputValue, setCapacityLevelInputValue] = useState('0')
 	const [isInputCapacityFocus, setIsInputCapacityFocus] = useState(true)

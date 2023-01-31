@@ -1,9 +1,9 @@
 import './Modal.scss'
 
-import { useContext, useState, useEffect, Children, isValidElement, cloneElement } from 'react';
-import { LoginContext } from '../../../contexts/LoginContext'
-import { ModalContext } from '../../../contexts/ModalContext'
-import { MessageContext, MESSAGE } from '../../../contexts/MessageContext';
+import { useState, useEffect } from 'react';
+import { useLoginContext } from '../../../contexts/LoginContext'
+import { useModalContext } from '../../../contexts/ModalContext'
+import { useMessageContext, MESSAGE } from '../../../contexts/MessageContext';
 
 import { Button, Message } from '../../'
 
@@ -14,9 +14,9 @@ type Props = {
 }
 
 export default function Modal({ children }: Props) {
-	const { messageContent, setMessageContent, messageToDisplay, setMessageToDisplay } = useContext(MessageContext)
-	const { isModalVisible, setIsModalVisible, setModalContent } = useContext(ModalContext)
-	const { isLogin } = useContext(LoginContext)
+	const { messageContent, setMessageContent, messageToDisplay, setMessageToDisplay } = useMessageContext()
+	const { isModalVisible, setIsModalVisible, setModalContent } = useModalContext()
+	const { isLogin } = useLoginContext()
 
 	const [isVisible, setIsVisible] = useState(false)
 
