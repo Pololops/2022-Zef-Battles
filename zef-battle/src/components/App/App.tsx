@@ -1,6 +1,6 @@
 import { useReducer } from 'react';
 import { useOutlet, useLoaderData, Outlet, useOutletContext } from 'react-router-dom';
-import reducer from '../../reducer/reducer'
+import { cardsReducer } from '../../reducer/cardsReducer'
 import useDelayUnmount from '../../hooks/useDelayUnmount'
 
 import { useModalContext } from '../../contexts/ModalContext';
@@ -18,7 +18,7 @@ export default function App() {
 
 	const shouldRenderModal = useDelayUnmount(isModalVisible, 300)
 	
-  const [cards, dispatch] = useReducer(reducer, data)
+  const [cards, dispatch] = useReducer(cardsReducer, data)
 
 	const outlet = useOutlet()
 

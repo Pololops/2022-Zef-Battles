@@ -1,11 +1,11 @@
-interface Capacity {
+type Capacity = {
   id: number
   name: string
   level: number
   description: string
 }
 
-interface Character {
+type Character = {
   id: number
   name: string
   picture: string
@@ -16,14 +16,13 @@ interface Character {
   number_capacity: number
 }
 
-interface Family {
-  [x: string]: any
+type Family = {
   id: number
   name: string
   characters: Character[]
 }
 
-interface  CardsContext {
+interface CardsContext {
   cards: Family[]
   dispatch?: Dispatch<{type: string, payload: any}>
 }

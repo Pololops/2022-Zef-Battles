@@ -1,4 +1,4 @@
-enum ActionType {
+export const enum ACTION_TYPES {
 	GET_CARDS = 'GET_CARDS',
   CREATE_FAMILY_CARD = 'CREATE_FAMILY_CARD',
   DELETE_FAMILY_CARD = 'DELETE_FAMILY_CARD',
@@ -8,17 +8,17 @@ enum ActionType {
 	DELETE_CHARACTER_CAPACITY = 'DELETE_CHARACTER_CAPACITY',
 }
 
-interface Action {
-  type: ActionType;
+export type Action = {
+  type: ACTION_TYPES;
   payload: any;
 }
 
-const reducer = (state: Family[], { type, payload }: Action) => {
+export const cardsReducer = (state: Family[], { type, payload }: Action): Family[] => {
 	switch (type) {
-		case 'GET_CARDS':
+		case ACTION_TYPES.GET_CARDS:
 			return [...payload]
 
-		case ActionType.CREATE_FAMILY_CARD: {
+		case ACTION_TYPES.CREATE_FAMILY_CARD: {
 			const { id } = payload
 			const modifiedState = [...state]
 
@@ -31,7 +31,7 @@ const reducer = (state: Family[], { type, payload }: Action) => {
 			return modifiedState
 		}
 
-		case ActionType.DELETE_FAMILY_CARD: {
+		case ACTION_TYPES.DELETE_FAMILY_CARD: {
 			const { family_id } = payload
 			const modifiedState = [...state].filter(
 				(family) => family.id !== family_id,
@@ -40,7 +40,7 @@ const reducer = (state: Family[], { type, payload }: Action) => {
 			return modifiedState
 		}
 
-		case ActionType.CREATE_CHARACTER_CARD: {
+		case ACTION_TYPES.CREATE_CHARACTER_CARD: {
 			const { id, family_id } = payload
 			const modifiedState = [...state]
 
@@ -57,7 +57,7 @@ const reducer = (state: Family[], { type, payload }: Action) => {
 			return modifiedState
 		}
 
-		case ActionType.DELETE_CHARACTER_CARD: {
+		case ACTION_TYPES.DELETE_CHARACTER_CARD: {
 			const { family_id, character_id } = payload
 			const modifiedState = [...state]
 
@@ -76,7 +76,7 @@ const reducer = (state: Family[], { type, payload }: Action) => {
 			return modifiedState
 		}
 
-		case ActionType.CREATE_CHARACTER_CAPACITY: {
+		case ACTION_TYPES.CREATE_CHARACTER_CAPACITY: {
 			const { id, family_id, newCapacityName, capacity } = payload
 			const modifiedState = [...state]
 
@@ -103,7 +103,7 @@ const reducer = (state: Family[], { type, payload }: Action) => {
 			return modifiedState
 		}
 
-		case ActionType.DELETE_CHARACTER_CAPACITY: {
+		case ACTION_TYPES.DELETE_CHARACTER_CAPACITY: {
 			const { family_id, character_id, capacity_id } = payload
 			const modifiedState = [...state]
 
@@ -131,12 +131,10 @@ const reducer = (state: Family[], { type, payload }: Action) => {
 	}
 }
 
-const findFamily = (state: Family[], familyId: number): Family | undefined => {
-	return state.find((family) => family.id === familyId)
+const findFamily = <T extends Family>(state: T[], familyId: number): T | undefined => {
+	return state.find(({ id }) => id === familyId)
 }
 
 const findCharacter = (family: Family, characterId: number): Character | undefined => {
-	return family.characters.find((character) => character.id === characterId)
+	return family.characters.find(({ id }) => id === characterId)
 }
-
-export default reducer;

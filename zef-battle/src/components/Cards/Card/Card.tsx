@@ -77,7 +77,7 @@ export default function Card({
 		if (status === 'OK') {
 			dispatch({
 				type: 'DELETE_FAMILY_CARD',
-				payload: { family_id: familyId },
+				payload: { id: familyId },
 			})
 			navigate('/families')
 		}
