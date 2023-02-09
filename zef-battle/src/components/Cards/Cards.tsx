@@ -3,7 +3,7 @@ import './Cards.scss';
 import { Card } from '../'
 
 interface Props {
-	data: Family[] | Character[]
+	data: Character[] | Family[]
 	isFamilyCard?: boolean
 }
 
@@ -19,11 +19,11 @@ export default function Cards({ data, isFamilyCard = false}: Props) {
 							index={index}
 							title={card.name}
 							isFamilyCard={isFamilyCard}
-							imageUrl={!!('family_id' in card) ? card.picture : null}
-							capacities={!!('family_id' in card) ? card.capacity: null}
-							familyId={!!('family_id' in card) ? card.family_id: null}
-							familyName={!!('family_id' in card) ? card.family_name: null}
-							totalLevel={!!('family_id' in card) ? card.total_level: null}
+							imageUrl={!!('family_id' in card) ? card.picture : undefined}
+							capacities={!!('family_id' in card) ? card.capacity: undefined}
+							familyId={!!('family_id' in card) ? card.family_id: undefined}
+							familyName={!!('family_id' in card) ? card.family_name: undefined}
+							totalLevel={!!('family_id' in card) ? card.total_level: undefined}
 						/>
 					),
 			)}
