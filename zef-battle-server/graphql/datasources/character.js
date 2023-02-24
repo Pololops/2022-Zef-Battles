@@ -5,9 +5,10 @@ const TTL = 1 // Time To Live: 1 minute
 class Character extends SQLDataSource {
 	tableName = 'character'
 
-	constructor(config) {
-		super({ client: config.client })
-		this.connection = config.connection
+	constructor(options) {
+		super({ client: options.dbConfig.client })
+		this.connection = options.dbConfig.connection
+		this.initialize({ cache: options.cache })
 	}
 
 	async findAll() {

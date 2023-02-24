@@ -5,19 +5,18 @@ const TTL = 1 // Time To Live: 1 minute
 class Family extends SQLDataSource {
 	tableName = 'family'
 
-	constructor(config) {
-		super({ client: config.client })
-		this.connection = config.connection
+	constructor(options) {
+		super({ client: options.dbConfig.client })
+		this.connection = options.dbConfig.connection
+		this.initialize({ cache: options.cache })
 	}
 
 	async findAll() {
-		return (
-			this.knex
-				.connection(this.connection)
-				.select('*')
-				.from(this.tableName)
-				.cache(TTL)
-		)
+		return this.knex
+			.connection(this.connection)
+			.select('*')
+			.from(this.tableName)
+			.cache(TTL)
 	}
 
 	async findByPk(id) {

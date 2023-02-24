@@ -4,7 +4,8 @@ dotenv.config()
 import Debug from 'debug'
 const debug = Debug('Server:log')
 
-import { ApolloServer } from 'apollo-server'
+import { ApolloServer } from '@apollo/server'
+import { startStandaloneServer } from '@apollo/server/standalone'
 import typeDefs from './graphql/schema.js'
 import resolvers from './graphql/resolvers/index.js'
 
@@ -20,15 +21,21 @@ const dbConfig = {
 const server = new ApolloServer({
 	typeDefs,
 	resolvers,
-	dataSources: () => ({
-		family: new Family(dbConfig),
-		character: new Character(dbConfig),
-		capacity: new Capacity(dbConfig),
-	}),
 })
 
 const PORT = process.env.PORT ?? 5000
 
-server
-	.listen(PORT)
-	.then(() => debug(`✅ Server started at : http://localhost:${PORT}`))
+const { url } = await startStandaloneServer(server, {
+	context: async () => {
+		const { cache } = server
+		return {
+			dataSources: {
+				family: new Family({ cache, dbConfig }),
+				character: new Character({ cache, dbConfig }),
+				capacity: new Capacity({ cache, dbConfig }),
+			},
+		}
+	},
+	listen: { port: PORT },
+})
+debug(`🚀  Server ready at ${url}`)

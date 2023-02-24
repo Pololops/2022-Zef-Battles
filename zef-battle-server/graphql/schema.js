@@ -1,4 +1,6 @@
-const typeDefs = `#graphql
+import gql from 'graphql-tag'
+
+const typeDefs = gql`#graphql
 	#### GET Requests
 		type Query {
 			"All families"
