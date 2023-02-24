@@ -2,8 +2,8 @@ import { SQLDataSource } from 'datasource-sql'
 
 const TTL = 1 // Time To Live: 1 minute
 
-class Family extends SQLDataSource {
-	tableName = 'family'
+class Character extends SQLDataSource {
+	tableName = 'capacity'
 
 	constructor(config) {
 		super({ client: config.client })
@@ -11,13 +11,11 @@ class Family extends SQLDataSource {
 	}
 
 	async findAll() {
-		return (
-			this.knex
-				.connection(this.connection)
-				.select('*')
-				.from(this.tableName)
-				.cache(TTL)
-		)
+		return this.knex
+			.connection(this.connection)
+			.select('*')
+			.from(this.tableName)
+			.cache(TTL)
 	}
 
 	async findByPk(id) {
@@ -29,19 +27,10 @@ class Family extends SQLDataSource {
 			.cache(TTL)
 	}
 
-	async findAllByUserId(userId) {
-		return this.db.query
-			.connection(this.connection)
-			.select('*')
-			.from(this.tableName)
-			.where('user_id', userId)
-			.cache(TTL)
-	}
-
-	async insert(family) {
+	async insert(capacity) {
 		return this.knex(this.tableName)
 			.connection(this.connection)
-			.insert(family)
+			.insert(capacity)
 			.returning('*')
 	}
 
@@ -61,4 +50,4 @@ class Family extends SQLDataSource {
 	}
 }
 
-export default Family
+export default Character

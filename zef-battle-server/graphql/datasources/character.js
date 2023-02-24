@@ -18,21 +18,21 @@ class Character extends SQLDataSource {
 			.cache(TTL)
 	}
 
+	async findAllByFamilyId(familyId) {
+		return this.knex
+			.connection(this.connection)
+			.select('*')
+			.from(this.tableName)
+			.where('family_id', familyId)
+			.cache(TTL)
+	}
+
 	async findByPk(id) {
 		return this.knex
 			.connection(this.connection)
 			.select('*')
 			.from(this.tableName)
 			.where({ id })
-			.cache(TTL)
-	}
-
-	async findByFamilyId(familyId) {
-		return this.knex
-			.connection(this.connection)
-			.select('*')
-			.from(this.tableName)
-			.where('family_id', familyId)
 			.cache(TTL)
 	}
 
