@@ -9,14 +9,14 @@ import { startStandaloneServer } from '@apollo/server/standalone'
 import typeDefs from './graphql/schema.js'
 import resolvers from './graphql/resolvers/index.js'
 
-import pool from './graphql/database/index.js'
+import client from './graphql/database/index.js'
 
-import { Family, Character, Capacity } from './graphql/datasources/index.js'
-
-const dbConfig = {
-	client: 'pg',
-	connection: pool,
-}
+import {
+	Family,
+	Character,
+	Capacity,
+	CharacterCapacity,
+} from './graphql/datasources/index.js'
 
 const server = new ApolloServer({
 	typeDefs,
@@ -30,9 +30,10 @@ const { url } = await startStandaloneServer(server, {
 		const { cache } = server
 		return {
 			dataSources: {
-				family: new Family({ cache, dbConfig }),
-				character: new Character({ cache, dbConfig }),
-				capacity: new Capacity({ cache, dbConfig }),
+				family: new Family({ knexConfig: client, cache }),
+				character: new Character({ knexConfig: client, cache }),
+				capacity: new Capacity({ knexConfig: client, cache }),
+				characterCapacity: new CharacterCapacity({ knexConfig: client, cache }),
 			},
 		}
 	},

@@ -1,18 +1,17 @@
-import { SQLDataSource } from 'datasource-sql'
+import { BatchedSQLDataSource } from '@nic-jennings/sql-datasource'
 
 const TTL = 1 // Time To Live: 1 minute
 
-class Character extends SQLDataSource {
+class Character extends BatchedSQLDataSource {
 	tableName = 'character'
 
 	constructor(options) {
-		super({ client: options.dbConfig.client })
-		this.connection = options.dbConfig.connection
-		this.initialize({ cache: options.cache })
+		super(options)
+		this.connection = options.knexConfig.connection
 	}
 
 	async findAll() {
-		return this.knex
+		return this.db.query
 			.connection(this.connection)
 			.select('*')
 			.from(this.tableName)
@@ -20,7 +19,7 @@ class Character extends SQLDataSource {
 	}
 
 	async findAllByFamilyId(familyId) {
-		return this.knex
+		return this.db.query
 			.connection(this.connection)
 			.select('*')
 			.from(this.tableName)
@@ -29,7 +28,7 @@ class Character extends SQLDataSource {
 	}
 
 	async findByPk(id) {
-		return this.knex
+		return this.db.query
 			.connection(this.connection)
 			.select('*')
 			.from(this.tableName)
@@ -37,27 +36,27 @@ class Character extends SQLDataSource {
 			.cache(TTL)
 	}
 
-	async insert(character) {
-		return this.knex(this.tableName)
-			.connection(this.connection)
-			.insert(character)
-			.returning('*')
-	}
+	// async insert(character) {
+	// 	return this.knex(this.tableName)
+	// 		.connection(this.connection)
+	// 		.insert(character)
+	// 		.returning('*')
+	// }
 
-	async update(id, updates) {
-		return this.knex(this.tableName)
-			.connection(this.connection)
-			.where({ id })
-			.update(updates)
-			.returning('*')
-	}
+	// async update(id, updates) {
+	// 	return this.knex(this.tableName)
+	// 		.connection(this.connection)
+	// 		.where({ id })
+	// 		.update(updates)
+	// 		.returning('*')
+	// }
 
-	async delete(id) {
-		return this.knex(this.tableName)
-			.connection(this.connection)
-			.where({ id })
-			.del()
-	}
+	// async delete(id) {
+	// 	return this.knex(this.tableName)
+	// 		.connection(this.connection)
+	// 		.where({ id })
+	// 		.del()
+	// }
 }
 
 export default Character

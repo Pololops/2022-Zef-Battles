@@ -2,20 +2,12 @@ import { BatchedSQLDataSource } from '@nic-jennings/sql-datasource'
 
 const TTL = 1 // Time To Live: 1 minute
 
-class Character extends BatchedSQLDataSource {
-	tableName = 'capacity'
+class CharacterCapacity extends BatchedSQLDataSource {
+	tableName = 'character_has_capacity'
 
 	constructor(options) {
 		super(options)
 		this.connection = options.knexConfig.connection
-	}
-
-	async findAll() {
-		return this.db.query
-			.connection(this.connection)
-			.select('*')
-			.from(this.tableName)
-			.cache(TTL)
 	}
 
 	async findByPk(id) {
@@ -24,6 +16,24 @@ class Character extends BatchedSQLDataSource {
 			.select('*')
 			.from(this.tableName)
 			.where({ id })
+			.cache(TTL)
+	}
+
+	async findCapacityCharacters(capacityId) {
+		return this.db.query
+			.connection(this.connection)
+			.select('*')
+			.from(this.tableName)
+			.where({ capacity_id: capacityId })
+			.cache(TTL)
+	}
+
+	async findCharacterCapacities(characterId) {
+		return this.db.query
+			.connection(this.connection)
+			.select('*')
+			.from(this.tableName)
+			.where({ character_id: characterId })
 			.cache(TTL)
 	}
 
@@ -50,4 +60,4 @@ class Character extends BatchedSQLDataSource {
 	// }
 }
 
-export default Character
+export default CharacterCapacity

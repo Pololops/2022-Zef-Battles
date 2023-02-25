@@ -1,6 +1,5 @@
 export default {
-	characters: async (parent, _, { dataSources }) => {
-		const characters = await dataSources.character.findAllByFamilyId(parent.id)
-		return characters
+	characters: async (parent, __, { dataSources }) => {
+		return await dataSources.character.findAllByFamilyId(parent.id)
 	},
 }
