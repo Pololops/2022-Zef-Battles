@@ -1,6 +1,3 @@
-import Debug from 'debug'
-const debug = Debug('Graphql:Mutations:log')
-
 import { GraphQLError } from 'graphql'
 import { ApolloServerErrorCode } from '@apollo/server/errors'
 
@@ -13,9 +10,9 @@ export default {
 				{
 					extensions: {
 						code: ApolloServerErrorCode.BAD_USER_INPUT,
-						statusCode: 404,
-						success: false,
-						message: `A family with the name ${params.name} already exists`,
+						http: {
+							status: 404,
+						},
 					},
 				},
 			)
@@ -37,9 +34,9 @@ export default {
 			throw new GraphQLError(`Family with id = ${id} not found`, {
 				extensions: {
 					code: ApolloServerErrorCode.BAD_USER_INPUT,
-					statusCode: 404,
-					success: false,
-					message: `Family with id = ${id} not found`,
+					http: {
+						status: 404,
+					},
 				},
 			})
 		}
@@ -59,9 +56,9 @@ export default {
 			throw new GraphQLError(`Family with id = ${id} not found`, {
 				extensions: {
 					code: ApolloServerErrorCode.BAD_USER_INPUT,
-					statusCode: 404,
-					success: false,
-					message: `Family with id = ${id} not found`,
+					http: {
+						status: 404,
+					},
 				},
 			})
 		}

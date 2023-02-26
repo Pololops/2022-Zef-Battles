@@ -36,27 +36,39 @@ class Character extends BatchedSQLDataSource {
 			.cache(TTL)
 	}
 
-	// async insert(character) {
-	// 	return this.knex(this.tableName)
-	// 		.connection(this.connection)
-	// 		.insert(character)
-	// 		.returning('*')
-	// }
+	async findByName({ name }) {
+		return this.db.query
+			.connection(this.connection)
+			.select('*')
+			.from(this.tableName)
+			.where({ name })
+			.cache(TTL)
+	}
 
-	// async update(id, updates) {
-	// 	return this.knex(this.tableName)
-	// 		.connection(this.connection)
-	// 		.where({ id })
-	// 		.update(updates)
-	// 		.returning('*')
-	// }
+	async insert(character) {
+		return this.db.write
+			.connection(this.connection)
+			.insert(character)
+			.into(this.tableName)
+			.returning('*')
+	}
 
-	// async delete(id) {
-	// 	return this.knex(this.tableName)
-	// 		.connection(this.connection)
-	// 		.where({ id })
-	// 		.del()
-	// }
+	async update(id, updates) {
+		return this.db.write
+			.connection(this.connection)
+			.from(this.tableName)
+			.where({ id })
+			.update(updates)
+			.returning('*')
+	}
+
+	async delete(id) {
+		return this.db.write
+			.connection(this.connection)
+			.from(this.tableName)
+			.where({ id })
+			.del()
+	}
 }
 
 export default Character
