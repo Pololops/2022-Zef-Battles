@@ -2,7 +2,7 @@ import { BatchedSQLDataSource } from '@nic-jennings/sql-datasource'
 
 const TTL = 1 // Time To Live: 1 minute
 
-class Character extends BatchedSQLDataSource {
+class Capacity extends BatchedSQLDataSource {
 	tableName = 'capacity'
 
 	constructor(options) {
@@ -27,27 +27,39 @@ class Character extends BatchedSQLDataSource {
 			.cache(TTL)
 	}
 
-	// async insert(capacity) {
-	// 	return this.knex(this.tableName)
-	// 		.connection(this.connection)
-	// 		.insert(capacity)
-	// 		.returning('*')
-	// }
+	async isUnique(name) {
+		return this.db.query
+			.connection(this.connection)
+			.select('*')
+			.from(this.tableName)
+			.where({ name })
+			.cache(TTL)
+	}
 
-	// async update(id, updates) {
-	// 	return this.knex(this.tableName)
-	// 		.connection(this.connection)
-	// 		.where({ id })
-	// 		.update(updates)
-	// 		.returning('*')
-	// }
+	async insert(capacity) {
+		return this.db.write
+			.connection(this.connection)
+			.insert(capacity)
+			.into(this.tableName)
+			.returning('*')
+	}
 
-	// async delete(id) {
-	// 	return this.knex(this.tableName)
-	// 		.connection(this.connection)
-	// 		.where({ id })
-	// 		.del()
-	// }
+	async update(id, updates) {
+		return this.db.write
+			.connection(this.connection)
+			.from(this.tableName)
+			.where({ id })
+			.update(updates)
+			.returning('*')
+	}
+
+	async delete(id) {
+		return this.db.write
+			.connection(this.connection)
+			.from(this.tableName)
+			.where({ id })
+			.del()
+	}
 }
 
-export default Character
+export default Capacity

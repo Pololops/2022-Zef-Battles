@@ -19,7 +19,7 @@ export default {
 			})
 		}
 
-		const foundCharacter = await dataSources.character.findByName(params)
+		const foundCharacter = await dataSources.character.isUnique(params)
 		if (foundCharacter.length > 0) {
 			throw new GraphQLError(
 				`A character with the name ${params.name} already exists`,

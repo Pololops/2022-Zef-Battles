@@ -21,4 +21,13 @@ export default {
 		const capacity = await dataSources.capacity.findByPk(id)
 		return capacity[0]
 	},
+
+	users: async (_, __, { dataSources }) => {
+		return await dataSources.user.findAll()
+	},
+
+	user: async (_, { id }, { dataSources }) => {
+		const user = await dataSources.user.findByPk(id)
+		return user[0]
+	},
 }

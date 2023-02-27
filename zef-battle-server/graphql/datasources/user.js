@@ -2,8 +2,8 @@ import { BatchedSQLDataSource } from '@nic-jennings/sql-datasource'
 
 const TTL = 1 // Time To Live: 1 minute
 
-class Character extends BatchedSQLDataSource {
-	tableName = 'character'
+class User extends BatchedSQLDataSource {
+	tableName = 'user'
 
 	constructor(options) {
 		super(options)
@@ -18,15 +18,6 @@ class Character extends BatchedSQLDataSource {
 			.cache(TTL)
 	}
 
-	async findAllByFamilyId(familyId) {
-		return this.db.query
-			.connection(this.connection)
-			.select('*')
-			.from(this.tableName)
-			.where('family_id', familyId)
-			.cache(TTL)
-	}
-
 	async findByPk(id) {
 		return this.db.query
 			.connection(this.connection)
@@ -36,7 +27,7 @@ class Character extends BatchedSQLDataSource {
 			.cache(TTL)
 	}
 
-	async isUnique({ name }) {
+	async findByName(name) {
 		return this.db.query
 			.connection(this.connection)
 			.select('*')
@@ -45,10 +36,20 @@ class Character extends BatchedSQLDataSource {
 			.cache(TTL)
 	}
 
-	async insert(character) {
+	async isUnique({ id, name }) {
+		return this.db.query
+			.connection(this.connection)
+			.select('*')
+			.from(this.tableName)
+			.where({ name })
+			.andWhereNot({ id })
+			.cache(TTL)
+	}
+
+	async insert(user) {
 		return this.db.write
 			.connection(this.connection)
-			.insert(character)
+			.insert(user)
 			.into(this.tableName)
 			.returning('*')
 	}
@@ -71,4 +72,4 @@ class Character extends BatchedSQLDataSource {
 	}
 }
 
-export default Character
+export default User

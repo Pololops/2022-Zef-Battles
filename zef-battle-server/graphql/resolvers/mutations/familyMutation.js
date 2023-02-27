@@ -3,7 +3,7 @@ import { ApolloServerErrorCode } from '@apollo/server/errors'
 
 export default {
 	createFamily: async (_, { params }, { dataSources }) => {
-		const foundFamily = await dataSources.family.findByName(params.name)
+		const foundFamily = await dataSources.family.isUnique(params.name)
 		if (foundFamily.length > 0) {
 			throw new GraphQLError(
 				`A family with the name ${params.name} already exists`,

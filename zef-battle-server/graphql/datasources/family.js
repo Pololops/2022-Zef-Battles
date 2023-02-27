@@ -27,7 +27,7 @@ class Family extends BatchedSQLDataSource {
 			.cache(TTL)
 	}
 
-	async findByName(name) {
+	async isUnique(name) {
 		return this.db.query
 			.connection(this.connection)
 			.select('*')

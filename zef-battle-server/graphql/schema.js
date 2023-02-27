@@ -18,6 +18,12 @@ const typeDefs = gql`
 
 		"One capacity"
 		capacity(id: ID!): Capacity
+
+		"All users"
+		users: [User]
+
+		"One user"
+		user(id: ID!): User
 	}
 
 	#### Get Schemas
@@ -50,6 +56,13 @@ const typeDefs = gql`
 		capacity_id: Int
 		character: Character
 		capacity: Capacity
+	}
+
+	type User {
+		id: ID
+		name: String!
+		visctory_number: Int
+		role: String
 	}
 
 	#### Mutations (POST, PUT, PATCH, DELETE)
@@ -89,6 +102,19 @@ const typeDefs = gql`
 
 		"Delete a capactity"
 		deleteCapacity(id: ID!): CapacityMutationResponse
+
+		###Mutations for users
+		"Create a new user"
+		login(params: Login): LoginMutationResponse
+
+		"Create a new user"
+		createUser(params: UserCreateContent): UserMutationResponse
+
+		"Update a user"
+		updateUser(id: ID!, params: UserUpdateContent): UserMutationResponse
+
+		"Delete a user"
+		deleteUser(id: ID!): UserMutationResponse
 	}
 
 	#### POST input types
@@ -107,6 +133,17 @@ const typeDefs = gql`
 		description: String
 	}
 
+	input Login {
+		name: String!
+		password: String!
+	}
+
+	input UserCreateContent {
+		name: String!
+		password: String!
+		role: String
+	}
+
 	#### PATCH / PUT Input types
 	input FamilyUpdateContent {
 		name: String
@@ -120,6 +157,13 @@ const typeDefs = gql`
 	input CapacityUpdateContent {
 		name: String
 		description: String
+	}
+
+	input UserUpdateContent {
+		name: String
+		password: String
+		victory_number: Int
+		role: String
 	}
 
 	#### POST, PATCH / PUT and DELETE Responses
@@ -148,6 +192,21 @@ const typeDefs = gql`
 		success: Boolean!
 		message: String!
 		capacity: Capacity
+	}
+
+	type UserMutationResponse implements MutationResponse {
+		code: Int!
+		success: Boolean!
+		message: String!
+		user: User
+	}
+
+	type LoginMutationResponse implements MutationResponse {
+		code: Int!
+		success: Boolean!
+		message: String!
+		token: String!
+		user: User
 	}
 `
 

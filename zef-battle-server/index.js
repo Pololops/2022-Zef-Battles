@@ -16,6 +16,7 @@ import {
 	Character,
 	Capacity,
 	CharacterCapacity,
+	User
 } from './graphql/datasources/index.js'
 
 const server = new ApolloServer({
@@ -34,6 +35,7 @@ const { url } = await startStandaloneServer(server, {
 				character: new Character({ knexConfig: client, cache }),
 				capacity: new Capacity({ knexConfig: client, cache }),
 				characterCapacity: new CharacterCapacity({ knexConfig: client, cache }),
+				user: new User({ knexConfig: client, cache }),
 			},
 		}
 	},
